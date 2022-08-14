@@ -112,7 +112,7 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 			for (JavaTypeDeclaration type : compilationUnit.getTypeDeclarations()) {
 				writeAnnotations(writer, type);
 				writeModifiers(writer, TYPE_MODIFIERS, type.getModifiers());
-				writer.print("class " + type.getName());
+				writer.print(type.getClassType()+" " + type.getName());
 				if (type.getExtends() != null) {
 					writer.print(" extends " + getUnqualifiedName(type.getExtends()));
 				}
@@ -130,7 +130,11 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 				if (!methodDeclarations.isEmpty()) {
 					writer.indented(() -> {
 						for (JavaMethodDeclaration methodDeclaration : methodDeclarations) {
-							writeMethodDeclaration(writer, methodDeclaration);
+							if(type.getClassType().equals("class"))
+								writeMethodDeclaration(writer, methodDeclaration);
+							else
+								writeAbstractMethodDeclaration(writer, methodDeclaration);
+							
 						}
 					});
 				}
@@ -225,6 +229,36 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 		writer.println("}");
 		writer.println();
 	}
+	
+	
+	private void writeAbstractMethodDeclaration(IndentingWriter writer, JavaMethodDeclaration methodDeclaration) {
+		writeAnnotations(writer, methodDeclaration);
+		writeModifiers(writer, METHOD_MODIFIERS, methodDeclaration.getModifiers());
+		writer.print(getUnqualifiedName(methodDeclaration.getReturnType()) + " " + methodDeclaration.getName() + "(");
+		List<Parameter> parameters = methodDeclaration.getParameters();
+		if (!parameters.isEmpty()) {
+			writer.print(parameters.stream()
+					.map((parameter) -> getUnqualifiedName(parameter.getType()) + " " + parameter.getName())
+					.collect(Collectors.joining(", ")));
+		}
+		writer.println(") ");
+//		writer.indented(() -> {
+//			List<JavaStatement> statements = methodDeclaration.getStatements();
+//			for (JavaStatement statement : statements) {
+//				if (statement instanceof JavaExpressionStatement) {
+//					writeExpression(writer, ((JavaExpressionStatement) statement).getExpression());
+//				}
+//				else if (statement instanceof JavaReturnStatement) {
+//					writer.print("return ");
+//					writeExpression(writer, ((JavaReturnStatement) statement).getExpression());
+//				}
+//				writer.println(";");
+//			}
+//		});
+//		writer.println("}");
+		writer.println();
+	}
+	
 
 	private void writeModifiers(IndentingWriter writer, Map<Predicate<Integer>, String> availableModifiers,
 			int declaredModifiers) {
