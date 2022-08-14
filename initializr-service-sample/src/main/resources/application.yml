@@ -1,6 +1,6 @@
 initializr:
   group-id:
-    value: org.acme
+    value: com.litmus
   dependencies:
     - name: Web
       content:
@@ -26,10 +26,10 @@ initializr:
   packagings:
     - name: Jar
       id: jar
-      default: true
+      default: false
     - name: War
       id: war
-      default: false
+      default: true
   types:
     - name: Maven Project
       id: maven-project
