@@ -16,6 +16,7 @@
 
 package io.spring.initializr.generator.language;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,9 @@ public class TypeDeclaration implements Annotatable {
 	private final String name;
 
 	private String extendedClassName;
+	
+	private String classType= "class";
+	
 
 	public TypeDeclaration(String name) {
 		this.name = name;
@@ -59,4 +63,12 @@ public class TypeDeclaration implements Annotatable {
 		return this.extendedClassName;
 	}
 
+	public String getClassType() {
+		return classType;
+	}
+
+	public void setClassType(String classType) {
+		this.classType = classType;
+	}
+	
 }
