@@ -26,7 +26,7 @@ import org.springframework.core.Ordered;
  * @author Stephane Nicoll
  */
 @FunctionalInterface
-public interface DockerCustomizer<D extends DockerFileDeclaration> extends Ordered {
+public interface DockerCustomizer<D extends DockerFile> extends Ordered {
 
 	void customize(D dockerFileDeclaration);
 
