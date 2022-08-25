@@ -1,0 +1,45 @@
+package {{packageName}};
+
+import java.util.Date;
+
+import org.springframework.http.HttpStatus;
+
+public class ErrorResponse {
+
+	private Date timestamp = new Date();
+
+	private HttpStatus status;
+
+	private String message;
+
+	public ErrorResponse(HttpStatus status, String errors) {
+		this.status = status;
+		this.message = errors;
+
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public HttpStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(HttpStatus status) {
+		this.status = status;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+}
