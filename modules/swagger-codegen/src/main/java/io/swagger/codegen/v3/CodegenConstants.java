@@ -24,6 +24,18 @@ public class CodegenConstants {
 
     public static final String MODEL_PACKAGE = "modelPackage";
     public static final String MODEL_PACKAGE_DESC = "package for generated models";
+    
+    public static final String CONFIG_PACKAGE = "configPackage";
+    public static final String CONFIG_PACKAGE_DESC = "package for generated configs";
+
+    public static final String CONTROLLER_PACKAGE = "controllerPackage";
+    public static final String CONTROLLER_PACKAGE_DESC = "package for generated controller";
+
+    public static final String CONTROLLER_IMPL_PACKAGE = "controllerImplPackage";
+    public static final String CONTROLLER_IMPL_PACKAGE_DESC = "package for generated controller impl";
+
+    public static final String EXCEPTION_PACKAGE = "exceptionPackage";
+    public static final String EXCEPTION_PACKAGE_DESC = "package for generated exception";
 
     public static final String TEMPLATE_DIR = "templateDir";
     public static final String TEMPLATE_VERSION = "templateVersion";

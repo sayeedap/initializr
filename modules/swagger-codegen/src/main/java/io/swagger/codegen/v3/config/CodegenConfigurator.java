@@ -68,6 +68,10 @@ public class CodegenConfigurator implements Serializable {
     private AuthorizationValue authorizationValue;
     private String apiPackage;
     private String modelPackage;
+    private String configPackage;
+    private String controllerPackage;
+    private String controllerImplPackage;
+    private String exceptionPackage;
     private String invokerPackage;
     private String modelNamePrefix;
     private String modelNameSuffix;
@@ -158,7 +162,43 @@ public class CodegenConfigurator implements Serializable {
         return this;
     }
 
-    public String getModelNamePrefix() {
+    public String getConfigPackage() {
+		return configPackage;
+	}
+
+	public CodegenConfigurator setConfigPackage(String configPackage) {
+		this.configPackage = configPackage;
+        return this;
+	}
+
+	public String getControllerPackage() {
+		return controllerPackage;
+	}
+
+	public String getControllerImplPackage() {
+		return controllerImplPackage;
+	}
+
+	public String getExceptionPackage() {
+		return exceptionPackage;
+	}
+
+	public CodegenConfigurator setControllerPackage(String controllerPackage) {
+		this.controllerPackage = controllerPackage;
+        return this;
+	}
+
+	public CodegenConfigurator setControllerImplPackage(String controllerImplPackage) {
+		this.controllerImplPackage = controllerImplPackage;
+        return this;
+	}
+
+	public CodegenConfigurator setExceptionPackage(String exceptionPackage) {
+		this.exceptionPackage = exceptionPackage;
+        return this;
+	}
+
+	public String getModelNamePrefix() {
         return modelNamePrefix;
     }
 
@@ -642,6 +682,12 @@ public class CodegenConfigurator implements Serializable {
         checkAndSetAdditionalProperty(apiPackage, CodegenConstants.API_PACKAGE);
         checkAndSetAdditionalProperty(modelPackage, CodegenConstants.MODEL_PACKAGE);
         checkAndSetAdditionalProperty(invokerPackage, CodegenConstants.INVOKER_PACKAGE);
+        checkAndSetAdditionalProperty(configPackage, CodegenConstants.CONFIG_PACKAGE);
+        checkAndSetAdditionalProperty(controllerPackage, CodegenConstants.CONTROLLER_PACKAGE);
+        checkAndSetAdditionalProperty(controllerImplPackage, CodegenConstants.CONTROLLER_IMPL_PACKAGE);
+        checkAndSetAdditionalProperty(exceptionPackage, CodegenConstants.EXCEPTION_PACKAGE);
+
+
         checkAndSetAdditionalProperty(groupId, CodegenConstants.GROUP_ID);
         checkAndSetAdditionalProperty(artifactId, CodegenConstants.ARTIFACT_ID);
         checkAndSetAdditionalProperty(artifactVersion, CodegenConstants.ARTIFACT_VERSION);

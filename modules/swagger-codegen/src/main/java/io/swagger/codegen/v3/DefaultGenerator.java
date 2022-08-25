@@ -539,6 +539,18 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
 
                 for (String templateName : config.apiTemplateFiles().keySet()) {
                     String filename = config.apiFilename(templateName, tag);
+					if(templateName.equalsIgnoreCase("api.mustache")) {
+                    	operation.put("package", config.controllerPackage());
+                    }
+                    else if(templateName.equalsIgnoreCase("apiController.mustache")) {
+                        List<Map<String, String>> importList =  (List<Map<String, String>>) operation.get("imports");
+                        Map<String, String> importMap = new LinkedHashMap<>();
+                        importMap.put("import", config.controllerPackage()+"."+operation.get("classname"));
+                        importList.add(importMap);
+                   	 	operation.put("imports", importList);
+                   	 	
+                    	operation.put("package", config.controllerImplPackage());
+                    }
                     if (!config.shouldOverwrite(filename) && new File(filename).exists()) {
                         LOGGER.info("Skipped overwriting " + filename);
                         continue;
@@ -725,7 +737,8 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
         Map<String, Object> bundle = new HashMap<>();
         bundle.putAll(config.additionalProperties());
         bundle.put("apiPackage", config.apiPackage());
-
+		bundle.put("exceptionPackage", config.additionalProperties().get("exceptionPackage"));
+		
         Map<String, Object> apis = new HashMap<>();
         apis.put("apis", allOperations);
 

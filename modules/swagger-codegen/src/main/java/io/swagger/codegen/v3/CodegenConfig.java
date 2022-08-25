@@ -27,6 +27,10 @@ public interface CodegenConfig {
 
     String apiPackage();
 
+    String controllerPackage();
+    
+    String controllerImplPackage();
+    
     String apiFileFolder();
 
     String apiTestFileFolder();
