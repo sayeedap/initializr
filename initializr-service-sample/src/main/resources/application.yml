@@ -7,6 +7,24 @@ initializr:
         - name: Web
           id: web
           description: Servlet web application with Spring MVC and Tomcat
+          facets:
+            - web
+            - json
+            - native
+        - name: Spring Reactive Web
+          id: webflux
+          description: Build reactive web applications with Spring WebFlux and Netty.
+          facets:
+            - json
+            - reactive
+            - native
+            - flux
+          links:
+            - rel: guide
+              href: https://spring.io/guides/gs/reactive-rest-service/
+              description: Building a Reactive RESTful Web Service
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#web.reactive
   languages:
     - name: Java
       id: java
