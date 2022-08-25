@@ -1,47 +1,68 @@
-package io.spring.initializr.generator.spring.code.components;
+package io.spring.initializr.generator.spring.code.java.components;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
 
-import org.springframework.beans.factory.ObjectProvider;
+import io.spring.initializr.generator.io.template.MustacheTemplateRenderer;
+import io.spring.initializr.generator.io.text.MustacheSection;
+import io.spring.initializr.generator.language.SourceStructure;
+import io.spring.initializr.generator.project.ProjectDescription;
+import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
-import io.spring.initializr.generator.language.CompilationUnit;
-import io.spring.initializr.generator.language.SourceCode;
-import io.spring.initializr.generator.language.TypeDeclaration;
-import io.spring.initializr.generator.spring.code.MainSourceCodeCustomizer;
-import io.spring.initializr.generator.spring.util.LambdaSafe;
-
-public class ExceptionCodeContributor implements
-		MainSourceCodeCustomizer<TypeDeclaration, CompilationUnit<TypeDeclaration>, SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>>> {
+/**
+ * @author Sayeed
+ *
+ */
+public class ExceptionCodeContributor implements ProjectContributor {
 
 	private final String packageName;
 
-	private final String initializerClassName;
+	private final ProjectDescription description;
 
-	private final ObjectProvider<ExceptionCodeCustomizer<?>> exceptionCodeCustomizers;
+	private final MustacheTemplateRenderer templateRenderer = new MustacheTemplateRenderer(
+			"classpath:/templates/java/exception");
 
-	public ExceptionCodeContributor(String packageName, String initializerClassName,
-			ObjectProvider<ExceptionCodeCustomizer<?>> exceptionCodeCustomizers) {
+	public ExceptionCodeContributor(String packageName, ProjectDescription description) {
 		this.packageName = packageName;
-		this.initializerClassName = initializerClassName;
-		this.exceptionCodeCustomizers = exceptionCodeCustomizers;
+		this.description = description;
 	}
 
 	@Override
-	public void customize(SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>> sourceCode) {
-		CompilationUnit<TypeDeclaration> compilationUnit = sourceCode
-				.createCompilationUnit(this.packageName + ".exception", "CustomException"); // File Name &&PACKAGENAME
-		TypeDeclaration servletInitializer = compilationUnit.createTypeDeclaration("CustomException"); // class																										// anme
-		servletInitializer.extend(this.initializerClassName);
-		customizeServletInitializer(servletInitializer);
+	public void contribute(Path projectRoot) throws IOException {
+		SourceStructure sourceStructure = this.description.getBuildSystem().getMainSource(projectRoot,
+				this.description.getLanguage());
+		writeCustomException(sourceStructure);
+		writeErrorResponsePOJO(sourceStructure);
+		writeExceptionHandler(sourceStructure);
 	}
 
-	@SuppressWarnings("unchecked")
-	private void customizeServletInitializer(TypeDeclaration servletInitializer) {
-		List<ExceptionCodeCustomizer<?>> customizers = this.exceptionCodeCustomizers.orderedStream()
-				.collect(Collectors.toList());
-		LambdaSafe.callbacks(ExceptionCodeCustomizer.class, customizers, servletInitializer)
-				.invoke((customizer) -> customizer.customize(servletInitializer));
+	private void writeExceptionHandler(SourceStructure sourceStructure) throws IOException {
+		Path file = sourceStructure.createSourceFile(this.packageName, "CustomException");
+		MustacheSection mustacheSection = new MustacheSection(templateRenderer, "/CustomException",
+				Collections.singletonMap("packageName", this.packageName));
+		try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(file))) {
+			mustacheSection.write(writer);
+		}
 	}
 
+	private void writeErrorResponsePOJO(SourceStructure sourceStructure) throws IOException {
+		Path file = sourceStructure.createSourceFile(this.packageName, "ErrorResponse");
+		MustacheSection mustacheSection = new MustacheSection(templateRenderer, "/ErrorResponse",
+				Collections.singletonMap("packageName", this.packageName));
+		try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(file))) {
+			mustacheSection.write(writer);
+		}
+	}
+
+	private void writeCustomException(SourceStructure sourceStructure) throws IOException {
+		Path file = sourceStructure.createSourceFile(this.packageName, "RestExceptionHandler");
+		MustacheSection mustacheSection = new MustacheSection(templateRenderer, "/RestExceptionHandler",
+				Collections.singletonMap("packageName", this.packageName));
+		try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(file))) {
+			mustacheSection.write(writer);
+		}
+	}
 }

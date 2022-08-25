@@ -1,9 +1,14 @@
-package io.spring.initializr.generator.spring.code.components;
+package io.spring.initializr.generator.spring.code.java.components;
 
 import org.springframework.core.Ordered;
 
 import io.spring.initializr.generator.language.TypeDeclaration;
 
+/**
+ * @author Sayeed
+ *
+ * @param <T>
+ */
 @FunctionalInterface
 public interface ControllerCodeCustomizer<T extends TypeDeclaration> extends Ordered {
 

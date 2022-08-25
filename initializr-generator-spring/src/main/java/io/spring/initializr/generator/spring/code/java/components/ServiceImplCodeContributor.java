@@ -1,4 +1,4 @@
-package io.spring.initializr.generator.spring.code.components;
+package io.spring.initializr.generator.spring.code.java.components;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +12,10 @@ import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.spring.code.MainSourceCodeCustomizer;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
 
+/**
+ * @author Sayeed
+ *
+ */
 public class ServiceImplCodeContributor implements
 		MainSourceCodeCustomizer<TypeDeclaration, CompilationUnit<TypeDeclaration>, SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>>> {
 
@@ -20,15 +24,15 @@ public class ServiceImplCodeContributor implements
 	
 	private final String packageName;
 
-	private final String initializerClassName;
+	private final List<String> implementsClassName;
 
 	private final ObjectProvider<ServiceImplCodeCustomizer<?>> serviceImplCodeCustomizers;
 
-	public ServiceImplCodeContributor(String fileName,String packageName, String initializerClassName,
+	public ServiceImplCodeContributor(String fileName,String packageName, List<String> implementsClassName,
 			ObjectProvider<ServiceImplCodeCustomizer<?>> serviceImplCodeCustomizers) {
 		this.fileName=fileName;
 		this.packageName = packageName;
-		this.initializerClassName = initializerClassName;
+		this.implementsClassName = implementsClassName;
 		this.serviceImplCodeCustomizers = serviceImplCodeCustomizers;
 	}
 
@@ -38,7 +42,7 @@ public class ServiceImplCodeContributor implements
 				.createCompilationUnit(this.packageName + ".service.impl", fileName); // File Name &&PACKAGENAME
 		TypeDeclaration servletInitializer = compilationUnit.createTypeDeclaration(fileName); // class
 		servletInitializer.annotate(Annotation.name("org.springframework.stereotype.Service"));																											// anme
-		servletInitializer.extend(this.initializerClassName);
+		servletInitializer.implement(this.implementsClassName);
 		customizeServletInitializer(servletInitializer);
 	}
 

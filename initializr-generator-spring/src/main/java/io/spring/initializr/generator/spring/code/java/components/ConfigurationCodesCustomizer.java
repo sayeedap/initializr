@@ -7,10 +7,9 @@ import io.spring.initializr.generator.language.TypeDeclaration;
 /**
  * @author Sayeed
  *
- * @param <T>
  */
 @FunctionalInterface
-public interface OtherComponentsCustomizer<T extends TypeDeclaration> extends Ordered {
+public interface ConfigurationCodesCustomizer extends Ordered {
 
 	void customize();
 

@@ -1,13 +1,17 @@
-package io.spring.initializr.generator.spring.code.components;
+package io.spring.initializr.generator.spring.code.java.components;
 
 import org.springframework.core.Ordered;
 
 import io.spring.initializr.generator.language.TypeDeclaration;
 
+/**
+ * @author Sayeed
+ *
+ */
 @FunctionalInterface
-public interface ExceptionCodeCustomizer<T extends TypeDeclaration> extends Ordered {
+public interface ExceptionCodeCustomizer extends Ordered {
 
-	void customize(T typeDeclaration);
+	void customize();
 
 	@Override
 	default int getOrder() {

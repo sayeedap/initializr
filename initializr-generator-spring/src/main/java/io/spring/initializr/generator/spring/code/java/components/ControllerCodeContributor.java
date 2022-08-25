@@ -1,4 +1,4 @@
-package io.spring.initializr.generator.spring.code.components;
+package io.spring.initializr.generator.spring.code.java.components;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,21 +13,24 @@ import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.spring.code.MainSourceCodeCustomizer;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
 
+/**
+ * @author Sayeed
+ *
+ */
 public class ControllerCodeContributor implements
 		MainSourceCodeCustomizer<TypeDeclaration, CompilationUnit<TypeDeclaration>, SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>>> {
 
+	private final String fileName;
 
-	private final String fileName; 
-	
 	private final String packageName;
 
 	private final String initializerClassName;
 
 	private final ObjectProvider<ControllerCodeCustomizer<?>> controllerCodeCustomizers;
 
-	public ControllerCodeContributor(String fileName,String packageName, String initializerClassName,
+	public ControllerCodeContributor(String fileName, String packageName, String initializerClassName,
 			ObjectProvider<ControllerCodeCustomizer<?>> controllerCodeCustomizers) {
-		this.fileName=fileName;
+		this.fileName = fileName;
 		this.packageName = packageName;
 		this.initializerClassName = initializerClassName;
 		this.controllerCodeCustomizers = controllerCodeCustomizers;
@@ -39,8 +42,6 @@ public class ControllerCodeContributor implements
 				.createCompilationUnit(this.packageName + ".controller", fileName); // File Name &&PACKAGENAME
 		TypeDeclaration servletInitializer = compilationUnit.createTypeDeclaration(fileName); // class
 		servletInitializer.setClassType("interface");
-		servletInitializer.annotate(Annotation.name("org.springframework.web.bind.annotation.RestController"));																											// anme
-		servletInitializer.extend(this.initializerClassName);
 		customizeServletInitializer(servletInitializer);
 	}
 

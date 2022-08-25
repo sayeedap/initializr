@@ -1,4 +1,4 @@
-package io.spring.initializr.generator.spring.code.components;
+package io.spring.initializr.generator.spring.code.java.components;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +11,10 @@ import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.spring.code.MainSourceCodeCustomizer;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
 
+/**
+ * @author Sayeed
+ *
+ */
 public class ServiceCodeContributor implements
 		MainSourceCodeCustomizer<TypeDeclaration, CompilationUnit<TypeDeclaration>, SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>>> {
 
