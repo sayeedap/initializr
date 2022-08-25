@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * The {@link Command} is executable commands
  * 
- * @author sayeed
+ * @author Sayeed
  */
 public class Command {
 

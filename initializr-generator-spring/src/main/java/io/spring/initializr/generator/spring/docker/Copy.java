@@ -5,7 +5,7 @@ package io.spring.initializr.generator.spring.docker;
  * {@link source} and adds them to the filesystem of the container at the path
  * {@link destination}
  * 
- * @author sayeed
+ * @author Sayeed
  */
 public class Copy {
 

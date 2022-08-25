@@ -12,6 +12,10 @@ import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.spring.docker.Command.CommandType;
 
+/**
+ * @author Sayeed
+ *
+ */
 @ProjectGenerationConfiguration
 public class DockerGenerationConfiguration {
 

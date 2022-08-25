@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
+/**
+ * @author Sayeed
+ *
+ */
 public class DockerContributor implements ProjectContributor {
 
 	private final DockerFile dockerFile;
