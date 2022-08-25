@@ -26,20 +26,24 @@ import java.util.List;
  */
 public class JavaMethodInvocation extends JavaExpression {
 
-	private final String target;
+	private final JavaExpression target;
 
 	private final String name;
 
 	private final List<String> arguments;
 
-	public JavaMethodInvocation(String target, String name, String... arguments) {
+	public JavaMethodInvocation(JavaExpression target, String name, String... arguments) {
 		this.target = target;
 		this.name = name;
 		this.arguments = Arrays.asList(arguments);
 	}
+	
+	public JavaMethodInvocation(String target, String name, String... arguments) {
+		this(new JavaStringExpression(target), name, arguments);
+	}
 
-	public String getTarget() {
-		return this.target;
+	public JavaExpression getTarget() {
+		return target;
 	}
 
 	public String getName() {

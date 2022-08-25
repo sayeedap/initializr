@@ -48,6 +48,7 @@ import io.spring.initializr.generator.language.SourceStructure;
  *
  * @author Andy Wilkinson
  * @author Matt Berteaux
+ * @author Sayeed
  */
 public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 
@@ -112,9 +113,13 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 			for (JavaTypeDeclaration type : compilationUnit.getTypeDeclarations()) {
 				writeAnnotations(writer, type);
 				writeModifiers(writer, TYPE_MODIFIERS, type.getModifiers());
-				writer.print(type.getClassType()+" " + type.getName());
+				writer.print(type.getClassType() + " " + type.getName());
 				if (type.getExtends() != null) {
 					writer.print(" extends " + getUnqualifiedName(type.getExtends()));
+				}
+				if (type.getImplements() != null && !type.getImplements().isEmpty()) {
+					writer.print(" implements " + type.getImplements().stream()
+							.map((className) -> getUnqualifiedName(className)).collect(Collectors.joining(", "))); // getUnqualifiedName(type.getExtends()));
 				}
 				writer.println(" {");
 				writer.println();
@@ -130,11 +135,11 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 				if (!methodDeclarations.isEmpty()) {
 					writer.indented(() -> {
 						for (JavaMethodDeclaration methodDeclaration : methodDeclarations) {
-							if(type.getClassType().equals("class"))
+							if (type.getClassType().equals("class"))
 								writeMethodDeclaration(writer, methodDeclaration);
 							else
 								writeAbstractMethodDeclaration(writer, methodDeclaration);
-							
+
 						}
 					});
 				}
@@ -154,8 +159,7 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 			writer.print("(");
 			if (attributes.size() == 1 && attributes.get(0).getName().equals("value")) {
 				writer.print(formatAnnotationAttribute(attributes.get(0)));
-			}
-			else {
+			} else {
 				writer.print(attributes.stream()
 						.map((attribute) -> attribute.getName() + " = " + formatAnnotationAttribute(attribute))
 						.collect(Collectors.joining(", ")));
@@ -205,7 +209,8 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 	private void writeMethodDeclaration(IndentingWriter writer, JavaMethodDeclaration methodDeclaration) {
 		writeAnnotations(writer, methodDeclaration);
 		writeModifiers(writer, METHOD_MODIFIERS, methodDeclaration.getModifiers());
-		writer.print(getUnqualifiedName(methodDeclaration.getReturnType()) + " " + methodDeclaration.getName() + "(");
+		writeReturnType(writer, methodDeclaration.getJavaReturnType());
+		writer.print(" " + methodDeclaration.getName() + "(");
 		List<Parameter> parameters = methodDeclaration.getParameters();
 		if (!parameters.isEmpty()) {
 			writer.print(parameters.stream()
@@ -218,8 +223,7 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 			for (JavaStatement statement : statements) {
 				if (statement instanceof JavaExpressionStatement) {
 					writeExpression(writer, ((JavaExpressionStatement) statement).getExpression());
-				}
-				else if (statement instanceof JavaReturnStatement) {
+				} else if (statement instanceof JavaReturnStatement) {
 					writer.print("return ");
 					writeExpression(writer, ((JavaReturnStatement) statement).getExpression());
 				}
@@ -229,36 +233,34 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 		writer.println("}");
 		writer.println();
 	}
-	
-	
+
 	private void writeAbstractMethodDeclaration(IndentingWriter writer, JavaMethodDeclaration methodDeclaration) {
 		writeAnnotations(writer, methodDeclaration);
 		writeModifiers(writer, METHOD_MODIFIERS, methodDeclaration.getModifiers());
-		writer.print(getUnqualifiedName(methodDeclaration.getReturnType()) + " " + methodDeclaration.getName() + "(");
+		writeReturnType(writer, methodDeclaration.getJavaReturnType());
+		writer.print(" " + methodDeclaration.getName() + "(");
 		List<Parameter> parameters = methodDeclaration.getParameters();
 		if (!parameters.isEmpty()) {
 			writer.print(parameters.stream()
 					.map((parameter) -> getUnqualifiedName(parameter.getType()) + " " + parameter.getName())
 					.collect(Collectors.joining(", ")));
 		}
-		writer.println(") ");
-//		writer.indented(() -> {
-//			List<JavaStatement> statements = methodDeclaration.getStatements();
-//			for (JavaStatement statement : statements) {
-//				if (statement instanceof JavaExpressionStatement) {
-//					writeExpression(writer, ((JavaExpressionStatement) statement).getExpression());
-//				}
-//				else if (statement instanceof JavaReturnStatement) {
-//					writer.print("return ");
-//					writeExpression(writer, ((JavaReturnStatement) statement).getExpression());
-//				}
-//				writer.println(";");
-//			}
-//		});
-//		writer.println("}");
+		writer.println("); ");
 		writer.println();
 	}
-	
+
+	private void writeReturnType(IndentingWriter writer, JavaReturnType javaReturnType) {
+		if (javaReturnType != null) {
+			writer.print(getUnqualifiedName(javaReturnType.getReturnType()));
+			if (javaReturnType.getGenerics() != null && !javaReturnType.getGenerics().isEmpty()) {
+				writer.print("<");
+				writer.print(javaReturnType.getGenerics().stream().map((generic) -> getUnqualifiedName(generic))
+						.collect(Collectors.joining(", ")));
+				writer.print(">");
+			}
+		}
+
+	}
 
 	private void writeModifiers(IndentingWriter writer, Map<Predicate<Integer>, String> availableModifiers,
 			int declaredModifiers) {
@@ -274,20 +276,38 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 	private void writeExpression(IndentingWriter writer, JavaExpression expression) {
 		if (expression instanceof JavaMethodInvocation) {
 			writeMethodInvocation(writer, (JavaMethodInvocation) expression);
+		} else if (expression instanceof JavaStringExpression) {
+			writeStringExpression(writer, (JavaStringExpression) expression);
 		}
 	}
 
 	private void writeMethodInvocation(IndentingWriter writer, JavaMethodInvocation methodInvocation) {
-		writer.print(getUnqualifiedName(methodInvocation.getTarget()) + "." + methodInvocation.getName() + "("
-				+ String.join(", ", methodInvocation.getArguments()) + ")");
+//		writer.print(getUnqualifiedName(methodInvocation.getTarget()) + "." + methodInvocation.getName() + "("
+//				+ String.join(", ", methodInvocation.getArguments()) + ")");
+		writeExpression(writer, methodInvocation.getTarget());
+		writer.print("." + methodInvocation.getName() + "(" + String.join(", ", methodInvocation.getArguments()) + ")");
+
+	}
+
+	private void writeStringExpression(IndentingWriter writer, JavaStringExpression stringExpression) {
+		writer.print(getUnqualifiedName(stringExpression.getValue()));
 	}
 
 	private Set<String> determineImports(JavaCompilationUnit compilationUnit) {
+//		TODO Imports for java return type
 		List<String> imports = new ArrayList<>();
 		for (JavaTypeDeclaration typeDeclaration : compilationUnit.getTypeDeclarations()) {
 			if (requiresImport(typeDeclaration.getExtends())) {
 				imports.add(typeDeclaration.getExtends());
 			}
+			if (typeDeclaration.getImplements() != null) {
+
+				imports.addAll(getRequiredImports(typeDeclaration.getImplements(), Collections::singletonList));
+
+			}
+
+//			imports.addAll(getRequiredImports(typeDeclaration.getImplements()));
+
 			imports.addAll(getRequiredImports(typeDeclaration.getAnnotations(), this::determineImports));
 			for (JavaFieldDeclaration fieldDeclaration : typeDeclaration.getFieldDeclarations()) {
 				if (requiresImport(fieldDeclaration.getReturnType())) {
@@ -296,8 +316,14 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 				imports.addAll(getRequiredImports(fieldDeclaration.getAnnotations(), this::determineImports));
 			}
 			for (JavaMethodDeclaration methodDeclaration : typeDeclaration.getMethodDeclarations()) {
-				if (requiresImport(methodDeclaration.getReturnType())) {
-					imports.add(methodDeclaration.getReturnType());
+				if (requiresImport(methodDeclaration.getJavaReturnType().getReturnType())) {
+					imports.add(methodDeclaration.getJavaReturnType().getReturnType());
+				}
+
+				if (methodDeclaration.getJavaReturnType().getGenerics() != null) {
+					imports.addAll(getRequiredImports(methodDeclaration.getJavaReturnType().getGenerics(),
+							Collections::singletonList));
+
 				}
 				imports.addAll(getRequiredImports(methodDeclaration.getAnnotations(), this::determineImports));
 				imports.addAll(getRequiredImports(methodDeclaration.getParameters(),
@@ -305,8 +331,12 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 				imports.addAll(getRequiredImports(
 						methodDeclaration.getStatements().stream().filter(JavaExpressionStatement.class::isInstance)
 								.map(JavaExpressionStatement.class::cast).map(JavaExpressionStatement::getExpression)
-								.filter(JavaMethodInvocation.class::isInstance).map(JavaMethodInvocation.class::cast),
-						(methodInvocation) -> Collections.singleton(methodInvocation.getTarget())));
+//								.filter(JavaMethodInvocation.class::isInstance).map(JavaMethodInvocation.class::cast),
+//						(methodInvocation) -> Collections.singleton(methodInvocation.getTarget())));
+								.filter(JavaMethodInvocation.class::isInstance).map(JavaMethodInvocation.class::cast)
+								.map(JavaMethodInvocation::getTarget).filter(JavaStringExpression.class::isInstance)
+								.map(JavaStringExpression.class::cast),
+						(javaStringExpression) -> Collections.singleton(javaStringExpression.getValue())));
 			}
 		}
 		Collections.sort(imports);
