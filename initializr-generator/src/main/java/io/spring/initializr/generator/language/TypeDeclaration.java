@@ -33,9 +33,10 @@ public class TypeDeclaration implements Annotatable {
 	private final String name;
 
 	private String extendedClassName;
-	
-	private String classType= "class";
-	
+
+	private String classType = "class";
+
+	private List<String> implementsClassName;
 
 	public TypeDeclaration(String name) {
 		this.name = name;
@@ -70,5 +71,13 @@ public class TypeDeclaration implements Annotatable {
 	public void setClassType(String classType) {
 		this.classType = classType;
 	}
-	
+
+	public List<String> getImplements() {
+		return implementsClassName;
+	}
+
+	public void implement(List<String> implementsClassName) {
+		this.implementsClassName = implementsClassName;
+	}
+
 }
