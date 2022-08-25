@@ -17,6 +17,7 @@
 package io.spring.initializr.generator.spring.code;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.ObjectProvider;
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import io.spring.initializr.generator.buildsystem.Build;
 import io.spring.initializr.generator.condition.ConditionalOnComponents;
 import io.spring.initializr.generator.condition.ConditionalOnPackaging;
 import io.spring.initializr.generator.condition.ConditionalOnPlatformVersion;
@@ -32,23 +34,25 @@ import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.packaging.war.WarPackaging;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
-import io.spring.initializr.generator.spring.code.components.ControllerCodeContributor;
-import io.spring.initializr.generator.spring.code.components.ControllerCodeCustomizer;
-import io.spring.initializr.generator.spring.code.components.ControllerImplCodeContributor;
-import io.spring.initializr.generator.spring.code.components.ControllerImplCodeCustomizer;
-import io.spring.initializr.generator.spring.code.components.ExceptionCodeContributor;
-import io.spring.initializr.generator.spring.code.components.ExceptionCodeCustomizer;
-import io.spring.initializr.generator.spring.code.components.RepositoryCodeContributor;
-import io.spring.initializr.generator.spring.code.components.RepositoryCodeCustomizer;
-import io.spring.initializr.generator.spring.code.components.ServiceCodeContributor;
-import io.spring.initializr.generator.spring.code.components.ServiceCodeCustomizer;
-import io.spring.initializr.generator.spring.code.components.ServiceImplCodeContributor;
-import io.spring.initializr.generator.spring.code.components.ServiceImplCodeCustomizer;
+import io.spring.initializr.generator.spring.build.BuildMetadataResolver;
+import io.spring.initializr.generator.spring.code.java.components.ConfigurationCodesContributor;
+import io.spring.initializr.generator.spring.code.java.components.ControllerCodeContributor;
+import io.spring.initializr.generator.spring.code.java.components.ControllerCodeCustomizer;
+import io.spring.initializr.generator.spring.code.java.components.ControllerImplCodeContributor;
+import io.spring.initializr.generator.spring.code.java.components.ControllerImplCodeCustomizer;
+import io.spring.initializr.generator.spring.code.java.components.ExceptionCodeContributor;
+import io.spring.initializr.generator.spring.code.java.components.OtherComponentsContributor;
+import io.spring.initializr.generator.spring.code.java.components.ServiceCodeContributor;
+import io.spring.initializr.generator.spring.code.java.components.ServiceCodeCustomizer;
+import io.spring.initializr.generator.spring.code.java.components.ServiceImplCodeContributor;
+import io.spring.initializr.generator.spring.code.java.components.ServiceImplCodeCustomizer;
+import io.spring.initializr.metadata.InitializrMetadata;
 
 /**
  * Project generation configuration for projects written in any language.
  *
  * @author Andy Wilkinson
+ * @author Sayeed
  */
 @ProjectGenerationConfiguration
 public class SourceCodeProjectGenerationConfiguration {
@@ -68,7 +72,7 @@ public class SourceCodeProjectGenerationConfiguration {
 	/**
 	 * Language-agnostic source code contributions for projects using war packaging.
 	 */
-	@Configuration // class filente annotation okke evide kodukkanam
+	@Configuration 
 	@ConditionalOnPackaging(WarPackaging.ID)
 	static class WarPackagingConfiguration {
 
@@ -92,68 +96,83 @@ public class SourceCodeProjectGenerationConfiguration {
 	/**
 	 * Language-agnostic source code contributions for projects using components.
 	 */
-	@Configuration // class filente annotation okke evide kodukkanam
+	@Configuration 
 	static class ComponentsConfiguration {
 
 		private final ProjectDescription description;
+		
 
-		ComponentsConfiguration(ProjectDescription description) {
+		private final InitializrMetadata buildMetadataResolver;
+
+		private final Build build;
+
+		ComponentsConfiguration(ProjectDescription description, InitializrMetadata buildMetadataResolver, Build build) {
 			this.description = description;
+			this.buildMetadataResolver = buildMetadataResolver;
+			this.build = build;
 		}
 
 		@Bean
 		@ConditionalOnComponents("controller")
 		ControllerCodeContributor controllerCodeContributor(
 				ObjectProvider<ControllerCodeCustomizer<?>> controllerCodeCustomizer) {
-			List<Annotation> annotations = new ArrayList<>();
-			annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
-			return new ControllerCodeContributor(StringUtils.capitalize(this.description.getName())+"Controller"  ,this.description.getPackageName(), null, controllerCodeCustomizer);
+			//List<Annotation> annotations = new ArrayList<>();
+//			annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
+			return new ControllerCodeContributor(StringUtils.capitalize(this.description.getName()) + "Controller",
+					this.description.getPackageName(), null, controllerCodeCustomizer);
 		}
 
 		@Bean
 		@ConditionalOnComponents("controller")
 		ControllerImplCodeContributor controllerImplCodeContributor(
 				ObjectProvider<ControllerImplCodeCustomizer<?>> customCodeCustomizers) {
-			List<Annotation> annotations = new ArrayList<>();
-			annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
-			return new ControllerImplCodeContributor(StringUtils.capitalize(this.description.getName())+"ControllerImpl",this.description.getPackageName(), "com.litmus.demo.controller",
+			//List<Annotation> annotations = new ArrayList<>();
+//			annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
+			return new ControllerImplCodeContributor(
+					StringUtils.capitalize(this.description.getName()) + "ControllerImpl",
+					this.description.getPackageName(),
+					Collections.singletonList(this.description.getPackageName() + ".controller."
+							+ StringUtils.capitalize(this.description.getName()) + "Controller"),
 					customCodeCustomizers);
 		}
 
 		@Bean
 		@ConditionalOnComponents("service")
 		ServiceCodeContributor serviceCodeContributor(ObjectProvider<ServiceCodeCustomizer<?>> customCodeCustomizers) {
-			List<Annotation> annotations = new ArrayList<>();
-			return new ServiceCodeContributor(StringUtils.capitalize(this.description.getName())+"Service",this.description.getPackageName(), null, customCodeCustomizers);
+			return new ServiceCodeContributor(StringUtils.capitalize(this.description.getName()) + "Service",
+					this.description.getPackageName(), null, customCodeCustomizers);
 		}
 
 		@Bean
 		@ConditionalOnComponents("service")
 		ServiceImplCodeContributor serviceImplCodeContributor(
 				ObjectProvider<ServiceImplCodeCustomizer<?>> customCodeCustomizers) {
-			List<Annotation> annotations = new ArrayList<>();
-			annotations.add(Annotation.name("org.springframework.stereotype.Service"));
-			return new ServiceImplCodeContributor(StringUtils.capitalize(this.description.getName())+"ServiceImpl",this.description.getPackageName(), "com.litmus.demo.service",
+			//List<Annotation> annotations = new ArrayList<>();
+//			annotations.add(Annotation.name("org.springframework.stereotype.Service"));
+			return new ServiceImplCodeContributor(StringUtils.capitalize(this.description.getName()) + "ServiceImpl",
+					this.description.getPackageName(), Collections.singletonList(this.description.getPackageName() + ".service."
+							+ StringUtils.capitalize(this.description.getName()) + "Service"),
 					customCodeCustomizers);
-		}
-
-		@Bean
-		RepositoryCodeContributor repositoryCodeContributor(
-				ObjectProvider<RepositoryCodeCustomizer<?>> customCodeCustomizers) {
-			List<Annotation> annotations = new ArrayList<>();
-			return new RepositoryCodeContributor(this.description.getPackageName(), null, customCodeCustomizers);
 		}
 
 		@Bean
 		@ConditionalOnComponents("exception")
-		ExceptionCodeContributor exceptionCodeContributor(
-				ObjectProvider<ExceptionCodeCustomizer<?>> customCodeCustomizers) {
-			List<Annotation> annotations = new ArrayList<>();
-			annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
-			return new ExceptionCodeContributor(this.description.getPackageName(), "java.lang.RuntimeException",
-					customCodeCustomizers);
+		ExceptionCodeContributor exceptionCodeContributor() {
+//			List<Annotation> annotations = new ArrayList<>();
+//			annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
+			return new ExceptionCodeContributor(this.description.getPackageName() + ".exception", this.description);
 		}
 
-	}	
+		@Bean
+		OtherComponentsContributor otherComponentsContributor() {
+			return new OtherComponentsContributor(this.description);
+		}
+		
+		@Bean
+		ConfigurationCodesContributor configurationCodesContributor() {
+			return new ConfigurationCodesContributor(this.description, build, buildMetadataResolver);
+		}
+
+	}
 
 }
