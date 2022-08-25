@@ -76,6 +76,7 @@ import org.springframework.core.env.Environment;
  * the necessary controller to serve the applications from the root context.
  *
  * @author Stephane Nicoll
+ * @author Sayeed
  */
 @AutoConfiguration(after = { JacksonAutoConfiguration.class, RestTemplateAutoConfiguration.class })
 @EnableConfigurationProperties(InitializrProperties.class)

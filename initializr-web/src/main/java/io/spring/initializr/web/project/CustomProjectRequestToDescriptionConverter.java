@@ -34,7 +34,17 @@ import io.spring.initializr.metadata.InitializrMetadata;
 import io.spring.initializr.metadata.Type;
 import io.spring.initializr.metadata.InitializrConfiguration.Platform;
 import io.spring.initializr.metadata.support.MetadataBuildItemMapper;
-
+/**
+ * A default {@link ProjectRequestToDescriptionConverter} implementation that uses the
+ * {@link InitializrMetadata metadata} to set default values for missing attributes if
+ * necessary. Transparently transform the platform version if necessary using a
+ * {@link ProjectRequestPlatformVersionTransformer}.
+ *
+ * @author Madhura Bhave
+ * @author HaiTao Zhang
+ * @author Stephane Nicoll
+ * @author Sayeed
+ */
 public class CustomProjectRequestToDescriptionConverter
 		implements ProjectRequestToDescriptionConverter<CustomProjectRequest>
 {
