@@ -130,6 +130,9 @@ public abstract class DefaultCodegenConfig implements CodegenConfig {
     protected Map<String, String> importMapping = new HashMap<String, String>();
     protected String modelPackage = StringUtils.EMPTY;
     protected String apiPackage = StringUtils.EMPTY;
+    protected String controllerPackage = StringUtils.EMPTY;
+    protected String controllerImplPackage = StringUtils.EMPTY;
+    
     protected String fileSuffix;
     protected String modelNamePrefix = StringUtils.EMPTY;
     protected String modelNameSuffix = StringUtils.EMPTY;
@@ -210,6 +213,21 @@ public abstract class DefaultCodegenConfig implements CodegenConfig {
             additionalProperties.put(CodegenConstants.API_PACKAGE, apiPackage);
         }
 
+        if (additionalProperties.containsKey(CodegenConstants.CONTROLLER_PACKAGE)) {
+            this.setControllerPackage((String) additionalProperties.get(CodegenConstants.CONTROLLER_PACKAGE));
+        } else if (StringUtils.isNotEmpty(controllerPackage)) {
+            // not set in additionalProperties, add value from CodegenConfig in order to use it in templates
+            additionalProperties.put(CodegenConstants.CONTROLLER_PACKAGE, controllerPackage);
+        }
+        
+        if (additionalProperties.containsKey(CodegenConstants.CONTROLLER_IMPL_PACKAGE)) {
+            this.setControllerImplPackage((String) additionalProperties.get(CodegenConstants.CONTROLLER_IMPL_PACKAGE));
+        } else if (StringUtils.isNotEmpty(controllerImplPackage)) {
+            // not set in additionalProperties, add value from CodegenConfig in order to use it in templates
+            additionalProperties.put(CodegenConstants.CONTROLLER_IMPL_PACKAGE, controllerImplPackage);
+        }
+        
+        
         if (additionalProperties.containsKey(CodegenConstants.SORT_PARAMS_BY_REQUIRED_FLAG)) {
             this.setSortParamsByRequiredFlag(Boolean.valueOf(additionalProperties
                     .get(CodegenConstants.SORT_PARAMS_BY_REQUIRED_FLAG).toString()));
@@ -588,6 +606,14 @@ public abstract class DefaultCodegenConfig implements CodegenConfig {
         return apiPackage;
     }
 
+    public String controllerPackage() {
+        return controllerPackage;
+    }
+    
+    public String controllerImplPackage() {
+        return controllerImplPackage;
+    }
+    
     public String fileSuffix() {
         return fileSuffix;
     }
@@ -642,7 +668,11 @@ public abstract class DefaultCodegenConfig implements CodegenConfig {
 
     public Map<String, String> modelTemplateFiles() { return modelTemplateFiles; }
 
-    public String apiFileFolder() { return outputFolder + File.separator + apiPackage().replace('.', File.separatorChar); }
+    public String apiFileFolder() { 
+    	return outputFolder + File.separator + controllerImplPackage().replace('.', File.separatorChar); }
+    
+    public String apiInterfaceFileFolder() { 
+    	return outputFolder + File.separator + controllerPackage().replace('.', File.separatorChar); }
 
     public String modelFileFolder() { return outputFolder + File.separator + modelPackage().replace('.', File.separatorChar); }
 
@@ -725,8 +755,16 @@ public abstract class DefaultCodegenConfig implements CodegenConfig {
     public void setApiPackage(String apiPackage) {
         this.apiPackage = apiPackage;
     }
+    
+    public void setControllerPackage(String controllerPackage) {
+		this.controllerPackage = controllerPackage;
+	}
 
-    public Boolean getSortParamsByRequiredFlag() {
+	public void setControllerImplPackage(String controllerImplPackage) {
+		this.controllerImplPackage = controllerImplPackage;
+	}
+
+	public Boolean getSortParamsByRequiredFlag() {
         return sortParamsByRequiredFlag;
     }
 
@@ -3409,10 +3447,18 @@ public abstract class DefaultCodegenConfig implements CodegenConfig {
 
     public String apiFilename(String templateName, String tag) {
         String suffix = apiTemplateFiles().get(templateName);
+        if(templateName.equalsIgnoreCase("api.mustache")) {
+            return apiInterfaceFileFolder() + File.separator + toApiFilename(tag) + suffix;
+
+        }
+        else if(templateName.equalsIgnoreCase("apiController.mustache")) {
+        	 return apiFileFolder() + File.separator + toApiFilename(tag) + suffix;
+        }
         return apiFileFolder() + File.separator + toApiFilename(tag) + suffix;
     }
 
-    /**
+
+	/**
      * Return the full path and API documentation file
      *
      * @param templateName template name

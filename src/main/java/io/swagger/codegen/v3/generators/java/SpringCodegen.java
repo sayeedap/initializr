@@ -67,11 +67,14 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
     public static final String SPRING_BOOT_VERSION_2 = "springBootV2";
     public static final String DATE_PATTERN = "datePattern";
     public static final String DATE_TIME_PATTERN = "dateTimePattern";
+    public static final String EXCEPTION_PACKAGE = "exceptionPackage";
 
     public static final String THROWS_EXCEPTION = "throwsException";
 
     protected String title = "swagger-petstore";
     protected String configPackage = "io.swagger.configuration";
+    protected String exceptionPackage = "io.swagger.exception";
+
     protected String basePackage = "io.swagger";
     protected boolean interfaceOnly = false;
     protected boolean delegatePattern = false;
@@ -99,15 +102,21 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
         modelPackage = "io.swagger.model";
         invokerPackage = "io.swagger.api";
         artifactId = "swagger-spring";
-
+        controllerPackage = "io.swagger.controller";
+        controllerImplPackage = "io.swagger.controller.impl";
+        
         additionalProperties.put(CONFIG_PACKAGE, configPackage);
         additionalProperties.put(BASE_PACKAGE, basePackage);
+        additionalProperties.put(EXCEPTION_PACKAGE, exceptionPackage);
 
         // spring uses the jackson lib
         additionalProperties.put("jackson", "true");
 
         cliOptions.add(new CliOption(TITLE, "server title name or client service name"));
         cliOptions.add(new CliOption(CONFIG_PACKAGE, "configuration package for generated code"));
+        cliOptions.add(new CliOption(EXCEPTION_PACKAGE, "exception package for generated code"));
+
+        
         cliOptions.add(new CliOption(BASE_PACKAGE, "base package (invokerPackage) for generated code"));
         cliOptions.add(CliOption.newBoolean(INTERFACE_ONLY, "Whether to generate only API interface stubs without the server files."));
         cliOptions.add(CliOption.newBoolean(DELEGATE_PATTERN, "Whether to generate the server files using the delegate pattern"));
@@ -230,6 +239,10 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
             this.setConfigPackage((String) additionalProperties.get(CONFIG_PACKAGE));
         }
 
+        if (additionalProperties.containsKey(EXCEPTION_PACKAGE)) {
+            this.setExceptionPackage((String) additionalProperties.get(EXCEPTION_PACKAGE));
+        }
+        
         if (additionalProperties.containsKey(BASE_PACKAGE)) {
             this.setBasePackage((String) additionalProperties.get(BASE_PACKAGE));
         }
@@ -322,6 +335,8 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
 
         supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
         supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
+        LOGGER.info("inside processOpts supportingFiles: " + supportingFiles + ")");
+
 
         if (!this.interfaceOnly) {
 
@@ -378,13 +393,13 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
             } else {
                 apiTemplateFiles.put("apiController.mustache", "Controller.java");
                 supportingFiles.add(new SupportingFile("apiException.mustache",
-                        (sourceFolder + File.separator + apiPackage).replace(".", java.io.File.separator), "ApiException.java"));
+                        (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiException.java"));
                 supportingFiles.add(new SupportingFile("apiResponseMessage.mustache",
-                        (sourceFolder + File.separator + apiPackage).replace(".", java.io.File.separator), "ApiResponseMessage.java"));
+                        (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiResponseMessage.java"));
                 supportingFiles.add(new SupportingFile("notFoundException.mustache",
-                        (sourceFolder + File.separator + apiPackage).replace(".", java.io.File.separator), "NotFoundException.java"));
+                        (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "NotFoundException.java"));
                 supportingFiles.add(new SupportingFile("apiOriginFilter.mustache",
-                        (sourceFolder + File.separator + apiPackage).replace(".", java.io.File.separator), "ApiOriginFilter.java"));
+                        (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiOriginFilter.java"));
                 supportingFiles.add(new SupportingFile("swaggerDocumentationConfig.mustache",
                         (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "SwaggerDocumentationConfig.java"));
                 supportingFiles.add(new SupportingFile("LocalDateConverter.mustache",
@@ -824,8 +839,20 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
     public void setConfigPackage(String configPackage) {
         this.configPackage = configPackage;
     }
+    
+    public void setControllerPackage(String controllerPackage) {
+		this.controllerPackage = controllerPackage;
+	}
 
-    public void setBasePackage(String configPackage) {
+	public void setControllerImplPackage(String controllerImplPackage) {
+		this.controllerImplPackage = controllerImplPackage;
+	}
+
+	public void setExceptionPackage(String exceptionPackage) {
+		this.exceptionPackage = exceptionPackage;
+	}
+
+	public void setBasePackage(String configPackage) {
         this.basePackage = configPackage;
     }
 

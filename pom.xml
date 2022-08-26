@@ -10,10 +10,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.swagger.codegen.v3</groupId>
-    <artifactId>swagger-codegen-generators</artifactId>
-    <version>1.0.36-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <groupId>swagger-codegen</groupId>
+    <artifactId>swaggercodegengenerators</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
     <build>
         <plugins>
@@ -176,9 +176,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.swagger.codegen.v3</groupId>
-            <artifactId>swagger-codegen</artifactId>
-            <version>${swagger-codegen-version}</version>
+            <groupId>io.swagger.codegen.custom</groupId>
+			<artifactId>swagger-codegen-custom</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

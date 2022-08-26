@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 {{^useOas2}}
 @EnableOpenApi
 {{/useOas2}}
-@ComponentScan(basePackages = { "{{basePackage}}", "{{apiPackage}}" , "{{configPackage}}"})
+@ComponentScan(basePackages = { "{{basePackage}}", "{{controllerImplPackage}}" , "{{configPackage}}"})
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     @Override
