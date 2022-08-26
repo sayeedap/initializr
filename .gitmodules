@@ -1,3 +1,6 @@
 [submodule "modules/swagger-codegen-generators"]
 	path = modules/swagger-codegen-generators
 	url = https://github.com/stefyjoshy/swagger-codegen-generators.git
+[submodule "modules/swagger-codegen-web"]
+	path = modules/swagger-codegen-web
+	url = https://github.com/stefyjoshy/swagger-codegen-web.git
