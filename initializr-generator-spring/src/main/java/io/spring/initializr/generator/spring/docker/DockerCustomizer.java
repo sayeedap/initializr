@@ -19,7 +19,7 @@ package io.spring.initializr.generator.spring.docker;
 import org.springframework.core.Ordered;
 
 /**
- * Callback for customizing a project's {@link GitIgnore}. Invoked with an
+ * Callback for customizing a project's {@link DockerFile}. Invoked with an
  * {@link Ordered order} of {@code 0} by default, considering overriding
  * {@link #getOrder()} to customize this behaviour.
  *

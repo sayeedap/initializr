@@ -13,6 +13,8 @@ import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 import io.spring.initializr.generator.spring.docker.Command.CommandType;
 
 /**
+ * Configuration for docker-related contributions to a generated project.
+ * 
  * @author Sayeed
  *
  */

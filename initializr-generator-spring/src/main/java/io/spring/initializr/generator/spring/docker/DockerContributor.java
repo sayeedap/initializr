@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
 /**
+ * {@link ProjectContributor} for the project's {@code DockerFile} file.
+ * 
  * @author Sayeed
  *
  */
