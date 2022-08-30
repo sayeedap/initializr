@@ -3,17 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>5</version>
-    </parent>
+   <parent>
+	<groupId>io.spring.initializr</groupId>
+		<artifactId>initializr-parent</artifactId>
+		<version>${revision}</version>
+		<relativePath>../../initializr-parent</relativePath>
+		<!-- <groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>5</version> -->
+	</parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>swagger-codegen</groupId>
     <artifactId>swaggercodegengenerators</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
 
     <build>
         <plugins>
@@ -176,9 +176,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.swagger.codegen.custom</groupId>
+            <groupId>io.spring.initializr</groupId>
 			<artifactId>swagger-codegen-custom</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
