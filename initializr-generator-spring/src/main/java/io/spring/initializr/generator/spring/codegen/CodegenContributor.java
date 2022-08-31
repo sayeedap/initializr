@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import io.spring.initializr.generator.language.SourceStructure;
+import io.spring.initializr.generator.project.CustomProjectDescription;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
@@ -15,9 +16,9 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
  */
 public class CodegenContributor implements ProjectContributor {
 
-	private final ProjectDescription description;
+	private final CustomProjectDescription description;
 
-	public CodegenContributor(ProjectDescription description) {
+	public CodegenContributor(CustomProjectDescription description) {
 		this.description = description;
 	}
 
@@ -46,6 +47,8 @@ public class CodegenContributor implements ProjectContributor {
 
 	private void writeSwaggerFile(SourceStructure sourceStructure) {
 		// TODO Code for writing swagger file
+		
+		System.out.println("swagger file" + this.description.getSwaggerFile());
 
 		System.out.println("CodegenContributor Executed");
 

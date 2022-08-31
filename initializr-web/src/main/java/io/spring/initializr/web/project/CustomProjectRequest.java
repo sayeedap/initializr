@@ -19,6 +19,8 @@ package io.spring.initializr.web.project;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * A sample custom {@link WebProjectRequest}.
  *
@@ -30,6 +32,8 @@ public class CustomProjectRequest extends WebProjectRequest {
 	private Boolean dockerFlag = true;
 
 	private List<String> projectComponents = new ArrayList<>();
+
+	private MultipartFile swaggerFile;
 
 	public List<String> getProjectComponents() {
 		return projectComponents;
@@ -45,6 +49,14 @@ public class CustomProjectRequest extends WebProjectRequest {
 
 	public void setDockerFlag(Boolean dockerFlag) {
 		this.dockerFlag = dockerFlag;
+	}
+
+	public MultipartFile getSwaggerFile() {
+		return swaggerFile;
+	}
+
+	public void setSwaggerFile(MultipartFile swaggerFile) {
+		this.swaggerFile = swaggerFile;
 	}
 
 }

@@ -16,10 +16,14 @@
 
 package io.spring.initializr.web.project;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.spring.initializr.generator.buildsystem.BuildSystem;
 import io.spring.initializr.generator.language.Language;
@@ -34,11 +38,12 @@ import io.spring.initializr.metadata.InitializrMetadata;
 import io.spring.initializr.metadata.Type;
 import io.spring.initializr.metadata.InitializrConfiguration.Platform;
 import io.spring.initializr.metadata.support.MetadataBuildItemMapper;
+
 /**
- * A default {@link ProjectRequestToDescriptionConverter} implementation that uses the
- * {@link InitializrMetadata metadata} to set default values for missing attributes if
- * necessary. Transparently transform the platform version if necessary using a
- * {@link ProjectRequestPlatformVersionTransformer}.
+ * A default {@link ProjectRequestToDescriptionConverter} implementation that
+ * uses the {@link InitializrMetadata metadata} to set default values for
+ * missing attributes if necessary. Transparently transform the platform version
+ * if necessary using a {@link ProjectRequestPlatformVersionTransformer}.
  *
  * @author Madhura Bhave
  * @author HaiTao Zhang
@@ -46,9 +51,8 @@ import io.spring.initializr.metadata.support.MetadataBuildItemMapper;
  * @author Sayeed
  */
 public class CustomProjectRequestToDescriptionConverter
-		implements ProjectRequestToDescriptionConverter<CustomProjectRequest>
-{
-	
+		implements ProjectRequestToDescriptionConverter<CustomProjectRequest> {
+
 	private final ProjectRequestPlatformVersionTransformer platformVersionTransformer;
 
 	public CustomProjectRequestToDescriptionConverter() {
@@ -78,7 +82,8 @@ public class CustomProjectRequestToDescriptionConverter
 	 * @param metadata    the metadata instance to use to apply defaults if
 	 *                    necessary
 	 */
-	public void convert(CustomProjectRequest request, CustomProjectDescription description, InitializrMetadata metadata) {
+	public void convert(CustomProjectRequest request, CustomProjectDescription description,
+			InitializrMetadata metadata) {
 		validate(request, metadata);
 		Version platformVersion = getPlatformVersion(request, metadata);
 		List<Dependency> resolvedDependencies = getResolvedDependencies(request, platformVersion, metadata);
@@ -100,15 +105,33 @@ public class CustomProjectRequestToDescriptionConverter
 				MetadataBuildItemMapper.toDependency(dependency)));
 		description.setDockerFlag(request.getDockerFlag());
 		description.setProjectComponents(request.getProjectComponents());
-		
+		description.setSwaggerFile(request.getSwaggerFile());
+
 	}
 
-	private void validate(ProjectRequest request, InitializrMetadata metadata) {
+	private void validate(CustomProjectRequest request, InitializrMetadata metadata) {
 		validatePlatformVersion(request, metadata);
 		validateType(request.getType(), metadata);
 		validateLanguage(request.getLanguage(), metadata);
 		validatePackaging(request.getPackaging(), metadata);
 		validateDependencies(request, metadata);
+		validateSwaggerFile(request.getSwaggerFile(), metadata);
+	}
+
+	private void validateSwaggerFile(MultipartFile file, InitializrMetadata metadata) {
+
+		List<String> SUPPORTED_MIME_TYPE = Arrays.asList("application/json", "text/yaml");
+		long FIVE_MB_IN_BYTES = 5242880;
+		if (file != null && !file.isEmpty()) {
+			if (file.getSize() > FIVE_MB_IN_BYTES) {
+				throw new InvalidProjectRequestException("Swagger File exceeded size");
+			}
+
+			if (!SUPPORTED_MIME_TYPE.contains(file.getContentType())) {
+				throw new InvalidProjectRequestException("Swagger File invalid type");
+			}
+		}
+
 	}
 
 	private void validatePlatformVersion(ProjectRequest request, InitializrMetadata metadata) {

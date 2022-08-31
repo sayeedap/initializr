@@ -2,7 +2,7 @@ package io.spring.initializr.generator.spring.codegen;
 
 import org.springframework.context.annotation.Bean;
 
-import io.spring.initializr.generator.project.ProjectDescription;
+import io.spring.initializr.generator.project.CustomProjectDescription;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 
 /**
@@ -15,7 +15,7 @@ import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 public class CodegenGenerationConfiguration {
 
 	@Bean
-	public CodegenContributor codegenContributor(ProjectDescription description) {
+	public CodegenContributor codegenContributor(CustomProjectDescription description) {
 		return new CodegenContributor(description);
 	}
 

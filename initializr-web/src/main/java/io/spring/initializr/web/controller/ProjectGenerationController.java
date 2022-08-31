@@ -58,6 +58,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -91,8 +92,9 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 	}
 
 	/**
-	 * Create an initialized {@link ProjectRequest} instance to use to bind the parameters
-	 * of a project generation request.
+	 * Create an initialized {@link ProjectRequest} instance to use to bind the
+	 * parameters of a project generation request.
+	 * 
 	 * @param headers the headers of the request
 	 * @return a new {@link ProjectRequest} instance
 	 */
@@ -122,7 +124,7 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 		return createResponseEntity(gradleBuild, "application/octet-stream", "build.gradle");
 	}
 
-	@RequestMapping("/starter.zip")
+	@RequestMapping(path = "/starter.zip", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> springZip(R request) throws IOException {
 		ProjectGenerationResult result = this.projectGenerationInvoker.invokeProjectStructureGeneration(request);
 		Path archive = createArchive(result, "zip", ZipArchiveOutputStream::new, ZipArchiveEntry::new,
@@ -130,7 +132,24 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 		return upload(archive, result.getRootDirectory(), generateFileName(request, "zip"), "application/zip");
 	}
 
-	@RequestMapping(path = "/starter.tgz", produces = "application/x-compress")
+	@RequestMapping(path = "/starter.zip", method = RequestMethod.POST)
+	public ResponseEntity<byte[]> swaggerSpringZip(R request) throws IOException {
+		ProjectGenerationResult result = this.projectGenerationInvoker.invokeProjectStructureGeneration(request);
+		Path archive = createArchive(result, "zip", ZipArchiveOutputStream::new, ZipArchiveEntry::new,
+				ZipArchiveEntry::setUnixMode);
+		return upload(archive, result.getRootDirectory(), generateFileName(request, "zip"), "application/zip");
+	}
+
+	@RequestMapping(path = "/starter.tgz", produces = "application/x-compress", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> swaggerSpringTgz(R request) throws IOException {
+		ProjectGenerationResult result = this.projectGenerationInvoker.invokeProjectStructureGeneration(request);
+		Path archive = createArchive(result, "tar.gz", this::createTarArchiveOutputStream, TarArchiveEntry::new,
+				TarArchiveEntry::setMode);
+		return upload(archive, result.getRootDirectory(), generateFileName(request, "tar.gz"),
+				"application/x-compress");
+	}
+
+	@RequestMapping(path = "/starter.tgz", produces = "application/x-compress", method = RequestMethod.POST)
 	public ResponseEntity<byte[]> springTgz(R request) throws IOException {
 		ProjectGenerationResult result = this.projectGenerationInvoker.invokeProjectStructureGeneration(request);
 		Path archive = createArchive(result, "tar.gz", this::createTarArchiveOutputStream, TarArchiveEntry::new,
@@ -144,8 +163,7 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 			TarArchiveOutputStream out = new TarArchiveOutputStream(new GzipCompressorOutputStream(output));
 			out.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
 			return out;
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -168,8 +186,7 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 								Files.copy(path, output);
 							}
 							output.closeArchiveEntry();
-						}
-						catch (IOException ex) {
+						} catch (IOException ex) {
 							throw new IllegalStateException(ex);
 						}
 					});
@@ -198,8 +215,7 @@ public abstract class ProjectGenerationController<R extends ProjectRequest> {
 		String tmp = candidate.replaceAll(" ", "_");
 		try {
 			return URLEncoder.encode(tmp, "UTF-8") + "." + extension;
-		}
-		catch (UnsupportedEncodingException ex) {
+		} catch (UnsupportedEncodingException ex) {
 			throw new IllegalStateException("Cannot encode URL", ex);
 		}
 	}
