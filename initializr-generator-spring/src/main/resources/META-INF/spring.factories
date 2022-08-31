@@ -9,4 +9,5 @@ io.spring.initializr.generator.spring.code.kotlin.KotlinProjectGenerationConfigu
 io.spring.initializr.generator.spring.configuration.ApplicationConfigurationProjectGenerationConfiguration,\
 io.spring.initializr.generator.spring.documentation.HelpDocumentProjectGenerationConfiguration,\
 io.spring.initializr.generator.spring.scm.git.GitProjectGenerationConfiguration,\
-io.spring.initializr.generator.spring.docker.DockerGenerationConfiguration
+io.spring.initializr.generator.spring.docker.DockerGenerationConfiguration,\
+io.spring.initializr.generator.spring.codegen.CodegenGenerationConfiguration
