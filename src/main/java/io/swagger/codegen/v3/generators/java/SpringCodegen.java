@@ -347,7 +347,7 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
                 supportingFiles.add(new SupportingFile("swagger2SpringBoot.mustache",
                         (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "Swagger2SpringBoot.java"));
                 supportingFiles.add(new SupportingFile("RFC3339DateFormat.mustache",
-                        (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "RFC3339DateFormat.java"));
+                        (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "RFC3339DateFormat.java"));
                 supportingFiles.add(new SupportingFile("swaggerUiConfiguration.mustache",
                         (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "SwaggerUiConfiguration.java"));
                 supportingFiles.add(new SupportingFile("application.mustache",
@@ -391,7 +391,7 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
                     }
                 }
             } else {
-                apiTemplateFiles.put("apiController.mustache", "Controller.java");
+                apiTemplateFiles.put("apiController.mustache", "Impl.java");
                 supportingFiles.add(new SupportingFile("apiException.mustache",
                         (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiException.java"));
                 supportingFiles.add(new SupportingFile("apiResponseMessage.mustache",
@@ -792,7 +792,7 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
             return "DefaultApi";
         }
         name = sanitizeName(name);
-        return camelize(name) + "Api";
+        return camelize(name) + "Controller";
     }
 
     @Override

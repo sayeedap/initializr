@@ -75,13 +75,13 @@ import java.util.concurrent.Callable;
 @RestController
 {{/useOas2}}
 {{#operations}}
-public class {{classname}}Controller implements {{classname}} {
+public class {{classname}}Impl implements {{classname}} {
 
 {{#isDelegate}}
     private final {{classname}}Delegate delegate;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public {{classname}}Controller({{classname}}Delegate delegate) {
+    public {{classname}}Impl({{classname}}Delegate delegate) {
         this.delegate = delegate;
     }
     {{#isJava8or11}}
@@ -94,7 +94,7 @@ public class {{classname}}Controller implements {{classname}} {
 {{/isDelegate}}
 {{^isDelegate}}
     {{#fullController}}
-    private static final Logger log = LoggerFactory.getLogger({{classname}}Controller.class);
+    private static final Logger log = LoggerFactory.getLogger({{classname}}Impl.class);
 
     {{/fullController}}
     private final ObjectMapper objectMapper;
@@ -102,7 +102,7 @@ public class {{classname}}Controller implements {{classname}} {
     private final HttpServletRequest request;
 
     @org.springframework.beans.factory.annotation.Autowired
-    public {{classname}}Controller(ObjectMapper objectMapper, HttpServletRequest request) {
+    public {{classname}}Impl(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }
