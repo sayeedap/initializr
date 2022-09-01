@@ -106,7 +106,16 @@
             <artifactId>spring-web</artifactId>
             <version>${spring-version}</version>
         </dependency>
-
+		<dependency>
+		   <groupId>jakarta.annotation</groupId>
+		   <artifactId>jakarta.annotation-api</artifactId>
+		   <version>${jakarta-annotation-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>${jaxb-api-version}</version>
+			</dependency>
         <!--SpringFox dependencies-->
         {{#useOas2}}
         <dependency>
@@ -240,5 +249,7 @@
         <jackson-version>2.9.10</jackson-version>
         <jackson-threetenbp-version>2.9.10</jackson-threetenbp-version>
         <spring-version>5.0.18.RELEASE</spring-version>
+		<jakarta-annotation-version>1.3.5</jakarta-annotation-version>
+		<jaxb-api-version>2.3.0</jaxb-api-version>
     </properties>
 </project>

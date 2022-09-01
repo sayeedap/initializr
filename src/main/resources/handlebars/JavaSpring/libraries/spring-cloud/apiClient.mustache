@@ -1,5 +1,9 @@
 package {{package}};
 
+{{#fullController}}
+{{#imports}}import {{import}};
+{{/imports}}
+{{/fullController}}
 {{^isOpenFeign}}
 import org.springframework.cloud.netflix.feign.FeignClient;
 {{/isOpenFeign}}

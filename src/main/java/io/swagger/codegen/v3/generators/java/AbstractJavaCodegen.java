@@ -541,7 +541,7 @@ public abstract class AbstractJavaCodegen extends DefaultCodegenConfig {
 
     @Override
     public String apiTestFileFolder() {
-        return outputFolder + "/" + testFolder + "/" + apiPackage().replace('.', '/');
+        return outputFolder + "/" + testFolder + "/" + controllerImplPackage().replace('.', '/');
     }
 
     @Override

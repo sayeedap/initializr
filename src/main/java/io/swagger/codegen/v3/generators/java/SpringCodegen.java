@@ -798,7 +798,7 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
     @Override
     public String toApiTestFilename(String name) {
         if (isSpringMvcLibrary()) {
-            return toApiName(name) + "ControllerIT";
+            return toApiName(name) + "ImplTest";
         }
         if (isSpringCloudLibrary()) {
             return toApiName(name) + "Test";
