@@ -59,6 +59,10 @@
 		<module>initializr-service-sample</module>
 		<module>initializr-version-resolver</module>
 		<module>initializr-web</module>
+		<module>modules/swagger-codegen</module>
+		<module>modules/swagger-codegen-generators</module>
+		<module>modules/swagger-codegen-web</module>
+
 	</modules>
 
 	<build>
