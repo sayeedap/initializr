@@ -55,10 +55,11 @@ public class CodegenContributor implements ProjectContributor {
 		System.out.println("swagger file" + this.description.getSwaggerFile());
 
 		String args = generateCodeGenerationArgs(projectRoot);
-		Object commandObject = cliHelper.setCommandObject(args);
-		if (commandObject instanceof Runnable) {
-			new Thread(((Runnable) commandObject)).start();
-		}
+		cliHelper.setCommandObject(args);
+		System.out.println("swagger code generation completed...");
+//		if (commandObject instanceof Runnable) {
+//			new Thread(((Runnable) commandObject)).start();
+//		}
 	}
 
 	private String generateCodeGenerationArgs(Path projectRoot) {

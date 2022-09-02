@@ -282,7 +282,7 @@ public class CliHelper {
 			return true;
 	}
 
-	public Object setCommandObject(String args) {
+	public void setCommandObject(String args) {
 		String[] codeGenerationArgs = args.split("\\s+");
 		String oas3 = loadResourceOAS3File();
 		if (StringUtils.isBlank(oas3)) {
@@ -386,6 +386,7 @@ public class CliHelper {
 
 				Generate generateCommand = (Generate) commandObject;
 				generateCommand.setCodegenArguments(codegenArguments);
+				generateCommand.generateSwaggerCode();
 			}
 		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException
 				| InvocationTargetException ex) {
@@ -393,6 +394,5 @@ public class CliHelper {
 					+ " and message is " + ex.getMessage());
 
 		}
-		return commandObject;
 	}
 }

@@ -35,8 +35,8 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  * User: lanwen Date: 24.03.15 Time: 20:22
  */
 
-public class Generate implements Runnable {
-
+//public class Generate implements Runnable {
+public class Generate{
 	CliHelper cliHelper;
     protected Boolean verbose;
     protected String lang;
@@ -256,9 +256,9 @@ public class Generate implements Runnable {
         this.ignoreImportMappings = ignoreImportMappings;
     }
 
-    @Override
-    public void run() {
-
+//    @Override
+//    public void run() {
+public void generateSwaggerCode() {
         loadArguments();
 
         // attempt to read from config file
