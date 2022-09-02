@@ -1,7 +1,9 @@
 package io.spring.initializr.generator.spring.codegen;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import io.spring.initializr.generator.language.SourceStructure;
 import io.spring.initializr.generator.project.CustomProjectDescription;
@@ -50,7 +52,7 @@ public class CodegenContributor implements ProjectContributor {
 	private void writeSwaggerFile(Path projectRoot) {
 		// TODO Code for writing swagger file
 
-		//ystem.out.println("swagger file" + this.description.getSwaggerFile());
+		System.out.println("swagger file" + this.description.getSwaggerFile());
 
 		String args = generateCodeGenerationArgs(projectRoot);
 		Object commandObject = cliHelper.setCommandObject(args);
@@ -80,8 +82,8 @@ public class CodegenContributor implements ProjectContributor {
 		setFramework(codeGenArgs);
 		codeGenArgs.append(" -o ").append(projectRoot);
 
-		// setInputFile(description);
-		codeGenArgs.append(" -i ").append("C:\\Users\\stefy\\Desktop\\SwaggerCodeGenJar_11-08-2022\\APi1.yaml");
+		setInputFile(codeGenArgs);
+		//codeGenArgs.append(" -i ").append("C:\\Users\\stefy\\Desktop\\SwaggerCodeGenJar_11-08-2022\\APi1.yaml");
 		System.out.println("stringBuilder:  " + codeGenArgs);
 
 		args = codeGenArgs.toString();
@@ -110,17 +112,17 @@ public class CodegenContributor implements ProjectContributor {
 		codeGenArgs.append(" -l ").append(framework);
 	}
 
-//		private void setInputFile(ProjectDescription description) {
-//			//createDirIfNotExist();
-//			byte[] bytes = new byte[0];
-//			try {
-//				bytes = swaggerRequest.getFile().getBytes();
-//				Path tempDirWithPrefix = Files.createTempDirectory(prefix);
-//				Files.write(Paths.get(tempDirWithPrefix + swaggerRequest.getFile().getOriginalFilename()), bytes);
-//				swaggerRequest.setInputFile(Paths.get(tempDirWithPrefix + swaggerRequest.getFile().getOriginalFilename()).toString());
-//			} catch (IOException ex) {
-//				LOGGER.error("Error in setting inputFile: %s", ex.getMessage());
-//			}
-//		}
+		private void setInputFile(StringBuilder codeGenArgs){
+			String prefix="temp";
+			byte[] bytes = new byte[0];
+			try {
+				bytes = this.description.getSwaggerFile().getBytes();
+				Path tempDirWithPrefix = Files.createTempDirectory(prefix);
+				Files.write(Paths.get(tempDirWithPrefix + this.description.getSwaggerFile().getOriginalFilename()), bytes);
+				codeGenArgs.append(" -i ").append(Paths.get(tempDirWithPrefix + this.description.getSwaggerFile().getOriginalFilename()).toString());
+			} catch (IOException ex) {
+				throw new InvalidArgException("Error in setting inputFile: "+ ex.getMessage());
+			}
+		}
 
 }

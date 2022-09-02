@@ -570,16 +570,12 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
 
 				for (String templateName : config.apiTemplateFiles().keySet()) {
 					String filename = config.apiFilename(templateName, tag);
-					if (templateName.equalsIgnoreCase("api.mustache")) {
-						operation.put("package", config.controllerPackage());
-					} else if (templateName.equalsIgnoreCase("apiController.mustache") ||templateName.equalsIgnoreCase("apiClient.mustache")) {
+					if (templateName.equalsIgnoreCase("apiController.mustache") || templateName.equalsIgnoreCase("api_test.mustache")|| templateName.equalsIgnoreCase("apiClient.mustache")) {
 						List<Map<String, String>> importList = (List<Map<String, String>>) operation.get("imports");
 						Map<String, String> importMap = new LinkedHashMap<>();
 						importMap.put("import", config.controllerPackage() + "." + operation.get("classname"));
 						importList.add(importMap);
 						operation.put("imports", importList);
-
-						operation.put("package", config.controllerImplPackage());
 					}
 					if (!config.shouldOverwrite(filename) && new File(filename).exists()) {
 						LOGGER.info("Skipped overwriting " + filename);
@@ -596,15 +592,11 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
 					// to generate api test files
 					for (String templateName : config.apiTestTemplateFiles().keySet()) {
 						String filename = config.apiTestFilename(templateName, tag);
-						if (templateName.equalsIgnoreCase("api_test.mustache")) {
-							operation.put("package", config.controllerImplPackage());
-						}
 						// do not overwrite test file that already exists
 						if (new File(filename).exists()) {
 							LOGGER.info("File exists. Skipped overwriting " + filename);
 							continue;
 						}
-
 						File written = processTemplateToFile(operation, templateName, filename);
 						if (written != null) {
 							files.add(written);

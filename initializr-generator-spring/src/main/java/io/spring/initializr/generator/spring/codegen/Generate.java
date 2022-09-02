@@ -419,16 +419,15 @@ public class Generate implements Runnable {
         final ClientOptInput clientOptInput = configurator.toClientOptInput();
 
         new DefaultGenerator().opts(clientOptInput).generate();
-		//deleteTempInputFile(configurator.getInputSpecURL());
+		deleteTempInputFile(configurator.getInputSpecURL());
     }
 
 	private void deleteTempInputFile(String inputFile) {
     	File file = new File(inputFile);
         try {
 			FileUtils.delete(file);
-		} catch (IOException e) {
-			//LOG.error("Unable to delete temporary input file");
-			return;
+		} catch (IOException ex) {
+			throw new InvalidArgException("Unable to delete temporary input file" + ex.getMessage());
 		}
     }
 	
