@@ -138,7 +138,7 @@
             <artifactId>jackson-datatype-joda</artifactId>
         </dependency>
         {{/joda}}
-        {{#threetenbp}}
+         {{#threetenbp}}
 
         <dependency>
             <groupId>com.github.joschi.jackson</groupId>
@@ -154,13 +154,13 @@
             <artifactId>validation-api</artifactId>
         </dependency>
         {{/useBeanValidation}}
-        {{#notNullJacksonAnnotation}}
+         <!--{{#notNullJacksonAnnotation}}
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>2.10.1</version>
             </dependency>
-        {{/notNullJacksonAnnotation}}
+        {{/notNullJacksonAnnotation}} -->
 
         {{^useOas2}}
         <dependency>

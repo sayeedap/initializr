@@ -346,8 +346,8 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
                         (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "HomeController.java"));
                 supportingFiles.add(new SupportingFile("swagger2SpringBoot.mustache",
                         (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "Swagger2SpringBoot.java"));
-                supportingFiles.add(new SupportingFile("RFC3339DateFormat.mustache",
-                        (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "RFC3339DateFormat.java"));
+//                supportingFiles.add(new SupportingFile("RFC3339DateFormat.mustache",
+//                        (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "RFC3339DateFormat.java"));
                 supportingFiles.add(new SupportingFile("swaggerUiConfiguration.mustache",
                         (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "SwaggerUiConfiguration.java"));
                 supportingFiles.add(new SupportingFile("application.mustache",
@@ -390,23 +390,24 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
 
                     }
                 }
-            } else {
-                apiTemplateFiles.put("apiController.mustache", "Impl.java");
-                supportingFiles.add(new SupportingFile("apiException.mustache",
-                        (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiException.java"));
-                supportingFiles.add(new SupportingFile("apiResponseMessage.mustache",
-                        (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiResponseMessage.java"));
-                supportingFiles.add(new SupportingFile("notFoundException.mustache",
-                        (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "NotFoundException.java"));
-                supportingFiles.add(new SupportingFile("apiOriginFilter.mustache",
-                        (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiOriginFilter.java"));
-                supportingFiles.add(new SupportingFile("swaggerDocumentationConfig.mustache",
-                        (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "SwaggerDocumentationConfig.java"));
-                supportingFiles.add(new SupportingFile("LocalDateConverter.mustache",
-                    (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "LocalDateConverter.java"));
-                supportingFiles.add(new SupportingFile("LocalDateTimeConverter.mustache",
-                    (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "LocalDateTimeConverter.java"));
-            }
+			} else {
+				apiTemplateFiles.put("apiController.mustache", "Impl.java");
+//              supportingFiles.add(new SupportingFile("apiException.mustache",
+//              (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiException.java"));
+//      supportingFiles.add(new SupportingFile("apiResponseMessage.mustache",
+//              (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiResponseMessage.java"));
+//      supportingFiles.add(new SupportingFile("notFoundException.mustache",
+//              (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "NotFoundException.java"));
+//      supportingFiles.add(new SupportingFile("apiOriginFilter.mustache",
+//              (sourceFolder + File.separator + exceptionPackage).replace(".", java.io.File.separator), "ApiOriginFilter.java"));
+				supportingFiles.add(new SupportingFile("swaggerDocumentationConfig.mustache",
+						(sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator),
+						"SwaggerDocumentationConfig.java"));
+//      supportingFiles.add(new SupportingFile("LocalDateConverter.mustache",
+//          (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "LocalDateConverter.java"));
+//      supportingFiles.add(new SupportingFile("LocalDateTimeConverter.mustache",
+//          (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "LocalDateTimeConverter.java"));
+			}
         } else if ( this.swaggerDocketConfig && !isSpringCloudLibrary()) {
             supportingFiles.add(new SupportingFile("swaggerDocumentationConfig.mustache",
                     (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "SwaggerDocumentationConfig.java"));
@@ -415,15 +416,15 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
         if (this.interfaceOnly) {
             apiTestTemplateFiles.clear();
         }
-        if ("threetenbp".equals(dateLibrary)) {
-            supportingFiles.add(new SupportingFile("customInstantDeserializer.mustache",
-                    (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "CustomInstantDeserializer.java"));
-            if (isDefaultLibrary() || isSpringCloudLibrary()) {
-                supportingFiles.add(new SupportingFile("jacksonConfiguration.mustache",
-                        (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "JacksonConfiguration.java"));
-            }
-        }
-
+//      if ("threetenbp".equals(dateLibrary)) {
+//      supportingFiles.add(new SupportingFile("customInstantDeserializer.mustache",
+//              (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "CustomInstantDeserializer.java"));
+//      if (isDefaultLibrary() || isSpringCloudLibrary()) {
+//          supportingFiles.add(new SupportingFile("jacksonConfiguration.mustache",
+//                  (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "JacksonConfiguration.java"));
+//      }
+//  }
+        
         if ((!this.delegatePattern && (this.java8 || this.java11)) || this.delegateMethod) {
             additionalProperties.put("jdk8-no-delegate", true);
         }

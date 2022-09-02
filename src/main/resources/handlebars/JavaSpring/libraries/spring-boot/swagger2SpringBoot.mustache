@@ -1,7 +1,5 @@
 package {{basePackage}};
 
-import {{configPackage}}.LocalDateConverter;
-import {{configPackage}}.LocalDateTimeConverter;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
@@ -21,13 +19,6 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-{{#useOas2}}
-@EnableSwagger2
-{{/useOas2}}
-{{^useOas2}}
-@EnableOpenApi
-{{/useOas2}}
-@ComponentScan(basePackages = { "{{basePackage}}", "{{controllerImplPackage}}" , "{{configPackage}}"})
 public class Swagger2SpringBoot implements CommandLineRunner {
 
     @Override
@@ -41,14 +32,14 @@ public class Swagger2SpringBoot implements CommandLineRunner {
         new SpringApplication(Swagger2SpringBoot.class).run(args);
     }
 
-    @Configuration
+   /* @Configuration
     static class CustomDateConfig extends WebMvcConfigurerAdapter {
         @Override
         public void addFormatters(FormatterRegistry registry) {
             registry.addConverter(new LocalDateConverter("{{#datePattern}}{{datePattern}}{{/datePattern}}{{^datePattern}}yyyy-MM-dd{{/datePattern}}"));
             registry.addConverter(new LocalDateTimeConverter("{{#dateTimePattern}}{{dateTimePattern}}{{/dateTimePattern}}{{^dateTimePattern}}yyyy-MM-dd'T'HH:mm:ss.SSS{{/dateTimePattern}}"));
         }
-    }
+    }*/
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;

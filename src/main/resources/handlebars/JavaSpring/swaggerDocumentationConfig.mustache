@@ -9,7 +9,11 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
+{{#useOas2}}
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+{{/useOas2}}
 {{^useOas2}}
+import springfox.documentation.oas.annotations.EnableOpenApi;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
@@ -20,6 +24,12 @@ import java.util.Optional;
 
 {{>generatedAnnotation}}
 @Configuration
+{{#useOas2}}
+@EnableSwagger2
+{{/useOas2}}
+{{^useOas2}}
+@EnableOpenApi
+{{/useOas2}}
 public class SwaggerDocumentationConfig {
 
     @Bean
