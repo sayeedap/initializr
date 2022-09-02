@@ -19,20 +19,22 @@ package io.spring.initializr.generator.project;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.spring.initializr.generator.project.MutableProjectDescription;
-import io.spring.initializr.generator.project.ProjectDescription;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * A custom {@link ProjectDescription} to convey the additional flags to
  * contributors.
  *
  * @author Stephane Nicoll
+ * @author Sayeed
  */
 public class CustomProjectDescription extends MutableProjectDescription {
 
 	private Boolean dockerFlag = true;
 
 	private List<String> projectComponents = new ArrayList<>();
+	
+	private MultipartFile swaggerFile;
 
 	public CustomProjectDescription() {
 	}
@@ -41,6 +43,7 @@ public class CustomProjectDescription extends MutableProjectDescription {
 		super(source);
 		this.dockerFlag=source.getDockerFlag();
 		this.projectComponents=source.getProjectComponents();
+		this.swaggerFile=source.getSwaggerFile();
 	}
 
 	@Override
@@ -63,5 +66,15 @@ public class CustomProjectDescription extends MutableProjectDescription {
 	public void setProjectComponents(List<String> projectComponents) {
 		this.projectComponents = projectComponents;
 	}
+
+	public MultipartFile getSwaggerFile() {
+		return swaggerFile;
+	}
+
+	public void setSwaggerFile(MultipartFile swaggerFile) {
+		this.swaggerFile = swaggerFile;
+	}
+	
+	
 
 }
