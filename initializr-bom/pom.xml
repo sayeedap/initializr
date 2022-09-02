@@ -64,6 +64,11 @@
 				<version>${revision}</version>
 				<type>test-jar</type>
 			</dependency>
+			<dependency>
+				<groupId>io.spring.initializr</groupId>
+    			<artifactId>swaggercodegengenerators</artifactId>
+				<version>${revision}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
