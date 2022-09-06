@@ -343,7 +343,7 @@ public class SpringCodegen extends AbstractJavaCodegen implements BeanValidation
             if (isDefaultLibrary()) {
                 apiTestTemplateFiles.clear();
                 supportingFiles.add(new SupportingFile("homeController.mustache",
-                        (sourceFolder + File.separator + configPackage).replace(".", java.io.File.separator), "HomeController.java"));
+                        (sourceFolder + File.separator + controllerImplPackage).replace(".", java.io.File.separator), artifactId+ "Controller.java"));
                 supportingFiles.add(new SupportingFile("swagger2SpringBoot.mustache",
                         (sourceFolder + File.separator + basePackage).replace(".", java.io.File.separator), "Swagger2SpringBoot.java"));
 //                supportingFiles.add(new SupportingFile("RFC3339DateFormat.mustache",
