@@ -11,18 +11,20 @@ import java.util.Map;
 
 public class GoSchemaHandler extends SchemaHandler {
 
-    public GoSchemaHandler(DefaultCodegenConfig codegenConfig) {
-        super(codegenConfig);
-    }
+	public GoSchemaHandler(DefaultCodegenConfig codegenConfig) {
+		super(codegenConfig);
+	}
 
-    protected void addInterfaces(List<Schema> schemas, CodegenModel composedModel, Map<String, CodegenModel> allModels) {
-        for (Schema interfaceSchema : schemas) {
-            final String ref = interfaceSchema.get$ref();
-            if (StringUtils.isBlank(ref)) {
-                continue;
-            }
-            final String schemaName = ref.substring(ref.lastIndexOf("/") + 1);
-            this.addInterfaceModel(composedModel, allModels.get(codegenConfig.toModelName(schemaName)));
-        }
-    }
+	protected void addInterfaces(List<Schema> schemas, CodegenModel composedModel,
+			Map<String, CodegenModel> allModels) {
+		for (Schema interfaceSchema : schemas) {
+			final String ref = interfaceSchema.get$ref();
+			if (StringUtils.isBlank(ref)) {
+				continue;
+			}
+			final String schemaName = ref.substring(ref.lastIndexOf("/") + 1);
+			this.addInterfaceModel(composedModel, allModels.get(codegenConfig.toModelName(schemaName)));
+		}
+	}
+
 }

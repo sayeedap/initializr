@@ -24,207 +24,225 @@ import io.swagger.v3.parser.util.SchemaTypeUtil;
 import org.apache.commons.lang3.StringUtils;
 
 public class TypeScriptFetchClientCodegen extends AbstractTypeScriptClientCodegen {
-    private static final SimpleDateFormat SNAPSHOT_SUFFIX_FORMAT = new SimpleDateFormat("yyyyMMddHHmm");
 
-    public static final String NPM_NAME = "npmName";
-    public static final String NPM_VERSION = "npmVersion";
-    public static final String NPM_REPOSITORY = "npmRepository";
-    public static final String SNAPSHOT = "snapshot";
-    public static final String WITH_INTERFACES = "withInterfaces";
+	private static final SimpleDateFormat SNAPSHOT_SUFFIX_FORMAT = new SimpleDateFormat("yyyyMMddHHmm");
 
-    protected String npmName = null;
-    protected String npmVersion = "1.0.0";
-    protected String npmRepository = null;
+	public static final String NPM_NAME = "npmName";
 
-    public TypeScriptFetchClientCodegen() {
-        super();
-        this.outputFolder = "generated-code" + File.separator + "typescript-fetch";
+	public static final String NPM_VERSION = "npmVersion";
 
-        this.cliOptions.add(new CliOption(NPM_NAME, "The name under which you want to publish generated npm package"));
-        this.cliOptions.add(new CliOption(NPM_VERSION, "The version of your npm package"));
-        this.cliOptions.add(new CliOption(NPM_REPOSITORY,
-                "Use this property to set an url your private npmRepo in the package.json"));
-        this.cliOptions.add(new CliOption(SNAPSHOT,
-                "When setting this property to true the version will be suffixed with -SNAPSHOT.yyyyMMddHHmm",
-                SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
-        this.cliOptions.add(new CliOption(WITH_INTERFACES,
-                "Setting this property to true will generate interfaces next to the default class implementations.",
-                SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
-    }
+	public static final String NPM_REPOSITORY = "npmRepository";
 
-    @Override
-    protected void addAdditionPropertiesToCodeGenModel(CodegenModel codegenModel, Schema schema) {
-        if (schema instanceof MapSchema && hasSchemaProperties(schema)) {
-            codegenModel.additionalPropertiesType = getTypeDeclaration((Schema) schema.getAdditionalProperties());
-            addImport(codegenModel, codegenModel.additionalPropertiesType);
-        } else if (schema instanceof MapSchema && hasTrueAdditionalProperties(schema)) {
-            codegenModel.additionalPropertiesType = getTypeDeclaration(new ObjectSchema());
-        }
-    }
+	public static final String SNAPSHOT = "snapshot";
 
-    @Override
-    public String getName() {
-        return "typescript-fetch";
-    }
+	public static final String WITH_INTERFACES = "withInterfaces";
 
-    @Override
-    public String getHelp() {
-        return "Generates a TypeScript client library using Fetch API (beta).";
-    }
+	protected String npmName = null;
 
-    @Override
-    public void processOpts() {
-        super.processOpts();
+	protected String npmVersion = "1.0.0";
 
-        supportingFiles.add(new SupportingFile("index.mustache", "", "index.ts"));
-        supportingFiles.add(new SupportingFile("api.mustache", "", "api.ts"));
-        supportingFiles.add(new SupportingFile("api_test.mustache", "", "api_test.spec.ts"));
-        supportingFiles.add(new SupportingFile("configuration.mustache", "", "configuration.ts"));
-        supportingFiles.add(new SupportingFile("custom.d.mustache", "", "custom.d.ts"));
-        supportingFiles.add(new SupportingFile("git_push.sh.mustache", "", "git_push.sh"));
-        supportingFiles.add(new SupportingFile("gitignore", "", ".gitignore"));
+	protected String npmRepository = null;
 
-        if (additionalProperties.containsKey(NPM_NAME)) {
-            addNpmPackageGeneration();
-        }
-    }
+	public TypeScriptFetchClientCodegen() {
+		super();
+		this.outputFolder = "generated-code" + File.separator + "typescript-fetch";
 
-    @Override
-    public String getDefaultTemplateDir() {
-        return "typescript-fetch";
-    }
+		this.cliOptions.add(new CliOption(NPM_NAME, "The name under which you want to publish generated npm package"));
+		this.cliOptions.add(new CliOption(NPM_VERSION, "The version of your npm package"));
+		this.cliOptions.add(new CliOption(NPM_REPOSITORY,
+				"Use this property to set an url your private npmRepo in the package.json"));
+		this.cliOptions.add(new CliOption(SNAPSHOT,
+				"When setting this property to true the version will be suffixed with -SNAPSHOT.yyyyMMddHHmm",
+				SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
+		this.cliOptions.add(new CliOption(WITH_INTERFACES,
+				"Setting this property to true will generate interfaces next to the default class implementations.",
+				SchemaTypeUtil.BOOLEAN_TYPE).defaultValue(Boolean.FALSE.toString()));
+	}
 
-    @Override
-    public String getTypeDeclaration(Schema propertySchema) {
-        Schema inner;
-        if (propertySchema instanceof ArraySchema) {
-            ArraySchema arraySchema = (ArraySchema) propertySchema;
-            inner = arraySchema.getItems();
-            return this.getSchemaType(propertySchema) + "<" + this.getTypeDeclaration(inner) + ">";
-        } else if (propertySchema instanceof MapSchema && hasSchemaProperties(propertySchema)) {
-            inner = (Schema) propertySchema.getAdditionalProperties();
-            return "{ [key: string]: " + this.getTypeDeclaration(inner) + "; }";
-        } else if (propertySchema instanceof MapSchema && hasTrueAdditionalProperties(propertySchema)) {
-            inner = new ObjectSchema();
-            return "{ [key: string]: " + this.getTypeDeclaration(inner) + "; }";
-        } else if (propertySchema instanceof FileSchema || propertySchema instanceof BinarySchema) {
-            return "Blob";
-        } else if (propertySchema instanceof ObjectSchema) {
-            return "any";
-        } else {
-            return super.getTypeDeclaration(propertySchema);
-        }
-    }
+	@Override
+	protected void addAdditionPropertiesToCodeGenModel(CodegenModel codegenModel, Schema schema) {
+		if (schema instanceof MapSchema && hasSchemaProperties(schema)) {
+			codegenModel.additionalPropertiesType = getTypeDeclaration((Schema) schema.getAdditionalProperties());
+			addImport(codegenModel, codegenModel.additionalPropertiesType);
+		}
+		else if (schema instanceof MapSchema && hasTrueAdditionalProperties(schema)) {
+			codegenModel.additionalPropertiesType = getTypeDeclaration(new ObjectSchema());
+		}
+	}
 
-    @Override
-    public CodegenParameter fromParameter(Parameter parameter, Set<String> imports) {
-        final CodegenParameter codegenParameter = super.fromParameter(parameter, imports);
-        if (parameter.getSchema() != null && isObjectSchema(parameter.getSchema())) {
-            //fixme: codegenParameter.getVendorExtensions().put(CodegenConstants.IS_OBJECT_EXT_NAME, Boolean.TRUE);
-            codegenParameter.getVendorExtensions().put("x-is-object", Boolean.TRUE);
-        }
-        return codegenParameter;
-    }
+	@Override
+	public String getName() {
+		return "typescript-fetch";
+	}
 
-    @Override
-    public CodegenParameter fromRequestBody(RequestBody body, String name, Schema schema, Map<String, Schema> schemas, Set<String> imports) {
-        final CodegenParameter codegenParameter = super.fromRequestBody(body, name, schema, schemas, imports);
-        if (schema == null) {
-            schema = getSchemaFromBody(body);
-        }
-        if (schema != null && isObjectSchema(schema)) {
-            //fixme: codegenParameter.getVendorExtensions().put(CodegenConstants.IS_OBJECT_EXT_NAME, Boolean.TRUE);
-            codegenParameter.getVendorExtensions().put("x-is-object", Boolean.TRUE);
-        }
-        return codegenParameter;
-    }
+	@Override
+	public String getHelp() {
+		return "Generates a TypeScript client library using Fetch API (beta).";
+	}
 
-    @Override
-    public String getSchemaType(Schema schema) {
-        String swaggerType = super.getSchemaType(schema);
-        if (isLanguagePrimitive(swaggerType) || isLanguageGenericType(swaggerType)) {
-            return swaggerType;
-        }
-        applyLocalTypeMapping(swaggerType);
-        return swaggerType;
-    }
+	@Override
+	public void processOpts() {
+		super.processOpts();
 
-    private String applyLocalTypeMapping(String type) {
-        if (typeMapping.containsKey(type)) {
-            type = typeMapping.get(type);
-        }
-        return type;
-    }
+		supportingFiles.add(new SupportingFile("index.mustache", "", "index.ts"));
+		supportingFiles.add(new SupportingFile("api.mustache", "", "api.ts"));
+		supportingFiles.add(new SupportingFile("api_test.mustache", "", "api_test.spec.ts"));
+		supportingFiles.add(new SupportingFile("configuration.mustache", "", "configuration.ts"));
+		supportingFiles.add(new SupportingFile("custom.d.mustache", "", "custom.d.ts"));
+		supportingFiles.add(new SupportingFile("git_push.sh.mustache", "", "git_push.sh"));
+		supportingFiles.add(new SupportingFile("gitignore", "", ".gitignore"));
 
-    private boolean isLanguagePrimitive(String type) {
-        return languageSpecificPrimitives.contains(type);
-    }
+		if (additionalProperties.containsKey(NPM_NAME)) {
+			addNpmPackageGeneration();
+		}
+	}
 
-    private boolean isLanguageGenericType(String type) {
-        for (String genericType : languageGenericTypes) {
-            if (type.startsWith(genericType + "<")) {
-                return true;
-            }
-        }
-        return false;
-    }
+	@Override
+	public String getDefaultTemplateDir() {
+		return "typescript-fetch";
+	}
 
-    @Override
-    public void postProcessParameter(CodegenParameter parameter) {
-        super.postProcessParameter(parameter);
+	@Override
+	public String getTypeDeclaration(Schema propertySchema) {
+		Schema inner;
+		if (propertySchema instanceof ArraySchema) {
+			ArraySchema arraySchema = (ArraySchema) propertySchema;
+			inner = arraySchema.getItems();
+			return this.getSchemaType(propertySchema) + "<" + this.getTypeDeclaration(inner) + ">";
+		}
+		else if (propertySchema instanceof MapSchema && hasSchemaProperties(propertySchema)) {
+			inner = (Schema) propertySchema.getAdditionalProperties();
+			return "{ [key: string]: " + this.getTypeDeclaration(inner) + "; }";
+		}
+		else if (propertySchema instanceof MapSchema && hasTrueAdditionalProperties(propertySchema)) {
+			inner = new ObjectSchema();
+			return "{ [key: string]: " + this.getTypeDeclaration(inner) + "; }";
+		}
+		else if (propertySchema instanceof FileSchema || propertySchema instanceof BinarySchema) {
+			return "Blob";
+		}
+		else if (propertySchema instanceof ObjectSchema) {
+			return "any";
+		}
+		else {
+			return super.getTypeDeclaration(propertySchema);
+		}
+	}
 
-        String type = applyLocalTypeMapping(parameter.dataType);
-        parameter.dataType = type;
-        parameter.getVendorExtensions().put(CodegenConstants.IS_PRIMITIVE_TYPE_EXT_NAME, isLanguagePrimitive(type));
-    }
+	@Override
+	public CodegenParameter fromParameter(Parameter parameter, Set<String> imports) {
+		final CodegenParameter codegenParameter = super.fromParameter(parameter, imports);
+		if (parameter.getSchema() != null && isObjectSchema(parameter.getSchema())) {
+			// fixme:
+			// codegenParameter.getVendorExtensions().put(CodegenConstants.IS_OBJECT_EXT_NAME,
+			// Boolean.TRUE);
+			codegenParameter.getVendorExtensions().put("x-is-object", Boolean.TRUE);
+		}
+		return codegenParameter;
+	}
 
-    private void addNpmPackageGeneration() {
-        if (additionalProperties.containsKey(NPM_NAME)) {
-            this.setNpmName(additionalProperties.get(NPM_NAME).toString());
-        }
+	@Override
+	public CodegenParameter fromRequestBody(RequestBody body, String name, Schema schema, Map<String, Schema> schemas,
+			Set<String> imports) {
+		final CodegenParameter codegenParameter = super.fromRequestBody(body, name, schema, schemas, imports);
+		if (schema == null) {
+			schema = getSchemaFromBody(body);
+		}
+		if (schema != null && isObjectSchema(schema)) {
+			// fixme:
+			// codegenParameter.getVendorExtensions().put(CodegenConstants.IS_OBJECT_EXT_NAME,
+			// Boolean.TRUE);
+			codegenParameter.getVendorExtensions().put("x-is-object", Boolean.TRUE);
+		}
+		return codegenParameter;
+	}
 
-        if (additionalProperties.containsKey(NPM_VERSION)) {
-            this.setNpmVersion(additionalProperties.get(NPM_VERSION).toString());
-        }
+	@Override
+	public String getSchemaType(Schema schema) {
+		String swaggerType = super.getSchemaType(schema);
+		if (isLanguagePrimitive(swaggerType) || isLanguageGenericType(swaggerType)) {
+			return swaggerType;
+		}
+		applyLocalTypeMapping(swaggerType);
+		return swaggerType;
+	}
 
-        if (additionalProperties.containsKey(SNAPSHOT)
-                && Boolean.valueOf(additionalProperties.get(SNAPSHOT).toString())) {
-            this.setNpmVersion(npmVersion + "-SNAPSHOT." + SNAPSHOT_SUFFIX_FORMAT.format(new Date()));
-        }
-        additionalProperties.put(NPM_VERSION, npmVersion);
+	private String applyLocalTypeMapping(String type) {
+		if (typeMapping.containsKey(type)) {
+			type = typeMapping.get(type);
+		}
+		return type;
+	}
 
-        if (additionalProperties.containsKey(NPM_REPOSITORY)) {
-            this.setNpmRepository(additionalProperties.get(NPM_REPOSITORY).toString());
-        }
+	private boolean isLanguagePrimitive(String type) {
+		return languageSpecificPrimitives.contains(type);
+	}
 
-        // Files for building our lib
-        supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
-        supportingFiles.add(new SupportingFile("package.mustache", "", "package.json"));
-        supportingFiles.add(new SupportingFile("tsconfig.mustache", "", "tsconfig.json"));
-    }
+	private boolean isLanguageGenericType(String type) {
+		for (String genericType : languageGenericTypes) {
+			if (type.startsWith(genericType + "<")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public String getNpmName() {
-        return npmName;
-    }
+	@Override
+	public void postProcessParameter(CodegenParameter parameter) {
+		super.postProcessParameter(parameter);
 
-    public void setNpmName(String npmName) {
-        this.npmName = npmName;
-    }
+		String type = applyLocalTypeMapping(parameter.dataType);
+		parameter.dataType = type;
+		parameter.getVendorExtensions().put(CodegenConstants.IS_PRIMITIVE_TYPE_EXT_NAME, isLanguagePrimitive(type));
+	}
 
-    public String getNpmVersion() {
-        return npmVersion;
-    }
+	private void addNpmPackageGeneration() {
+		if (additionalProperties.containsKey(NPM_NAME)) {
+			this.setNpmName(additionalProperties.get(NPM_NAME).toString());
+		}
 
-    public void setNpmVersion(String npmVersion) {
-        this.npmVersion = npmVersion;
-    }
+		if (additionalProperties.containsKey(NPM_VERSION)) {
+			this.setNpmVersion(additionalProperties.get(NPM_VERSION).toString());
+		}
 
-    public String getNpmRepository() {
-        return npmRepository;
-    }
+		if (additionalProperties.containsKey(SNAPSHOT)
+				&& Boolean.valueOf(additionalProperties.get(SNAPSHOT).toString())) {
+			this.setNpmVersion(npmVersion + "-SNAPSHOT." + SNAPSHOT_SUFFIX_FORMAT.format(new Date()));
+		}
+		additionalProperties.put(NPM_VERSION, npmVersion);
 
-    public void setNpmRepository(String npmRepository) {
-        this.npmRepository = npmRepository;
-    }
+		if (additionalProperties.containsKey(NPM_REPOSITORY)) {
+			this.setNpmRepository(additionalProperties.get(NPM_REPOSITORY).toString());
+		}
+
+		// Files for building our lib
+		supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
+		supportingFiles.add(new SupportingFile("package.mustache", "", "package.json"));
+		supportingFiles.add(new SupportingFile("tsconfig.mustache", "", "tsconfig.json"));
+	}
+
+	public String getNpmName() {
+		return npmName;
+	}
+
+	public void setNpmName(String npmName) {
+		this.npmName = npmName;
+	}
+
+	public String getNpmVersion() {
+		return npmVersion;
+	}
+
+	public void setNpmVersion(String npmVersion) {
+		this.npmVersion = npmVersion;
+	}
+
+	public String getNpmRepository() {
+		return npmRepository;
+	}
+
+	public void setNpmRepository(String npmRepository) {
+		this.npmRepository = npmRepository;
+	}
 
 }

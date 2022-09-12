@@ -26,228 +26,239 @@ import java.util.Map;
 import static io.swagger.codegen.v3.generators.handlebars.ExtensionHelper.getBooleanValue;
 
 public abstract class AbstractJavaJAXRSServerCodegen extends AbstractJavaCodegen implements BeanValidationFeatures {
-    private static Logger LOGGER = LoggerFactory.getLogger(AbstractJavaJAXRSServerCodegen.class);
 
-    /**
-     * Name of the sub-directory in "src/main/resource" where to find the
-     * Mustache template for the JAX-RS Codegen.
-     */
-    protected static final String JAXRS_TEMPLATE_DIRECTORY_NAME = "JavaJaxRS";
-    protected String implFolder = "src/main/java";
-    protected String testResourcesFolder = "src/test/resources";
-    protected String title = "Swagger Server";
+	private static Logger LOGGER = LoggerFactory.getLogger(AbstractJavaJAXRSServerCodegen.class);
 
-    protected boolean useBeanValidation = true;
+	/**
+	 * Name of the sub-directory in "src/main/resource" where to find the Mustache
+	 * template for the JAX-RS Codegen.
+	 */
+	protected static final String JAXRS_TEMPLATE_DIRECTORY_NAME = "JavaJaxRS";
 
-    public AbstractJavaJAXRSServerCodegen() {
-        super();
+	protected String implFolder = "src/main/java";
 
-        sourceFolder = "src/gen/java";
-        invokerPackage = "io.swagger.api";
-        artifactId = "swagger-jaxrs-server";
-        dateLibrary = "legacy"; //TODO: add joda support to all jax-rs
+	protected String testResourcesFolder = "src/test/resources";
 
-        apiPackage = "io.swagger.api";
-        modelPackage = "io.swagger.model";
+	protected String title = "Swagger Server";
 
-        additionalProperties.put("title", title);
-        // java inflector uses the jackson lib
-        additionalProperties.put("jackson", "true");
+	protected boolean useBeanValidation = true;
 
-        cliOptions.add(new CliOption(CodegenConstants.IMPL_FOLDER, CodegenConstants.IMPL_FOLDER_DESC));
-        cliOptions.add(new CliOption("title", "a title describing the application"));
+	public AbstractJavaJAXRSServerCodegen() {
+		super();
 
-        cliOptions.add(CliOption.newBoolean(USE_BEANVALIDATION, "Use BeanValidation API annotations"));
-        cliOptions.add(new CliOption("serverPort", "The port on which the server should be started"));
-    }
+		sourceFolder = "src/gen/java";
+		invokerPackage = "io.swagger.api";
+		artifactId = "swagger-jaxrs-server";
+		dateLibrary = "legacy"; // TODO: add joda support to all jax-rs
 
+		apiPackage = "io.swagger.api";
+		modelPackage = "io.swagger.model";
 
-    // ===============
-    // COMMONS METHODS
-    // ===============
+		additionalProperties.put("title", title);
+		// java inflector uses the jackson lib
+		additionalProperties.put("jackson", "true");
 
-    @Override
-    public CodegenType getTag() {
-        return CodegenType.SERVER;
-    }
+		cliOptions.add(new CliOption(CodegenConstants.IMPL_FOLDER, CodegenConstants.IMPL_FOLDER_DESC));
+		cliOptions.add(new CliOption("title", "a title describing the application"));
 
-    @Override
-    public void processOpts() {
-        super.processOpts();
+		cliOptions.add(CliOption.newBoolean(USE_BEANVALIDATION, "Use BeanValidation API annotations"));
+		cliOptions.add(new CliOption("serverPort", "The port on which the server should be started"));
+	}
 
-        if (additionalProperties.containsKey(CodegenConstants.IMPL_FOLDER)) {
-            implFolder = (String) additionalProperties.get(CodegenConstants.IMPL_FOLDER);
-        }
+	// ===============
+	// COMMONS METHODS
+	// ===============
 
-        if (additionalProperties.containsKey(USE_BEANVALIDATION)) {
-            this.setUseBeanValidation(convertPropertyToBoolean(USE_BEANVALIDATION));
-        }
+	@Override
+	public CodegenType getTag() {
+		return CodegenType.SERVER;
+	}
 
-        if (useBeanValidation) {
-            writePropertyBack(USE_BEANVALIDATION, useBeanValidation);
-        }
+	@Override
+	public void processOpts() {
+		super.processOpts();
 
-    }
+		if (additionalProperties.containsKey(CodegenConstants.IMPL_FOLDER)) {
+			implFolder = (String) additionalProperties.get(CodegenConstants.IMPL_FOLDER);
+		}
 
-    @Override
-    public void preprocessOpenAPI(OpenAPI openAPI) {
-        //this.openAPIUtil = new OpenAPIUtil(openAPI);
-        this.openAPI = openAPI;
-        if (!this.additionalProperties.containsKey("serverPort")) {
-            final URL urlInfo = URLPathUtil.getServerURL(openAPI);
-            String port = "8080"; // Default value for a JEE Server
-            if ( urlInfo != null && urlInfo.getPort() > 0) {
-                    port = String.valueOf(urlInfo.getPort());
-            }
-            this.additionalProperties.put("serverPort", port);
-        }
+		if (additionalProperties.containsKey(USE_BEANVALIDATION)) {
+			this.setUseBeanValidation(convertPropertyToBoolean(USE_BEANVALIDATION));
+		}
 
-        if (openAPI.getPaths() != null) {
-            for (String pathname : openAPI.getPaths().keySet()) {
-                PathItem pathItem = openAPI.getPaths().get(pathname);
-                final Operation[] operations = ModelUtils.createOperationArray(pathItem);
-                for (Operation operation : operations) {
-                    if (operation != null && operation.getTags() != null) {
-                        List<Map<String, String>> tags = new ArrayList<Map<String, String>>();
-                        for (String tag : operation.getTags()) {
-                            Map<String, String> value = new HashMap<String, String>();
-                            value.put("tag", tag);
-                            value.put("hasMore", "true");
-                            tags.add(value);
-                        }
-                        if (tags.size() > 0) {
-                            tags.get(tags.size() - 1).remove("hasMore");
-                        }
-                        if (operation.getTags().size() > 0) {
-                            String tag = operation.getTags().get(0);
-                            operation.setTags(Arrays.asList(tag));
-                        }
-                        operation.addExtension("x-tags", tags);
-                    }
-                }
-            }
-        }
-    }
+		if (useBeanValidation) {
+			writePropertyBack(USE_BEANVALIDATION, useBeanValidation);
+		}
 
-    @Override
-    public Map<String, Object> postProcessOperations(Map<String, Object> objs) {
-        return jaxrsPostProcessOperations(objs);
-    }
+	}
 
-    static Map<String, Object> jaxrsPostProcessOperations(Map<String, Object> objs) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> operations = (Map<String, Object>) objs.get("operations");
-        if ( operations != null ) {
-            @SuppressWarnings("unchecked")
-            List<CodegenOperation> ops = (List<CodegenOperation>) operations.get("operation");
-            for ( CodegenOperation operation : ops ) {
-                boolean hasConsumes = getBooleanValue(operation, CodegenConstants.HAS_CONSUMES_EXT_NAME);
-                if (hasConsumes) {
-                    Map<String, String> firstType = operation.consumes.get(0);
-                    if (firstType != null) {
-                        if ("multipart/form-data".equals(firstType.get("mediaType"))) {
-                            operation.getVendorExtensions().put(CodegenConstants.IS_MULTIPART_EXT_NAME, Boolean.TRUE);
-                        }
-                    }
-                }
+	@Override
+	public void preprocessOpenAPI(OpenAPI openAPI) {
+		// this.openAPIUtil = new OpenAPIUtil(openAPI);
+		this.openAPI = openAPI;
+		if (!this.additionalProperties.containsKey("serverPort")) {
+			final URL urlInfo = URLPathUtil.getServerURL(openAPI);
+			String port = "8080"; // Default value for a JEE Server
+			if (urlInfo != null && urlInfo.getPort() > 0) {
+				port = String.valueOf(urlInfo.getPort());
+			}
+			this.additionalProperties.put("serverPort", port);
+		}
 
-                boolean isMultipartPost = false;
-                List<Map<String, String>> consumes = operation.consumes;
-                if(consumes != null) {
-                    for(Map<String, String> consume : consumes) {
-                        String mt = consume.get("mediaType");
-                        if(mt != null) {
-                            if(mt.startsWith("multipart/form-data")) {
-                                isMultipartPost = true;
-                            }
-                        }
-                    }
-                }
+		if (openAPI.getPaths() != null) {
+			for (String pathname : openAPI.getPaths().keySet()) {
+				PathItem pathItem = openAPI.getPaths().get(pathname);
+				final Operation[] operations = ModelUtils.createOperationArray(pathItem);
+				for (Operation operation : operations) {
+					if (operation != null && operation.getTags() != null) {
+						List<Map<String, String>> tags = new ArrayList<Map<String, String>>();
+						for (String tag : operation.getTags()) {
+							Map<String, String> value = new HashMap<String, String>();
+							value.put("tag", tag);
+							value.put("hasMore", "true");
+							tags.add(value);
+						}
+						if (tags.size() > 0) {
+							tags.get(tags.size() - 1).remove("hasMore");
+						}
+						if (operation.getTags().size() > 0) {
+							String tag = operation.getTags().get(0);
+							operation.setTags(Arrays.asList(tag));
+						}
+						operation.addExtension("x-tags", tags);
+					}
+				}
+			}
+		}
+	}
 
-                for(CodegenParameter parameter : operation.allParams) {
-                    if(isMultipartPost) {
-                        parameter.vendorExtensions.put("x-multipart", "true");
-                    }
-                }
+	@Override
+	public Map<String, Object> postProcessOperations(Map<String, Object> objs) {
+		return jaxrsPostProcessOperations(objs);
+	}
 
-                List<CodegenResponse> responses = operation.responses;
-                if ( responses != null ) {
-                    for ( CodegenResponse resp : responses ) {
-                        if ( "0".equals(resp.code) ) {
-                            resp.code = "200";
-                        }
+	static Map<String, Object> jaxrsPostProcessOperations(Map<String, Object> objs) {
+		@SuppressWarnings("unchecked")
+		Map<String, Object> operations = (Map<String, Object>) objs.get("operations");
+		if (operations != null) {
+			@SuppressWarnings("unchecked")
+			List<CodegenOperation> ops = (List<CodegenOperation>) operations.get("operation");
+			for (CodegenOperation operation : ops) {
+				boolean hasConsumes = getBooleanValue(operation, CodegenConstants.HAS_CONSUMES_EXT_NAME);
+				if (hasConsumes) {
+					Map<String, String> firstType = operation.consumes.get(0);
+					if (firstType != null) {
+						if ("multipart/form-data".equals(firstType.get("mediaType"))) {
+							operation.getVendorExtensions().put(CodegenConstants.IS_MULTIPART_EXT_NAME, Boolean.TRUE);
+						}
+					}
+				}
 
-                        if (resp.baseType == null) {
-                            resp.dataType = "void";
-                            resp.baseType = "Void";
-                            // set vendorExtensions.x-java-is-response-void to true as baseType is set to "Void"
-                            resp.vendorExtensions.put("x-java-is-response-void", true);
-                        }
+				boolean isMultipartPost = false;
+				List<Map<String, String>> consumes = operation.consumes;
+				if (consumes != null) {
+					for (Map<String, String> consume : consumes) {
+						String mt = consume.get("mediaType");
+						if (mt != null) {
+							if (mt.startsWith("multipart/form-data")) {
+								isMultipartPost = true;
+							}
+						}
+					}
+				}
 
-                        if ("array".equals(resp.containerType)) {
-                            resp.containerType = "List";
-                        } else if ("map".equals(resp.containerType)) {
-                            resp.containerType = "Map";
-                        }
-                    }
-                }
+				for (CodegenParameter parameter : operation.allParams) {
+					if (isMultipartPost) {
+						parameter.vendorExtensions.put("x-multipart", "true");
+					}
+				}
 
-                if ( operation.returnBaseType == null ) {
-                    operation.returnType = "void";
-                    operation.returnBaseType = "Void";
-                    // set vendorExtensions.x-java-is-response-void to true as returnBaseType is set to "Void"
-                    operation.vendorExtensions.put("x-java-is-response-void", true);
-                }
+				List<CodegenResponse> responses = operation.responses;
+				if (responses != null) {
+					for (CodegenResponse resp : responses) {
+						if ("0".equals(resp.code)) {
+							resp.code = "200";
+						}
 
-                if ("array".equals(operation.returnContainer)) {
-                    operation.returnContainer = "List";
-                } else if ("map".equals(operation.returnContainer)) {
-                    operation.returnContainer = "Map";
-                }
-            }
-        }
-        return objs;
-    }
+						if (resp.baseType == null) {
+							resp.dataType = "void";
+							resp.baseType = "Void";
+							// set vendorExtensions.x-java-is-response-void to true as
+							// baseType is set to "Void"
+							resp.vendorExtensions.put("x-java-is-response-void", true);
+						}
 
-    @Override
-    public String toApiName(final String name) {
-        String computed = name;
-        if ( computed.length() == 0 ) {
-            return "DefaultApi";
-        }
-        computed = sanitizeName(computed);
-        return camelize(computed) + "Api";
-    }
+						if ("array".equals(resp.containerType)) {
+							resp.containerType = "List";
+						}
+						else if ("map".equals(resp.containerType)) {
+							resp.containerType = "Map";
+						}
+					}
+				}
 
-    @Override
-    public String apiFilename(String templateName, String tag) {
-        String result = super.apiFilename(templateName, tag);
+				if (operation.returnBaseType == null) {
+					operation.returnType = "void";
+					operation.returnBaseType = "Void";
+					// set vendorExtensions.x-java-is-response-void to true as
+					// returnBaseType is set to "Void"
+					operation.vendorExtensions.put("x-java-is-response-void", true);
+				}
 
-        if ( templateName.endsWith("Impl.mustache") ) {
-            int ix = result.lastIndexOf('/');
-            result = result.substring(0, ix) + "/impl" + result.substring(ix, result.length() - 5) + "ServiceImpl.java";
-            result = result.replace(apiFileFolder(), implFileFolder(implFolder));
-        } else if ( templateName.endsWith("Factory.mustache") ) {
-            int ix = result.lastIndexOf('/');
-            result = result.substring(0, ix) + "/factories" + result.substring(ix, result.length() - 5) + "ServiceFactory.java";
-            result = result.replace(apiFileFolder(), implFileFolder(implFolder));
-        } else if ( templateName.endsWith("Service.mustache") ) {
-            int ix = result.lastIndexOf('.');
-            result = result.substring(0, ix) + "Service.java";
-        }
-        return result;
-    }
+				if ("array".equals(operation.returnContainer)) {
+					operation.returnContainer = "List";
+				}
+				else if ("map".equals(operation.returnContainer)) {
+					operation.returnContainer = "Map";
+				}
+			}
+		}
+		return objs;
+	}
 
-    private String implFileFolder(String output) {
-        return outputFolder + "/" + output + "/" + apiPackage().replace('.', '/');
-    }
+	@Override
+	public String toApiName(final String name) {
+		String computed = name;
+		if (computed.length() == 0) {
+			return "DefaultApi";
+		}
+		computed = sanitizeName(computed);
+		return camelize(computed) + "Api";
+	}
 
-    public void setUseBeanValidation(boolean useBeanValidation) {
-        this.useBeanValidation = useBeanValidation;
-    }
+	@Override
+	public String apiFilename(String templateName, String tag) {
+		String result = super.apiFilename(templateName, tag);
 
-    @Override
-    public String getArgumentsLocation() {
-        return "/arguments/server.yaml";
-    }
+		if (templateName.endsWith("Impl.mustache")) {
+			int ix = result.lastIndexOf('/');
+			result = result.substring(0, ix) + "/impl" + result.substring(ix, result.length() - 5) + "ServiceImpl.java";
+			result = result.replace(apiFileFolder(), implFileFolder(implFolder));
+		}
+		else if (templateName.endsWith("Factory.mustache")) {
+			int ix = result.lastIndexOf('/');
+			result = result.substring(0, ix) + "/factories" + result.substring(ix, result.length() - 5)
+					+ "ServiceFactory.java";
+			result = result.replace(apiFileFolder(), implFileFolder(implFolder));
+		}
+		else if (templateName.endsWith("Service.mustache")) {
+			int ix = result.lastIndexOf('.');
+			result = result.substring(0, ix) + "Service.java";
+		}
+		return result;
+	}
+
+	private String implFileFolder(String output) {
+		return outputFolder + "/" + output + "/" + apiPackage().replace('.', '/');
+	}
+
+	public void setUseBeanValidation(boolean useBeanValidation) {
+		this.useBeanValidation = useBeanValidation;
+	}
+
+	@Override
+	public String getArgumentsLocation() {
+		return "/arguments/server.yaml";
+	}
+
 }

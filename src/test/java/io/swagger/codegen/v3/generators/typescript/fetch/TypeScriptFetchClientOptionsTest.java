@@ -9,31 +9,32 @@ import mockit.Tested;
 
 public class TypeScriptFetchClientOptionsTest extends AbstractOptionsTest {
 
-    @Tested
-    private TypeScriptFetchClientCodegen clientCodegen;
+	@Tested
+	private TypeScriptFetchClientCodegen clientCodegen;
 
-    public TypeScriptFetchClientOptionsTest() {
-        super(new TypeScriptFetchClientOptionsProvider());
-    }
+	public TypeScriptFetchClientOptionsTest() {
+		super(new TypeScriptFetchClientOptionsProvider());
+	}
 
-    @Override
-    protected CodegenConfig getCodegenConfig() {
-        return clientCodegen;
-    }
+	@Override
+	protected CodegenConfig getCodegenConfig() {
+		return clientCodegen;
+	}
 
-    @SuppressWarnings("unused")
-    @Override
-    protected void setExpectations() {
-        new Expectations(clientCodegen) {
-            {
-                clientCodegen.setSortParamsByRequiredFlag(
-                        Boolean.valueOf(TypeScriptFetchClientOptionsProvider.SORT_PARAMS_VALUE));
-                times = 1;
-                clientCodegen.setModelPropertyNaming(TypeScriptFetchClientOptionsProvider.MODEL_PROPERTY_NAMING_VALUE);
-                times = 1;
-                clientCodegen.setSupportsES6(Boolean.valueOf(TypeScriptFetchClientOptionsProvider.SUPPORTS_ES6_VALUE));
-                times = 1;
-            }
-        };
-    }
+	@SuppressWarnings("unused")
+	@Override
+	protected void setExpectations() {
+		new Expectations(clientCodegen) {
+			{
+				clientCodegen.setSortParamsByRequiredFlag(
+						Boolean.valueOf(TypeScriptFetchClientOptionsProvider.SORT_PARAMS_VALUE));
+				times = 1;
+				clientCodegen.setModelPropertyNaming(TypeScriptFetchClientOptionsProvider.MODEL_PROPERTY_NAMING_VALUE);
+				times = 1;
+				clientCodegen.setSupportsES6(Boolean.valueOf(TypeScriptFetchClientOptionsProvider.SUPPORTS_ES6_VALUE));
+				times = 1;
+			}
+		};
+	}
+
 }

@@ -21,81 +21,83 @@ import static org.testng.Assert.*;
  */
 public class RubyClientCodegenTest {
 
-  private TemporaryFolder folder = null;
+	private TemporaryFolder folder = null;
 
-  @BeforeMethod
-  public void setUp() throws Exception {
-      folder = new TemporaryFolder();
-      folder.create();
-  }
+	@BeforeMethod
+	public void setUp() throws Exception {
+		folder = new TemporaryFolder();
+		folder.create();
+	}
 
-  @AfterMethod
-  public void tearDown() {
-      folder.delete();
-  }
+	@AfterMethod
+	public void tearDown() {
+		folder.delete();
+	}
 
-  @Test
-  public void testGenerateRubyClientWithHtmlEntity() throws Exception {
-      final File output = folder.getRoot();
+	@Test
+	public void testGenerateRubyClientWithHtmlEntity() throws Exception {
+		final File output = folder.getRoot();
 
-      final OpenAPI openAPI = new OpenAPIParser()
-              .readLocation("src/test/resources/3_0_0/requiredFormParamsTest.yaml", null, null)
-              .getOpenAPI();
-      CodegenConfig codegenConfig = new RubyClientCodegen();
-      codegenConfig.setOutputDir(output.getAbsolutePath());
+		final OpenAPI openAPI = new OpenAPIParser()
+				.readLocation("src/test/resources/3_0_0/requiredFormParamsTest.yaml", null, null).getOpenAPI();
+		CodegenConfig codegenConfig = new RubyClientCodegen();
+		codegenConfig.setOutputDir(output.getAbsolutePath());
 
-      ClientOptInput clientOptInput = new ClientOptInput()
-              .opts(new ClientOpts())
-              .openAPI(openAPI)
-              .config(codegenConfig);
+		ClientOptInput clientOptInput = new ClientOptInput().opts(new ClientOpts()).openAPI(openAPI)
+				.config(codegenConfig);
 
-      DefaultGenerator generator = new DefaultGenerator();
-      List<File> files = generator.opts(clientOptInput).generate();
-      boolean apiFileGenerated = false;
-      for (File file : files) {
-        if (file.getName().equals("default_api.rb")) {
-          apiFileGenerated = true;
-          // Ruby client should set the path unescaped in the api file
-          assertTrue(FileUtils.readFileToString(file, StandardCharsets.UTF_8).contains("local_var_path = '/test_optional'"));
-        }
-      }
-      if (!apiFileGenerated) {
-        fail("Default api file is not generated!");
-      }
-  }
+		DefaultGenerator generator = new DefaultGenerator();
+		List<File> files = generator.opts(clientOptInput).generate();
+		boolean apiFileGenerated = false;
+		for (File file : files) {
+			if (file.getName().equals("default_api.rb")) {
+				apiFileGenerated = true;
+				// Ruby client should set the path unescaped in the api file
+				assertTrue(FileUtils.readFileToString(file, StandardCharsets.UTF_8)
+						.contains("local_var_path = '/test_optional'"));
+			}
+		}
+		if (!apiFileGenerated) {
+			fail("Default api file is not generated!");
+		}
+	}
 
-  @Test
-  public void testInitialConfigValues() throws Exception {
-      final RubyClientCodegen codegen = new RubyClientCodegen();
-      codegen.processOpts();
+	@Test
+	public void testInitialConfigValues() throws Exception {
+		final RubyClientCodegen codegen = new RubyClientCodegen();
+		codegen.processOpts();
 
-      Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.HIDE_GENERATION_TIMESTAMP), Boolean.TRUE);
-      Assert.assertTrue(codegen.getHideGenerationTimestamp());
-      Assert.assertEquals(codegen.modelPackage(), "models");
-      Assert.assertEquals(codegen.apiPackage(), "api");
-  }
+		Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.HIDE_GENERATION_TIMESTAMP),
+				Boolean.TRUE);
+		Assert.assertTrue(codegen.getHideGenerationTimestamp());
+		Assert.assertEquals(codegen.modelPackage(), "models");
+		Assert.assertEquals(codegen.apiPackage(), "api");
+	}
 
-  @Test
-  public void testSettersForConfigValues() throws Exception {
-      final RubyClientCodegen codegen = new RubyClientCodegen();
-      codegen.setHideGenerationTimestamp(false);
-      codegen.processOpts();
+	@Test
+	public void testSettersForConfigValues() throws Exception {
+		final RubyClientCodegen codegen = new RubyClientCodegen();
+		codegen.setHideGenerationTimestamp(false);
+		codegen.processOpts();
 
-      Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.HIDE_GENERATION_TIMESTAMP), Boolean.FALSE);
-      Assert.assertFalse(codegen.getHideGenerationTimestamp());
-  }
+		Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.HIDE_GENERATION_TIMESTAMP),
+				Boolean.FALSE);
+		Assert.assertFalse(codegen.getHideGenerationTimestamp());
+	}
 
-  @Test
-  public void testAdditionalPropertiesPutForConfigValues() throws Exception {
-      final RubyClientCodegen codegen = new RubyClientCodegen();
-      codegen.additionalProperties().put(CodegenConstants.HIDE_GENERATION_TIMESTAMP, false);
-      codegen.additionalProperties().put(CodegenConstants.MODEL_PACKAGE, "ruby-models");
-      codegen.additionalProperties().put(CodegenConstants.API_PACKAGE, "ruby-api");
-      codegen.processOpts();
+	@Test
+	public void testAdditionalPropertiesPutForConfigValues() throws Exception {
+		final RubyClientCodegen codegen = new RubyClientCodegen();
+		codegen.additionalProperties().put(CodegenConstants.HIDE_GENERATION_TIMESTAMP, false);
+		codegen.additionalProperties().put(CodegenConstants.MODEL_PACKAGE, "ruby-models");
+		codegen.additionalProperties().put(CodegenConstants.API_PACKAGE, "ruby-api");
+		codegen.processOpts();
 
-      Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.HIDE_GENERATION_TIMESTAMP), Boolean.FALSE);
-      Assert.assertFalse(codegen.getHideGenerationTimestamp());
-      Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.MODEL_PACKAGE), "ruby-models");
-      Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.API_PACKAGE), "ruby-api");
-  }
+		Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.HIDE_GENERATION_TIMESTAMP),
+				Boolean.FALSE);
+		Assert.assertFalse(codegen.getHideGenerationTimestamp());
+		Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.MODEL_PACKAGE), "ruby-models");
+		Assert.assertEquals(codegen.additionalProperties().get(CodegenConstants.API_PACKAGE), "ruby-api");
+	}
+
 }

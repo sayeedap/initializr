@@ -9,47 +9,51 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 
 public class OpenAPIYamlGenerator extends OpenAPIGenerator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIYamlGenerator.class);
 
-    public static final String OPENAPI_FILENAME_DEFAULT_YAML = "openapi.yaml";
+	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIYamlGenerator.class);
 
-    private String outputFile = OPENAPI_FILENAME_DEFAULT_YAML;
+	public static final String OPENAPI_FILENAME_DEFAULT_YAML = "openapi.yaml";
 
-    @Override
-    public String getName() {
-        return "openapi-yaml";
-    }
+	private String outputFile = OPENAPI_FILENAME_DEFAULT_YAML;
 
-    @Override
-    public String getHelp() {
-        return "Creates a static openapi.yaml file.";
-    }
+	@Override
+	public String getName() {
+		return "openapi-yaml";
+	}
 
-    @Override
-    protected String getOutputFile() {
-        return outputFile;
-    }
+	@Override
+	public String getHelp() {
+		return "Creates a static openapi.yaml file.";
+	}
 
-    public void setOutputFile(String outputFile) {
-        this.outputFile = outputFile;
-    }
+	@Override
+	protected String getOutputFile() {
+		return outputFile;
+	}
 
-    @Override
-    public void preprocessOpenAPI(OpenAPI openAPI) {
-        this.openAPI = openAPI;
-        try {
-            final String outputString;
-            if (flattenSpec) {
-                outputString = Yaml.pretty(openAPI);
-            } else {
-                outputString = Yaml.pretty(this.unflattenedOpenAPI);
-            }
+	public void setOutputFile(String outputFile) {
+		this.outputFile = outputFile;
+	}
 
-            String outputFile = outputFolder + File.separator + this.outputFile;
-            FileUtils.writeStringToFile(new File(outputFile), outputString);
-            LOGGER.debug("wrote file to " + outputFile);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-    }
+	@Override
+	public void preprocessOpenAPI(OpenAPI openAPI) {
+		this.openAPI = openAPI;
+		try {
+			final String outputString;
+			if (flattenSpec) {
+				outputString = Yaml.pretty(openAPI);
+			}
+			else {
+				outputString = Yaml.pretty(this.unflattenedOpenAPI);
+			}
+
+			String outputFile = outputFolder + File.separator + this.outputFile;
+			FileUtils.writeStringToFile(new File(outputFile), outputString);
+			LOGGER.debug("wrote file to " + outputFile);
+		}
+		catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+	}
+
 }

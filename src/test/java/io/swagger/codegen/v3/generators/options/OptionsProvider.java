@@ -4,7 +4,10 @@ import java.util.Map;
 
 public interface OptionsProvider {
 
-    String getLanguage();
-    Map<String, String> createOptions();
-    boolean isServer();
+	String getLanguage();
+
+	Map<String, String> createOptions();
+
+	boolean isServer();
+
 }

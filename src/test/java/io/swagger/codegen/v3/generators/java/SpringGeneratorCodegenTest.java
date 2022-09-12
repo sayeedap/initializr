@@ -15,56 +15,54 @@ import java.io.File;
 import java.util.Collections;
 
 public class SpringGeneratorCodegenTest extends AbstractCodegenTest {
-    @Test(description = "verify that parameters are listed in following order: header, query, path, cookie, body (OAS 2.x)")
-    public void testParameterOrdersUseOas2() throws Exception {
-        final TemporaryFolder folder = new TemporaryFolder();
-        folder.create();
-        final File output = folder.getRoot();
 
-        final CodegenConfigurator configurator = new CodegenConfigurator()
-            .setLang("spring")
-            .setInputSpecURL("src/test/resources/3_0_0/parameterOrder.yaml")
-            .setOutputDir(output.getAbsolutePath());
+	@Test(description = "verify that parameters are listed in following order: header, query, path, cookie, body (OAS 2.x)")
+	public void testParameterOrdersUseOas2() throws Exception {
+		final TemporaryFolder folder = new TemporaryFolder();
+		folder.create();
+		final File output = folder.getRoot();
 
-        configurator.setCodegenArguments(Collections.singletonList(
-            new CodegenArgument()
-                .option(CodegenConstants.USE_OAS2_OPTION)
-                .type("boolean")
-                .value(Boolean.TRUE.toString())));
+		final CodegenConfigurator configurator = new CodegenConfigurator().setLang("spring")
+				.setInputSpecURL("src/test/resources/3_0_0/parameterOrder.yaml").setOutputDir(output.getAbsolutePath());
 
-        final ClientOptInput clientOptInput = configurator.toClientOptInput();
-        new DefaultGenerator().opts(clientOptInput).generate();
+		configurator.setCodegenArguments(Collections.singletonList(new CodegenArgument()
+				.option(CodegenConstants.USE_OAS2_OPTION).type("boolean").value(Boolean.TRUE.toString())));
 
-        final File petControllerFile = new File(output, "/src/main/java/io/swagger/api/AdminApi.java");
-        final String content = FileUtils.readFileToString(petControllerFile);
+		final ClientOptInput clientOptInput = configurator.toClientOptInput();
+		new DefaultGenerator().opts(clientOptInput).generate();
 
-        Assert.assertTrue(content.contains("ResponseEntity<LocalizedText> updateTest(@ApiParam(value = \"description\", required=true) @PathVariable(\"id\") Long id"));
-        Assert.assertTrue(content.contains("@ApiParam(value = \"Localized Text object containing updated data.\", required=true ) @Valid @RequestBody LocalizedText body"));
+		final File petControllerFile = new File(output, "/src/main/java/io/swagger/api/AdminApi.java");
+		final String content = FileUtils.readFileToString(petControllerFile);
 
-        folder.delete();
-    }
+		Assert.assertTrue(content.contains(
+				"ResponseEntity<LocalizedText> updateTest(@ApiParam(value = \"description\", required=true) @PathVariable(\"id\") Long id"));
+		Assert.assertTrue(content.contains(
+				"@ApiParam(value = \"Localized Text object containing updated data.\", required=true ) @Valid @RequestBody LocalizedText body"));
 
-    @Test(description = "verify that parameters are listed in following order: header, query, path, cookie, body (OAS 3.x)")
-    public void testParameterOrdersUseOas3() throws Exception {
-        final TemporaryFolder folder = new TemporaryFolder();
-        folder.create();
-        final File output = folder.getRoot();
+		folder.delete();
+	}
 
-        final CodegenConfigurator configurator = new CodegenConfigurator()
-            .setLang("spring")
-            .setInputSpecURL("src/test/resources/3_0_0/parameterOrder.yaml")
-            .setOutputDir(output.getAbsolutePath());
+	@Test(description = "verify that parameters are listed in following order: header, query, path, cookie, body (OAS 3.x)")
+	public void testParameterOrdersUseOas3() throws Exception {
+		final TemporaryFolder folder = new TemporaryFolder();
+		folder.create();
+		final File output = folder.getRoot();
 
-        final ClientOptInput clientOptInput = configurator.toClientOptInput();
-        new DefaultGenerator().opts(clientOptInput).generate();
+		final CodegenConfigurator configurator = new CodegenConfigurator().setLang("spring")
+				.setInputSpecURL("src/test/resources/3_0_0/parameterOrder.yaml").setOutputDir(output.getAbsolutePath());
 
-        final File petControllerFile = new File(output, "/src/main/java/io/swagger/api/AdminApi.java");
-        final String content = FileUtils.readFileToString(petControllerFile);
+		final ClientOptInput clientOptInput = configurator.toClientOptInput();
+		new DefaultGenerator().opts(clientOptInput).generate();
 
-        Assert.assertTrue(content.contains("ResponseEntity<LocalizedText> updateTest(@Parameter(in = ParameterIn.PATH, description = \"description\", required=true, schema=@Schema()) @PathVariable(\"id\") Long id"));
-        Assert.assertTrue(content.contains("@Parameter(in = ParameterIn.DEFAULT, description = \"Localized Text object containing updated data.\", required=true, schema=@Schema()) @Valid @RequestBody LocalizedText body"));
+		final File petControllerFile = new File(output, "/src/main/java/io/swagger/api/AdminApi.java");
+		final String content = FileUtils.readFileToString(petControllerFile);
 
-        folder.delete();
-    }
+		Assert.assertTrue(content.contains(
+				"ResponseEntity<LocalizedText> updateTest(@Parameter(in = ParameterIn.PATH, description = \"description\", required=true, schema=@Schema()) @PathVariable(\"id\") Long id"));
+		Assert.assertTrue(content.contains(
+				"@Parameter(in = ParameterIn.DEFAULT, description = \"Localized Text object containing updated data.\", required=true, schema=@Schema()) @Valid @RequestBody LocalizedText body"));
+
+		folder.delete();
+	}
 
 }

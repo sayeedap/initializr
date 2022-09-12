@@ -11,28 +11,29 @@ import java.io.IOException;
  */
 public class RemoveLineBreakLambda implements Lambda {
 
-    private CodegenConfig generator = null;
+	private CodegenConfig generator = null;
 
-    public RemoveLineBreakLambda() {
+	public RemoveLineBreakLambda() {
 
-    }
+	}
 
-    public RemoveLineBreakLambda generator(final CodegenConfig generator) {
-        this.generator = generator;
-        return this;
-    }
+	public RemoveLineBreakLambda generator(final CodegenConfig generator) {
+		this.generator = generator;
+		return this;
+	}
 
-    @Override
-    public Object apply(Object o, Template template) throws IOException {
-        String text = template.apply(o);
-        if (text == null || text.length() == 0) {
-            return text;
-        }
-        text = text.replaceAll("\\r|\\n", "");
-        if (generator != null && generator.reservedWords().contains(text)) {
-            text = generator.escapeReservedWord(text);
-        }
+	@Override
+	public Object apply(Object o, Template template) throws IOException {
+		String text = template.apply(o);
+		if (text == null || text.length() == 0) {
+			return text;
+		}
+		text = text.replaceAll("\\r|\\n", "");
+		if (generator != null && generator.reservedWords().contains(text)) {
+			text = generator.escapeReservedWord(text);
+		}
 
-        return text;
-    }
+		return text;
+	}
+
 }

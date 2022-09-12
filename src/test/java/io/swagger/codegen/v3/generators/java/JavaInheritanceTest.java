@@ -14,46 +14,45 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JavaInheritanceTest {
-    @SuppressWarnings("static-method")
-    @Test(description = "convert a composed model with parent")
-    public void javaInheritanceTest() {
-        final Schema parentModel = new Schema().name("Base");
 
-        final Schema schema = new ComposedSchema()
-                .addAllOfItem(new Schema().$ref("Base"))
-                .name("composed");
+	@SuppressWarnings("static-method")
+	@Test(description = "convert a composed model with parent")
+	public void javaInheritanceTest() {
+		final Schema parentModel = new Schema().name("Base");
 
-        final Map<String, Schema> allSchemas = new HashMap<>();
-        allSchemas.put(parentModel.getName(), parentModel);
-        allSchemas.put(schema.getName(), schema);
+		final Schema schema = new ComposedSchema().addAllOfItem(new Schema().$ref("Base")).name("composed");
 
-        final DefaultCodegenConfig codegen = new JavaClientCodegen();
-        final CodegenModel cm = codegen.fromModel("sample", schema, allSchemas);
+		final Map<String, Schema> allSchemas = new HashMap<>();
+		allSchemas.put(parentModel.getName(), parentModel);
+		allSchemas.put(schema.getName(), schema);
 
-        Assert.assertEquals(cm.name, "sample");
-        Assert.assertEquals(cm.classname, "Sample");
-        Assert.assertEquals(cm.parent, "Base");
-        Assert.assertEquals(cm.imports, Sets.newHashSet("Base"));
-    }
+		final DefaultCodegenConfig codegen = new JavaClientCodegen();
+		final CodegenModel cm = codegen.fromModel("sample", schema, allSchemas);
 
-    @SuppressWarnings("static-method")
-    @Test(description = "convert a composed model with discriminator")
-    public void javaInheritanceWithDiscriminatorTest() {
-        final Schema base = new Schema().name("Base");
-        base.setDiscriminator(new Discriminator().mapping("name", StringUtils.EMPTY));
+		Assert.assertEquals(cm.name, "sample");
+		Assert.assertEquals(cm.classname, "Sample");
+		Assert.assertEquals(cm.parent, "Base");
+		Assert.assertEquals(cm.imports, Sets.newHashSet("Base"));
+	}
 
-        final Schema schema = new ComposedSchema()
-                .addAllOfItem(new Schema().$ref("Base"));
+	@SuppressWarnings("static-method")
+	@Test(description = "convert a composed model with discriminator")
+	public void javaInheritanceWithDiscriminatorTest() {
+		final Schema base = new Schema().name("Base");
+		base.setDiscriminator(new Discriminator().mapping("name", StringUtils.EMPTY));
 
-        final Map<String, Schema> allDefinitions = new HashMap<String, Schema>();
-        allDefinitions.put("Base", base);
+		final Schema schema = new ComposedSchema().addAllOfItem(new Schema().$ref("Base"));
 
-        final DefaultCodegenConfig codegen = new JavaClientCodegen();
-        final CodegenModel cm = codegen.fromModel("sample", schema, allDefinitions);
+		final Map<String, Schema> allDefinitions = new HashMap<String, Schema>();
+		allDefinitions.put("Base", base);
 
-        Assert.assertEquals(cm.name, "sample");
-        Assert.assertEquals(cm.classname, "Sample");
-        Assert.assertEquals(cm.parent, "Base");
-        Assert.assertEquals(cm.imports, Sets.newHashSet("Base"));
-    }
+		final DefaultCodegenConfig codegen = new JavaClientCodegen();
+		final CodegenModel cm = codegen.fromModel("sample", schema, allDefinitions);
+
+		Assert.assertEquals(cm.name, "sample");
+		Assert.assertEquals(cm.classname, "Sample");
+		Assert.assertEquals(cm.parent, "Base");
+		Assert.assertEquals(cm.imports, Sets.newHashSet("Base"));
+	}
+
 }

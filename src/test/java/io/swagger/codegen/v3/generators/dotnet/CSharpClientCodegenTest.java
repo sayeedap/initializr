@@ -11,51 +11,48 @@ import org.testng.annotations.Test;
 
 public class CSharpClientCodegenTest extends AbstractCodegenTest {
 
-    @Test
-    public void checkOneOfModelCreation() {
-        final OpenAPI openAPI = getOpenAPI("3_0_0/composed_schemas.yaml");
-        final CodegenConfig config = new CSharpClientCodegen();
-        final CodegenWrapper codegenWrapper = processSchemas(config, openAPI);
+	@Test
+	public void checkOneOfModelCreation() {
+		final OpenAPI openAPI = getOpenAPI("3_0_0/composed_schemas.yaml");
+		final CodegenConfig config = new CSharpClientCodegen();
+		final CodegenWrapper codegenWrapper = processSchemas(config, openAPI);
 
-        CodegenModel codegenModel = codegenWrapper.getAllModels().get("PartMaster");
+		CodegenModel codegenModel = codegenWrapper.getAllModels().get("PartMaster");
 
-        boolean hasOneOfProperty = codegenModel.getVars()
-            .stream()
-            .anyMatch(codegenProperty -> codegenProperty.datatype.equals("OneOfPartMasterDestination"));
+		boolean hasOneOfProperty = codegenModel.getVars().stream()
+				.anyMatch(codegenProperty -> codegenProperty.datatype.equals("OneOfPartMasterDestination"));
 
-        Assert.assertTrue(hasOneOfProperty);
+		Assert.assertTrue(hasOneOfProperty);
 
-        hasOneOfProperty = codegenModel.getVars()
-            .stream()
-            .anyMatch(codegenProperty -> codegenProperty.datatype.equals("OneOfPartMasterOrigin"));
+		hasOneOfProperty = codegenModel.getVars().stream()
+				.anyMatch(codegenProperty -> codegenProperty.datatype.equals("OneOfPartMasterOrigin"));
 
-        Assert.assertTrue(hasOneOfProperty);
+		Assert.assertTrue(hasOneOfProperty);
 
-        final ISchemaHandler schemaHandler = codegenWrapper.getSchemaHandler();
+		final ISchemaHandler schemaHandler = codegenWrapper.getSchemaHandler();
 
-        boolean hasComposedModel = schemaHandler.getModels()
-            .stream()
-            .anyMatch(model -> model.name.equals("OneOfPartMasterDestination"));
+		boolean hasComposedModel = schemaHandler.getModels().stream()
+				.anyMatch(model -> model.name.equals("OneOfPartMasterDestination"));
 
-        Assert.assertTrue(hasComposedModel);
+		Assert.assertTrue(hasComposedModel);
 
-        hasComposedModel = schemaHandler.getModels()
-            .stream()
-            .anyMatch(model -> model.name.equals("OneOfPartMasterOrigin"));
+		hasComposedModel = schemaHandler.getModels().stream()
+				.anyMatch(model -> model.name.equals("OneOfPartMasterOrigin"));
 
-        Assert.assertTrue(hasComposedModel);
-    }
+		Assert.assertTrue(hasComposedModel);
+	}
 
-    @Test
-    public void renameReservedWordModel() {
-        final OpenAPI openAPI = getOpenAPI("3_0_0/composed_schemas.yaml");
-        final CodegenConfig config = new CSharpClientCodegen();
-        final CodegenWrapper codegenWrapper = processSchemas(config, openAPI);
+	@Test
+	public void renameReservedWordModel() {
+		final OpenAPI openAPI = getOpenAPI("3_0_0/composed_schemas.yaml");
+		final CodegenConfig config = new CSharpClientCodegen();
+		final CodegenWrapper codegenWrapper = processSchemas(config, openAPI);
 
-        CodegenModel codegenModel = codegenWrapper.getAllModels().get("ModelClient");
-        Assert.assertNotNull(codegenModel);
+		CodegenModel codegenModel = codegenWrapper.getAllModels().get("ModelClient");
+		Assert.assertNotNull(codegenModel);
 
-        codegenModel = codegenWrapper.getAllModels().get("ModelList");
-        Assert.assertNotNull(codegenModel);
-    }
+		codegenModel = codegenWrapper.getAllModels().get("ModelList");
+		Assert.assertNotNull(codegenModel);
+	}
+
 }

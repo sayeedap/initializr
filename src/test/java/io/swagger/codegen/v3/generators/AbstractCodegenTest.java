@@ -16,61 +16,63 @@ import java.util.Map;
 
 public abstract class AbstractCodegenTest {
 
-    protected OpenAPI getOpenAPI(String filePath) {
-        OpenAPIV3Parser openApiParser = new OpenAPIV3Parser();
-        ParseOptions options = new ParseOptions();
-        options.setResolve(true);
-        options.setFlatten(true);
-        SwaggerParseResult parseResult = openApiParser.readLocation(filePath, null, options);
+	protected OpenAPI getOpenAPI(String filePath) {
+		OpenAPIV3Parser openApiParser = new OpenAPIV3Parser();
+		ParseOptions options = new ParseOptions();
+		options.setResolve(true);
+		options.setFlatten(true);
+		SwaggerParseResult parseResult = openApiParser.readLocation(filePath, null, options);
 
-        return parseResult.getOpenAPI();
-    }
+		return parseResult.getOpenAPI();
+	}
 
-    protected DefaultCodegenConfig createConfig() {
-        return new DefaultCodegenConfig() {
-            @Override
-            public String getDefaultTemplateDir() {
-                return null;
-            }
+	protected DefaultCodegenConfig createConfig() {
+		return new DefaultCodegenConfig() {
+			@Override
+			public String getDefaultTemplateDir() {
+				return null;
+			}
 
-            @Override
-            public CodegenType getTag() {
-                return null;
-            }
+			@Override
+			public CodegenType getTag() {
+				return null;
+			}
 
-            @Override
-            public String getName() {
-                return null;
-            }
+			@Override
+			public String getName() {
+				return null;
+			}
 
-            @Override
-            public String getHelp() {
-                return null;
-            }
-        };
-    }
+			@Override
+			public String getHelp() {
+				return null;
+			}
+		};
+	}
 
-    protected CodegenWrapper processSchemas(CodegenConfig codegenConfig, OpenAPI openAPI) {
-        codegenConfig.preprocessOpenAPI(openAPI);
-        final Map<String, Schema> schemaMap = openAPI.getComponents().getSchemas();
+	protected CodegenWrapper processSchemas(CodegenConfig codegenConfig, OpenAPI openAPI) {
+		codegenConfig.preprocessOpenAPI(openAPI);
+		final Map<String, Schema> schemaMap = openAPI.getComponents().getSchemas();
 
-        final CodegenWrapper codegenWrapper = new CodegenWrapper(((DefaultCodegenConfig)codegenConfig).getSchemaHandler());
-        for (String name : schemaMap.keySet()) {
-            final Schema schema = schemaMap.get(name);
-            final CodegenModel codegenModel = codegenConfig.fromModel(name, schema, schemaMap);
-            codegenWrapper.addCodegenSchema(codegenModel, schema);
-        }
+		final CodegenWrapper codegenWrapper = new CodegenWrapper(
+				((DefaultCodegenConfig) codegenConfig).getSchemaHandler());
+		for (String name : schemaMap.keySet()) {
+			final Schema schema = schemaMap.get(name);
+			final CodegenModel codegenModel = codegenConfig.fromModel(name, schema, schemaMap);
+			codegenWrapper.addCodegenSchema(codegenModel, schema);
+		}
 
-        generateComposedObjects(codegenWrapper.getSchemaHandler(),
-                codegenWrapper.getCodegenSchemas(),
-                codegenWrapper.getAllModels());
+		generateComposedObjects(codegenWrapper.getSchemaHandler(), codegenWrapper.getCodegenSchemas(),
+				codegenWrapper.getAllModels());
 
-        return codegenWrapper;
-    }
+		return codegenWrapper;
+	}
 
-    protected void generateComposedObjects(ISchemaHandler schemaHandler, List<CodegenSchema> codegenSchemas, Map<String, CodegenModel> allModels) {
-        for (CodegenSchema codegenSchema : codegenSchemas) {
-            schemaHandler.processComposedSchemas(codegenSchema.getCodegenModel(), codegenSchema.getSchema(), allModels);
-        }
-    }
+	protected void generateComposedObjects(ISchemaHandler schemaHandler, List<CodegenSchema> codegenSchemas,
+			Map<String, CodegenModel> allModels) {
+		for (CodegenSchema codegenSchema : codegenSchemas) {
+			schemaHandler.processComposedSchemas(codegenSchema.getCodegenModel(), codegenSchema.getSchema(), allModels);
+		}
+	}
+
 }

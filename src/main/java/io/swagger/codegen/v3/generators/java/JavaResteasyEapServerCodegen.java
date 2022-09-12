@@ -22,173 +22,185 @@ import static io.swagger.codegen.v3.CodegenConstants.HAS_ENUMS_EXT_NAME;
 import static io.swagger.codegen.v3.CodegenConstants.IS_ENUM_EXT_NAME;
 import static io.swagger.codegen.v3.generators.handlebars.ExtensionHelper.getBooleanValue;
 
-public class JavaResteasyEapServerCodegen extends AbstractJavaJAXRSServerCodegen implements JbossFeature, BeanValidationFeatures, SwaggerFeatures {
+public class JavaResteasyEapServerCodegen extends AbstractJavaJAXRSServerCodegen
+		implements JbossFeature, BeanValidationFeatures, SwaggerFeatures {
 
-    protected boolean generateJbossDeploymentDescriptor = true;
-    protected boolean useSwaggerFeature = false;
+	protected boolean generateJbossDeploymentDescriptor = true;
 
-    public JavaResteasyEapServerCodegen() {
-        super();
+	protected boolean useSwaggerFeature = false;
 
-        useBeanValidation = true;
+	public JavaResteasyEapServerCodegen() {
+		super();
 
-        artifactId = "swagger-jaxrs-resteasy-eap-server";
+		useBeanValidation = true;
 
-        outputFolder = "generated-code/JavaJaxRS-Resteasy-eap";
+		artifactId = "swagger-jaxrs-resteasy-eap-server";
 
-        dateLibrary = "legacy";// TODO: change to joda
+		outputFolder = "generated-code/JavaJaxRS-Resteasy-eap";
 
-        cliOptions.add(CliOption.newBoolean(USE_BEANVALIDATION, "Use BeanValidation API annotations"));
-        cliOptions.add(CliOption.newBoolean(GENERATE_JBOSS_DEPLOYMENT_DESCRIPTOR, "Generate Jboss Deployment Descriptor"));
-        cliOptions.add(CliOption.newBoolean(USE_SWAGGER_FEATURE, "Use dynamic Swagger generator"));
+		dateLibrary = "legacy";// TODO: change to joda
 
-    }
+		cliOptions.add(CliOption.newBoolean(USE_BEANVALIDATION, "Use BeanValidation API annotations"));
+		cliOptions.add(
+				CliOption.newBoolean(GENERATE_JBOSS_DEPLOYMENT_DESCRIPTOR, "Generate Jboss Deployment Descriptor"));
+		cliOptions.add(CliOption.newBoolean(USE_SWAGGER_FEATURE, "Use dynamic Swagger generator"));
 
-    @Override
-    public String getName() {
-        return "jaxrs-resteasy-eap";
-    }
+	}
 
-    @Override
-    public String getHelp() {
-        return "[WORK IN PROGRESS: generated code depends from Swagger v2 libraries] "
-                + "Generates a Java JAXRS-Resteasy Server application.";
-    }
+	@Override
+	public String getName() {
+		return "jaxrs-resteasy-eap";
+	}
 
-    @Override
-    public void processOpts() {
-        super.processOpts();
+	@Override
+	public String getHelp() {
+		return "[WORK IN PROGRESS: generated code depends from Swagger v2 libraries] "
+				+ "Generates a Java JAXRS-Resteasy Server application.";
+	}
 
-        apiTemplateFiles.put("apiServiceImpl.mustache", ".java");
-        apiTestTemplateFiles.clear(); // TODO: add test template
+	@Override
+	public void processOpts() {
+		super.processOpts();
 
-        // clear model and api doc template as AbstractJavaJAXRSServerCodegen
-        // does not support auto-generated markdown doc at the moment
-        // TODO: add doc templates
-        modelDocTemplateFiles.remove("model_doc.mustache");
-        apiDocTemplateFiles.remove("api_doc.mustache");
+		apiTemplateFiles.put("apiServiceImpl.mustache", ".java");
+		apiTestTemplateFiles.clear(); // TODO: add test template
 
-        if (additionalProperties.containsKey(GENERATE_JBOSS_DEPLOYMENT_DESCRIPTOR)) {
-            boolean generateJbossDeploymentDescriptorProp = convertPropertyToBooleanAndWriteBack(GENERATE_JBOSS_DEPLOYMENT_DESCRIPTOR);
-            this.setGenerateJbossDeploymentDescriptor(generateJbossDeploymentDescriptorProp);
-        }
+		// clear model and api doc template as AbstractJavaJAXRSServerCodegen
+		// does not support auto-generated markdown doc at the moment
+		// TODO: add doc templates
+		modelDocTemplateFiles.remove("model_doc.mustache");
+		apiDocTemplateFiles.remove("api_doc.mustache");
 
-        if (additionalProperties.containsKey(USE_BEANVALIDATION)) {
-            this.setUseBeanValidation(convertPropertyToBoolean(USE_BEANVALIDATION));
-        }
+		if (additionalProperties.containsKey(GENERATE_JBOSS_DEPLOYMENT_DESCRIPTOR)) {
+			boolean generateJbossDeploymentDescriptorProp = convertPropertyToBooleanAndWriteBack(
+					GENERATE_JBOSS_DEPLOYMENT_DESCRIPTOR);
+			this.setGenerateJbossDeploymentDescriptor(generateJbossDeploymentDescriptorProp);
+		}
 
-        if (useBeanValidation) {
-            writePropertyBack(USE_BEANVALIDATION, useBeanValidation);
-        }
+		if (additionalProperties.containsKey(USE_BEANVALIDATION)) {
+			this.setUseBeanValidation(convertPropertyToBoolean(USE_BEANVALIDATION));
+		}
 
-        if (additionalProperties.containsKey(USE_SWAGGER_FEATURE)) {
-            this.setUseSwaggerFeature(convertPropertyToBoolean(USE_SWAGGER_FEATURE));
-        }
+		if (useBeanValidation) {
+			writePropertyBack(USE_BEANVALIDATION, useBeanValidation);
+		}
 
-        if (useSwaggerFeature) {
-            writePropertyBack(USE_SWAGGER_FEATURE, useSwaggerFeature);
-        }
+		if (additionalProperties.containsKey(USE_SWAGGER_FEATURE)) {
+			this.setUseSwaggerFeature(convertPropertyToBoolean(USE_SWAGGER_FEATURE));
+		}
 
-        writeOptional(outputFolder, new SupportingFile("pom.mustache", "", "pom.xml"));
-        writeOptional(outputFolder, new SupportingFile("gradle.mustache", "", "build.gradle"));
-        writeOptional(outputFolder, new SupportingFile("settingsGradle.mustache", "", "settings.gradle"));
-        writeOptional(outputFolder, new SupportingFile("README.mustache", "", "README.md"));
-        writeOptional(outputFolder, new SupportingFile("web.mustache", ("src/main/webapp/WEB-INF"), "web.xml"));
+		if (useSwaggerFeature) {
+			writePropertyBack(USE_SWAGGER_FEATURE, useSwaggerFeature);
+		}
 
-        supportingFiles.add(new SupportingFile("JacksonConfig.mustache", (projectFolder + File.separator + "java" + '/' + invokerPackage).replace(".", "/"), "JacksonConfig.java"));
+		writeOptional(outputFolder, new SupportingFile("pom.mustache", "", "pom.xml"));
+		writeOptional(outputFolder, new SupportingFile("gradle.mustache", "", "build.gradle"));
+		writeOptional(outputFolder, new SupportingFile("settingsGradle.mustache", "", "settings.gradle"));
+		writeOptional(outputFolder, new SupportingFile("README.mustache", "", "README.md"));
+		writeOptional(outputFolder, new SupportingFile("web.mustache", ("src/main/webapp/WEB-INF"), "web.xml"));
 
-        if (generateJbossDeploymentDescriptor) {
-            writeOptional(outputFolder, new SupportingFile("jboss-web.mustache", ("src/main/webapp/WEB-INF"), "jboss-web.xml"));
-        }
+		supportingFiles.add(new SupportingFile("JacksonConfig.mustache",
+				(projectFolder + File.separator + "java" + '/' + invokerPackage).replace(".", "/"),
+				"JacksonConfig.java"));
 
-        writeOptional(outputFolder, new SupportingFile("RestApplication.mustache", (projectFolder + File.separator + "java" + '/' + invokerPackage).replace(".", "/"), "RestApplication.java"));
+		if (generateJbossDeploymentDescriptor) {
+			writeOptional(outputFolder,
+					new SupportingFile("jboss-web.mustache", ("src/main/webapp/WEB-INF"), "jboss-web.xml"));
+		}
 
-    }
+		writeOptional(outputFolder,
+				new SupportingFile("RestApplication.mustache",
+						(projectFolder + File.separator + "java" + '/' + invokerPackage).replace(".", "/"),
+						"RestApplication.java"));
 
-    @Override
-    public String getDefaultTemplateDir() {
-        return JAXRS_TEMPLATE_DIRECTORY_NAME +  "/resteasy/eap";
-    }
+	}
 
-    @Override
-    public void addOperationToGroup(String tag, String resourcePath, Operation operation, CodegenOperation co, Map<String, List<CodegenOperation>> operations) {
-        String basePath = resourcePath;
-        if (basePath.startsWith("/")) {
-            basePath = basePath.substring(1);
-        }
-        int pos = basePath.indexOf("/");
-        if (pos > 0) {
-            basePath = basePath.substring(0, pos);
-        }
+	@Override
+	public String getDefaultTemplateDir() {
+		return JAXRS_TEMPLATE_DIRECTORY_NAME + "/resteasy/eap";
+	}
 
-        if (basePath == "") {
-            basePath = "default";
-        }
-        else {
-            if (co.path.startsWith("/" + basePath)) {
-                co.path = co.path.substring(("/" + basePath).length());
-            }
-            co.subresourceOperation = !co.path.isEmpty();
-        }
-        List<CodegenOperation> opList = operations.get(basePath);
-        if (opList == null) {
-            opList = new ArrayList<CodegenOperation>();
-            operations.put(basePath, opList);
-        }
-        opList.add(co);
-        co.baseName = basePath;
-    }
+	@Override
+	public void addOperationToGroup(String tag, String resourcePath, Operation operation, CodegenOperation co,
+			Map<String, List<CodegenOperation>> operations) {
+		String basePath = resourcePath;
+		if (basePath.startsWith("/")) {
+			basePath = basePath.substring(1);
+		}
+		int pos = basePath.indexOf("/");
+		if (pos > 0) {
+			basePath = basePath.substring(0, pos);
+		}
 
-    @Override
-    public Map<String, Object> postProcessOperations(Map<String, Object> objs) {
-        return super.postProcessOperations(objs);
-    }
+		if (basePath == "") {
+			basePath = "default";
+		}
+		else {
+			if (co.path.startsWith("/" + basePath)) {
+				co.path = co.path.substring(("/" + basePath).length());
+			}
+			co.subresourceOperation = !co.path.isEmpty();
+		}
+		List<CodegenOperation> opList = operations.get(basePath);
+		if (opList == null) {
+			opList = new ArrayList<CodegenOperation>();
+			operations.put(basePath, opList);
+		}
+		opList.add(co);
+		co.baseName = basePath;
+	}
 
-    @Override
-    public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
-        boolean isEnum = getBooleanValue(model, IS_ENUM_EXT_NAME);
-        // Add imports for Jackson
-        if (!BooleanUtils.toBoolean(isEnum)) {
-            model.imports.add("JsonProperty");
-            boolean hasEnums = getBooleanValue(model, HAS_ENUMS_EXT_NAME);
-            if (BooleanUtils.toBoolean(hasEnums)) {
-                model.imports.add("JsonValue");
-            }
-        }
-    }
+	@Override
+	public Map<String, Object> postProcessOperations(Map<String, Object> objs) {
+		return super.postProcessOperations(objs);
+	}
 
-    @Override
-    public Map<String, Object> postProcessModelsEnum(Map<String, Object> objs) {
-        objs = super.postProcessModelsEnum(objs);
+	@Override
+	public void postProcessModelProperty(CodegenModel model, CodegenProperty property) {
+		boolean isEnum = getBooleanValue(model, IS_ENUM_EXT_NAME);
+		// Add imports for Jackson
+		if (!BooleanUtils.toBoolean(isEnum)) {
+			model.imports.add("JsonProperty");
+			boolean hasEnums = getBooleanValue(model, HAS_ENUMS_EXT_NAME);
+			if (BooleanUtils.toBoolean(hasEnums)) {
+				model.imports.add("JsonValue");
+			}
+		}
+	}
 
-        // Add imports for Jackson
-        List<Map<String, String>> imports = (List<Map<String, String>>) objs.get("imports");
-        List<Object> models = (List<Object>) objs.get("models");
-        for (Object _mo : models) {
-            Map<String, Object> mo = (Map<String, Object>) _mo;
-            CodegenModel cm = (CodegenModel) mo.get("model");
-            // for enum model
-            boolean isEnum = getBooleanValue(cm, IS_ENUM_EXT_NAME);
-            if (Boolean.TRUE.equals(isEnum) && cm.allowableValues != null) {
-                cm.imports.add(importMapping.get("JsonValue"));
-                Map<String, String> item = new HashMap<String, String>();
-                item.put("import", importMapping.get("JsonValue"));
-                imports.add(item);
-            }
-        }
+	@Override
+	public Map<String, Object> postProcessModelsEnum(Map<String, Object> objs) {
+		objs = super.postProcessModelsEnum(objs);
 
-        return objs;
-    }
+		// Add imports for Jackson
+		List<Map<String, String>> imports = (List<Map<String, String>>) objs.get("imports");
+		List<Object> models = (List<Object>) objs.get("models");
+		for (Object _mo : models) {
+			Map<String, Object> mo = (Map<String, Object>) _mo;
+			CodegenModel cm = (CodegenModel) mo.get("model");
+			// for enum model
+			boolean isEnum = getBooleanValue(cm, IS_ENUM_EXT_NAME);
+			if (Boolean.TRUE.equals(isEnum) && cm.allowableValues != null) {
+				cm.imports.add(importMapping.get("JsonValue"));
+				Map<String, String> item = new HashMap<String, String>();
+				item.put("import", importMapping.get("JsonValue"));
+				imports.add(item);
+			}
+		}
 
-    public void setUseBeanValidation(boolean useBeanValidation) {
-        this.useBeanValidation = useBeanValidation;
-    }
+		return objs;
+	}
 
-    public void setGenerateJbossDeploymentDescriptor(boolean generateJbossDeploymentDescriptor) {
-        this.generateJbossDeploymentDescriptor = generateJbossDeploymentDescriptor;
-    }
+	public void setUseBeanValidation(boolean useBeanValidation) {
+		this.useBeanValidation = useBeanValidation;
+	}
 
-    public void setUseSwaggerFeature(boolean useSwaggerFeature) {
-        this.useSwaggerFeature = useSwaggerFeature;
-    }
+	public void setGenerateJbossDeploymentDescriptor(boolean generateJbossDeploymentDescriptor) {
+		this.generateJbossDeploymentDescriptor = generateJbossDeploymentDescriptor;
+	}
+
+	public void setUseSwaggerFeature(boolean useSwaggerFeature) {
+		this.useSwaggerFeature = useSwaggerFeature;
+	}
+
 }

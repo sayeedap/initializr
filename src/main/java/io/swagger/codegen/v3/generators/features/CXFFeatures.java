@@ -5,4 +5,5 @@ package io.swagger.codegen.v3.generators.features;
  *
  */
 public interface CXFFeatures extends LoggingFeatures, GzipFeatures, BeanValidationFeatures {
+
 }

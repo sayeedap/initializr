@@ -16,123 +16,121 @@ import java.io.File;
 
 public class OpenAPIGenerator extends DefaultCodegenConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIGenerator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIGenerator.class);
 
-    public static final String OUTPUT_NAME = "outputFile";
-    public static final String FLATTEN_SPEC = "flattenSpec";
+	public static final String OUTPUT_NAME = "outputFile";
 
-    public static final String OPENAPI_FILENAME_DEFAULT_JSON = "openapi.json";
+	public static final String FLATTEN_SPEC = "flattenSpec";
 
-    private String outputFile = OPENAPI_FILENAME_DEFAULT_JSON;
+	public static final String OPENAPI_FILENAME_DEFAULT_JSON = "openapi.json";
 
-    protected boolean flattenSpec = true;
+	private String outputFile = OPENAPI_FILENAME_DEFAULT_JSON;
 
-    public OpenAPIGenerator() {
-        super();
-        outputFolder = "generated-code/openapi";
+	protected boolean flattenSpec = true;
 
-        cliOptions.add(new CliOption(OUTPUT_NAME,
-                "output filename")
-                .defaultValue(getOutputFile()));
+	public OpenAPIGenerator() {
+		super();
+		outputFolder = "generated-code/openapi";
 
-        cliOptions.add(new CliOption(FLATTEN_SPEC,
-            "flatten the spec by moving all inline complex schema to components, and add a ref in element",
-            "boolean")
-            .defaultValue(Boolean.TRUE.toString()));
+		cliOptions.add(new CliOption(OUTPUT_NAME, "output filename").defaultValue(getOutputFile()));
 
-        supportingFiles.add(new SupportingFile("README.md", "", "README.md"));
-    }
+		cliOptions.add(new CliOption(FLATTEN_SPEC,
+				"flatten the spec by moving all inline complex schema to components, and add a ref in element",
+				"boolean").defaultValue(Boolean.TRUE.toString()));
 
-    protected String getOutputFile() {
-        return outputFile;
-    }
+		supportingFiles.add(new SupportingFile("README.md", "", "README.md"));
+	}
 
-    @Override
-    public CodegenType getTag() {
-        return CodegenType.DOCUMENTATION;
-    }
+	protected String getOutputFile() {
+		return outputFile;
+	}
 
-    @Override
-    public String getName() {
-        return "openapi";
-    }
+	@Override
+	public CodegenType getTag() {
+		return CodegenType.DOCUMENTATION;
+	}
 
-    @Override
-    public String getHelp() {
-        return "Creates a static openapi.json file.";
-    }
+	@Override
+	public String getName() {
+		return "openapi";
+	}
 
-    @Override
-    public void preprocessOpenAPI(OpenAPI openAPI) {
-        super.preprocessOpenAPI(openAPI);
-        final String outputString;
-        if (flattenSpec) {
-            outputString = Json.pretty(openAPI);
-        } else {
-            outputString = Json.pretty(this.unflattenedOpenAPI);
-        }
+	@Override
+	public String getHelp() {
+		return "Creates a static openapi.json file.";
+	}
 
-        try {
-            String outputFile = outputFolder + File.separator + this.outputFile;
-            FileUtils.writeStringToFile(new File(outputFile), outputString);
-            LOGGER.debug("wrote file to " + outputFile);
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-    }
+	@Override
+	public void preprocessOpenAPI(OpenAPI openAPI) {
+		super.preprocessOpenAPI(openAPI);
+		final String outputString;
+		if (flattenSpec) {
+			outputString = Json.pretty(openAPI);
+		}
+		else {
+			outputString = Json.pretty(this.unflattenedOpenAPI);
+		}
 
-    @Override
-    public void processOpts() {
-        super.processOpts();
+		try {
+			String outputFile = outputFolder + File.separator + this.outputFile;
+			FileUtils.writeStringToFile(new File(outputFile), outputString);
+			LOGGER.debug("wrote file to " + outputFile);
+		}
+		catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+	}
 
-        if (additionalProperties.containsKey(OUTPUT_NAME) && !StringUtils.isBlank((String) additionalProperties.get(OUTPUT_NAME))) {
-            setOutputFile((String) additionalProperties.get(OUTPUT_NAME));
-        }
+	@Override
+	public void processOpts() {
+		super.processOpts();
 
-        if (additionalProperties
-            .containsKey(FLATTEN_SPEC) &&
-            (
-                !(additionalProperties.get(FLATTEN_SPEC) instanceof String) ||
-                    !StringUtils.isBlank((String) additionalProperties.get(FLATTEN_SPEC))
-            )
-        ) {
-            this.flattenSpec = Boolean.valueOf(additionalProperties.get(FLATTEN_SPEC).toString());
-        }
-    }
+		if (additionalProperties.containsKey(OUTPUT_NAME)
+				&& !StringUtils.isBlank((String) additionalProperties.get(OUTPUT_NAME))) {
+			setOutputFile((String) additionalProperties.get(OUTPUT_NAME));
+		}
 
-    public void setOutputFile(String outputFile) {
-        this.outputFile = outputFile;
-    }
+		if (additionalProperties.containsKey(FLATTEN_SPEC)
+				&& (!(additionalProperties.get(FLATTEN_SPEC) instanceof String)
+						|| !StringUtils.isBlank((String) additionalProperties.get(FLATTEN_SPEC)))) {
+			this.flattenSpec = Boolean.valueOf(additionalProperties.get(FLATTEN_SPEC).toString());
+		}
+	}
 
-    @Override
-    public String escapeQuotationMark(String input) {
-        // just return the original string
-        return input;
-    }
+	public void setOutputFile(String outputFile) {
+		this.outputFile = outputFile;
+	}
 
-    @Override
-    public String getArgumentsLocation() {
-        return null;
-    }
+	@Override
+	public String escapeQuotationMark(String input) {
+		// just return the original string
+		return input;
+	}
 
-    @Override
-    public String getDefaultTemplateDir() {
-        return "openapi";
-    }
+	@Override
+	public String getArgumentsLocation() {
+		return null;
+	}
 
-    @Override
-    public String escapeUnsafeCharacters(String input) {
-        // just return the original string
-        return input;
-    }
+	@Override
+	public String getDefaultTemplateDir() {
+		return "openapi";
+	}
 
-    @Override
-    protected void setTemplateEngine() {
-        templateEngine = new HandlebarTemplateEngine(this);
-    }
+	@Override
+	public String escapeUnsafeCharacters(String input) {
+		// just return the original string
+		return input;
+	}
 
-    @Override
-    public boolean needsUnflattenedSpec() {
-        return true;
-    }
+	@Override
+	protected void setTemplateEngine() {
+		templateEngine = new HandlebarTemplateEngine(this);
+	}
+
+	@Override
+	public boolean needsUnflattenedSpec() {
+		return true;
+	}
+
 }

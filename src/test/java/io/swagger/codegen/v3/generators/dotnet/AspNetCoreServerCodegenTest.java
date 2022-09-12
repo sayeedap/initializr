@@ -12,24 +12,26 @@ import org.testng.annotations.Test;
 
 public class AspNetCoreServerCodegenTest extends AbstractCodegenTest {
 
-    @Test(description = "Verify if List<> is fixed for array schema with composed items.")
-    public void checkArrayItemsSchemaParent() {
-        final OpenAPI openAPI = getOpenAPI("3_0_0/composed_schemas.yaml");
-        final CodegenConfig config = new AspNetCoreServerCodegen();
-        final CodegenWrapper codegenWrapper = processSchemas(config, openAPI);
-        CodegenModel codegenModel = codegenWrapper.getAllModels().get("AllPetsResponse");
-        Assert.assertEquals(codegenModel.parent, "List<OneOfAllPetsResponseItems>");
-    }
+	@Test(description = "Verify if List<> is fixed for array schema with composed items.")
+	public void checkArrayItemsSchemaParent() {
+		final OpenAPI openAPI = getOpenAPI("3_0_0/composed_schemas.yaml");
+		final CodegenConfig config = new AspNetCoreServerCodegen();
+		final CodegenWrapper codegenWrapper = processSchemas(config, openAPI);
+		CodegenModel codegenModel = codegenWrapper.getAllModels().get("AllPetsResponse");
+		Assert.assertEquals(codegenModel.parent, "List<OneOfAllPetsResponseItems>");
+	}
 
-    @Test
-    public void checkArrayItemsSchemaProperty() {
-        final OpenAPI openAPI = getOpenAPI("3_0_0/composed_schemas.yaml");
-        final CodegenConfig config = new AspNetCoreServerCodegen();
-        final CodegenWrapper codegenWrapper = processSchemas(config, openAPI);
-        final CodegenModel codegenModel = codegenWrapper.getAllModels().get("House");
+	@Test
+	public void checkArrayItemsSchemaProperty() {
+		final OpenAPI openAPI = getOpenAPI("3_0_0/composed_schemas.yaml");
+		final CodegenConfig config = new AspNetCoreServerCodegen();
+		final CodegenWrapper codegenWrapper = processSchemas(config, openAPI);
+		final CodegenModel codegenModel = codegenWrapper.getAllModels().get("House");
 
-        final CodegenProperty codegenProperty = codegenModel.vars.stream().filter(property -> property.baseName.equals("pets")).findFirst().get();
-        Assert.assertEquals(codegenProperty.datatype, "List<OneOfHousePetsItems>");
+		final CodegenProperty codegenProperty = codegenModel.vars.stream()
+				.filter(property -> property.baseName.equals("pets")).findFirst().get();
+		Assert.assertEquals(codegenProperty.datatype, "List<OneOfHousePetsItems>");
 
-    }
+	}
+
 }
