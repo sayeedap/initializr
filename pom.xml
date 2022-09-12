@@ -13,7 +13,7 @@
 		<version>5</version> -->
 	</parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>swaggercodegengenerators</artifactId>
+    <artifactId>swagger-codegen-generators</artifactId>
 
     <build>
         <plugins>
