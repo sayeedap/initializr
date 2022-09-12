@@ -10,7 +10,7 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
 /**
  * {@link ProjectContributor} for the project's {@code DockerFile} file.
- * 
+ *
  * @author Sayeed
  *
  */
@@ -42,7 +42,7 @@ public class DockerContributor implements ProjectContributor {
 	}
 
 	private void writeCommand(PrintWriter writer) throws IOException {
-		writer.print(dockerFile.getCommand().getType()+ " [\"" + dockerFile.getCommand().getCommand() + "\",");
+		writer.print(dockerFile.getCommand().getType() + " [\"" + dockerFile.getCommand().getCommand() + "\",");
 		writer.print(dockerFile.getCommand().getParameter().stream().map((parameter) -> " \"" + parameter + "\" ")
 				.collect(Collectors.joining(", ")));
 

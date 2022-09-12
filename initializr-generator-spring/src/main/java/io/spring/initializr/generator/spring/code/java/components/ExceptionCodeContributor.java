@@ -65,4 +65,5 @@ public class ExceptionCodeContributor implements ProjectContributor {
 			mustacheSection.write(writer);
 		}
 	}
+
 }

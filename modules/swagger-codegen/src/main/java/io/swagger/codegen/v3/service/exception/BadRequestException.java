@@ -17,12 +17,15 @@ package io.swagger.codegen.v3.service.exception;
 import org.apache.http.HttpStatus;
 
 public class BadRequestException extends ApiException {
-    private static final long serialVersionUID = -5540416398447252055L;
 
-    public BadRequestException(String msg) {
-        super(HttpStatus.SC_BAD_REQUEST, msg);
-    }
-    public BadRequestException(String msg, Throwable e) {
-        super(HttpStatus.SC_BAD_REQUEST, msg, e);
-    }
+	private static final long serialVersionUID = -5540416398447252055L;
+
+	public BadRequestException(String msg) {
+		super(HttpStatus.SC_BAD_REQUEST, msg);
+	}
+
+	public BadRequestException(String msg, Throwable e) {
+		super(HttpStatus.SC_BAD_REQUEST, msg, e);
+	}
+
 }

@@ -7,68 +7,73 @@ import io.swagger.v3.parser.core.models.AuthorizationValue;
 import java.util.List;
 
 public class ClientOptInput {
-    private CodegenConfig config;
-    private ClientOpts opts;
-    private OpenAPI openAPI;
-    private List<AuthorizationValue> auths;
 
-    public ClientOptInput openAPI(OpenAPI openAPI) {
-        this.setOpenAPI(openAPI);
-        return this;
-    }
+	private CodegenConfig config;
 
-    public ClientOptInput opts(ClientOpts opts) {
-        this.setOpts(opts);
-        return this;
-    }
+	private ClientOpts opts;
 
-    public ClientOptInput config(CodegenConfig codegenConfig) {
-        this.setConfig(codegenConfig);
-        return this;
-    }
+	private OpenAPI openAPI;
 
-    @Deprecated
-    public ClientOptInput auth(String urlEncodedAuthString) {
-        this.setAuth(urlEncodedAuthString);
-        return this;
-    }
+	private List<AuthorizationValue> auths;
 
-    @Deprecated
-    public String getAuth() {
-        return AuthParser.reconstruct(auths);
-    }
+	public ClientOptInput openAPI(OpenAPI openAPI) {
+		this.setOpenAPI(openAPI);
+		return this;
+	}
 
-    @Deprecated
-    public void setAuth(String urlEncodedAuthString) {
-        this.auths = AuthParser.parse(urlEncodedAuthString);
-    }
+	public ClientOptInput opts(ClientOpts opts) {
+		this.setOpts(opts);
+		return this;
+	}
 
-    @Deprecated
-    public List<AuthorizationValue> getAuthorizationValues() {
-        return auths;
-    }
+	public ClientOptInput config(CodegenConfig codegenConfig) {
+		this.setConfig(codegenConfig);
+		return this;
+	}
 
-    public CodegenConfig getConfig() {
-        return config;
-    }
+	@Deprecated
+	public ClientOptInput auth(String urlEncodedAuthString) {
+		this.setAuth(urlEncodedAuthString);
+		return this;
+	}
 
-    public void setConfig(CodegenConfig config) {
-        this.config = config;
-    }
+	@Deprecated
+	public String getAuth() {
+		return AuthParser.reconstruct(auths);
+	}
 
-    public ClientOpts getOpts() {
-        return opts;
-    }
+	@Deprecated
+	public void setAuth(String urlEncodedAuthString) {
+		this.auths = AuthParser.parse(urlEncodedAuthString);
+	}
 
-    public void setOpts(ClientOpts opts) {
-        this.opts = opts;
-    }
+	@Deprecated
+	public List<AuthorizationValue> getAuthorizationValues() {
+		return auths;
+	}
 
-    public OpenAPI getOpenAPI() {
-        return openAPI;
-    }
+	public CodegenConfig getConfig() {
+		return config;
+	}
 
-    public void setOpenAPI(OpenAPI openAPI) {
-        this.openAPI = openAPI;
-    }
+	public void setConfig(CodegenConfig config) {
+		this.config = config;
+	}
+
+	public ClientOpts getOpts() {
+		return opts;
+	}
+
+	public void setOpts(ClientOpts opts) {
+		this.opts = opts;
+	}
+
+	public OpenAPI getOpenAPI() {
+		return openAPI;
+	}
+
+	public void setOpenAPI(OpenAPI openAPI) {
+		this.openAPI = openAPI;
+	}
+
 }

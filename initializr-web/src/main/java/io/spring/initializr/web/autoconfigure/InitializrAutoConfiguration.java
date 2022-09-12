@@ -139,28 +139,33 @@ public class InitializrAutoConfiguration {
 		InitializrWebConfig initializrWebConfig() {
 			return new InitializrWebConfig();
 		}
-		
+
 		@Bean
-		public CustomProjectGenerationController projectGenerationController(InitializrMetadataProvider metadataProvider,
+		public CustomProjectGenerationController projectGenerationController(
+				InitializrMetadataProvider metadataProvider,
 				ObjectProvider<ProjectRequestPlatformVersionTransformer> platformVersionTransformer,
-				ApplicationContext applicationContext) { 
+				ApplicationContext applicationContext) {
 			ProjectGenerationInvoker<CustomProjectRequest> projectGenerationInvoker = new ProjectGenerationInvoker<>(
 					applicationContext, new CustomProjectRequestToDescriptionConverter(platformVersionTransformer
 							.getIfAvailable(DefaultProjectRequestPlatformVersionTransformer::new)));
 			return new CustomProjectGenerationController(metadataProvider, projectGenerationInvoker);
 		}
 
-//		@Bean
-//		@ConditionalOnMissingBean
-//		ProjectGenerationController<ProjectRequest> projectGenerationControlleSr(
-//				InitializrMetadataProvider metadataProvider,
-//				ObjectProvider<ProjectRequestPlatformVersionTransformer> platformVersionTransformer,
-//				ApplicationContext applicationContext) {
-//			ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker = new ProjectGenerationInvoker<>(
-//					applicationContext, new DefaultProjectRequestToDescriptionConverter(platformVersionTransformer
-//							.getIfAvailable(DefaultProjectRequestPlatformVersionTransformer::new)));
-//			return new DefaultProjectGenerationController(metadataProvider, projectGenerationInvoker);
-//		}
+		// @Bean
+		// @ConditionalOnMissingBean
+		// ProjectGenerationController<ProjectRequest> projectGenerationControlleSr(
+		// InitializrMetadataProvider metadataProvider,
+		// ObjectProvider<ProjectRequestPlatformVersionTransformer>
+		// platformVersionTransformer,
+		// ApplicationContext applicationContext) {
+		// ProjectGenerationInvoker<ProjectRequest> projectGenerationInvoker = new
+		// ProjectGenerationInvoker<>(
+		// applicationContext, new
+		// DefaultProjectRequestToDescriptionConverter(platformVersionTransformer
+		// .getIfAvailable(DefaultProjectRequestPlatformVersionTransformer::new)));
+		// return new DefaultProjectGenerationController(metadataProvider,
+		// projectGenerationInvoker);
+		// }
 
 		@Bean
 		@ConditionalOnMissingBean

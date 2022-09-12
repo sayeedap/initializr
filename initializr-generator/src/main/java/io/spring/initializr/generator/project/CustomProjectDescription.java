@@ -22,18 +22,17 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * A custom {@link ProjectDescription} to convey the additional flags to
- * contributors.
+ * A custom {@link ProjectDescription} to convey the additional flags to contributors.
  *
  * @author Stephane Nicoll
- * @author Sayeed
+ * @author Sayeed A
  */
 public class CustomProjectDescription extends MutableProjectDescription {
 
 	private Boolean dockerFlag = true;
 
 	private List<String> projectComponents = new ArrayList<>();
-	
+
 	private MultipartFile swaggerFile;
 
 	public CustomProjectDescription() {
@@ -41,9 +40,9 @@ public class CustomProjectDescription extends MutableProjectDescription {
 
 	CustomProjectDescription(CustomProjectDescription source) {
 		super(source);
-		this.dockerFlag=source.getDockerFlag();
-		this.projectComponents=source.getProjectComponents();
-		this.swaggerFile=source.getSwaggerFile();
+		this.dockerFlag = source.getDockerFlag();
+		this.projectComponents = source.getProjectComponents();
+		this.swaggerFile = source.getSwaggerFile();
 	}
 
 	@Override
@@ -52,7 +51,7 @@ public class CustomProjectDescription extends MutableProjectDescription {
 	}
 
 	public Boolean getDockerFlag() {
-		return dockerFlag;
+		return this.dockerFlag;
 	}
 
 	public void setDockerFlag(Boolean dockerFlag) {
@@ -60,7 +59,7 @@ public class CustomProjectDescription extends MutableProjectDescription {
 	}
 
 	public List<String> getProjectComponents() {
-		return projectComponents;
+		return this.projectComponents;
 	}
 
 	public void setProjectComponents(List<String> projectComponents) {
@@ -68,13 +67,11 @@ public class CustomProjectDescription extends MutableProjectDescription {
 	}
 
 	public MultipartFile getSwaggerFile() {
-		return swaggerFile;
+		return this.swaggerFile;
 	}
 
 	public void setSwaggerFile(MultipartFile swaggerFile) {
 		this.swaggerFile = swaggerFile;
 	}
-	
-	
 
 }

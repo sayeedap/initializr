@@ -35,112 +35,154 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  * User: lanwen Date: 24.03.15 Time: 20:22
  */
 
-//public class Generate implements Runnable {
-public class Generate{
+// public class Generate implements Runnable {
+public class Generate {
+
 	CliHelper cliHelper;
-    protected Boolean verbose;
-    protected String lang;
-    protected String output = "";
-    protected String spec;
-    protected String templateDir;
-    protected String templateVersion;
-    protected String templateEngine;
-    protected String auth;
-    protected List<String> systemProperties = new ArrayList<>();
-    protected String configFile;
-    protected Boolean skipOverwrite;
-    protected String apiPackage;
-    protected String modelPackage;
-    protected String configPackage;
-    protected String controllerPackage;
-    protected String controllerImplPackage;
-    protected String exceptionPackage;
 
-    protected String modelNamePrefix;
-    protected String modelNameSuffix;
-    protected List<String> instantiationTypes = new ArrayList<>();
-    protected List<String> typeMappings = new ArrayList<>();
-    protected List<String> additionalProperties = new ArrayList<>();
-    protected List<String> languageSpecificPrimitives = new ArrayList<>();
-    protected List<String> importMappings = new ArrayList<>();
-    protected String invokerPackage;
-    protected String groupId;
-    protected String artifactId;
-    protected String artifactVersion;
-    protected String library;
-    protected String gitUserId;
-    protected String gitRepoId;
-    protected String gitRepoBaseURL;
-    protected String releaseNote;
-    protected String httpUserAgent;
-    protected List<String> reservedWordsMappings = new ArrayList<>();
-    protected String ignoreFileOverride;
-    protected Boolean removeOperationIdPrefix;
-    protected Boolean disableExamples;
-    protected Boolean resolveFully;
-    protected Boolean ignoreImportMappings;
-    protected Boolean flattenInlineSchema;
-    private String url;
-    private List<CodegenArgument> codegenArguments;
+	protected Boolean verbose;
 
+	protected String lang;
 
-    public void setVerbose(Boolean verbose) {
-        this.verbose = verbose;
-    }
+	protected String output = "";
 
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
+	protected String spec;
 
-    public void setOutput(String output) {
-        this.output = output;
-    }
+	protected String templateDir;
 
-    public void setSpec(String spec) {
-        this.spec = spec;
-    }
+	protected String templateVersion;
 
-    public void setTemplateDir(String templateDir) {
-        this.templateDir = templateDir;
-    }
+	protected String templateEngine;
 
-    public void setTemplateVersion(String templateVersion) {
-        this.templateVersion = templateVersion;
-    }
+	protected String auth;
 
-    public void setTemplateEngine(String templateEngine) {
-        this.templateEngine = templateEngine;
-    }
+	protected List<String> systemProperties = new ArrayList<>();
 
-    public void setAuth(String auth) {
-        this.auth = auth;
-    }
+	protected String configFile;
 
-    public void setSystemProperties(List<String> systemProperties) {
-        this.systemProperties = systemProperties;
-    }
+	protected Boolean skipOverwrite;
 
-    public void setConfigFile(String configFile) {
-        this.configFile = configFile;
-    }
+	protected String apiPackage;
 
-    public void setSkipOverwrite(Boolean skipOverwrite) {
-        this.skipOverwrite = skipOverwrite;
-    }
+	protected String modelPackage;
 
-    public void setApiPackage(String apiPackage) {
-        this.apiPackage = apiPackage;
-    }
+	protected String configPackage;
 
-    public void setModelPackage(String modelPackage) {
-        this.modelPackage = modelPackage;
-    }
+	protected String controllerPackage;
 
-    public void setConfigPackage(String configPackage) {
-        this.configPackage = configPackage;
-    }
-    
-    public void setControllerPackage(String controllerPackage) {
+	protected String controllerImplPackage;
+
+	protected String exceptionPackage;
+
+	protected String modelNamePrefix;
+
+	protected String modelNameSuffix;
+
+	protected List<String> instantiationTypes = new ArrayList<>();
+
+	protected List<String> typeMappings = new ArrayList<>();
+
+	protected List<String> additionalProperties = new ArrayList<>();
+
+	protected List<String> languageSpecificPrimitives = new ArrayList<>();
+
+	protected List<String> importMappings = new ArrayList<>();
+
+	protected String invokerPackage;
+
+	protected String groupId;
+
+	protected String artifactId;
+
+	protected String artifactVersion;
+
+	protected String library;
+
+	protected String gitUserId;
+
+	protected String gitRepoId;
+
+	protected String gitRepoBaseURL;
+
+	protected String releaseNote;
+
+	protected String httpUserAgent;
+
+	protected List<String> reservedWordsMappings = new ArrayList<>();
+
+	protected String ignoreFileOverride;
+
+	protected Boolean removeOperationIdPrefix;
+
+	protected Boolean disableExamples;
+
+	protected Boolean resolveFully;
+
+	protected Boolean ignoreImportMappings;
+
+	protected Boolean flattenInlineSchema;
+
+	private String url;
+
+	private List<CodegenArgument> codegenArguments;
+
+	public void setVerbose(Boolean verbose) {
+		this.verbose = verbose;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
+	}
+
+	public void setOutput(String output) {
+		this.output = output;
+	}
+
+	public void setSpec(String spec) {
+		this.spec = spec;
+	}
+
+	public void setTemplateDir(String templateDir) {
+		this.templateDir = templateDir;
+	}
+
+	public void setTemplateVersion(String templateVersion) {
+		this.templateVersion = templateVersion;
+	}
+
+	public void setTemplateEngine(String templateEngine) {
+		this.templateEngine = templateEngine;
+	}
+
+	public void setAuth(String auth) {
+		this.auth = auth;
+	}
+
+	public void setSystemProperties(List<String> systemProperties) {
+		this.systemProperties = systemProperties;
+	}
+
+	public void setConfigFile(String configFile) {
+		this.configFile = configFile;
+	}
+
+	public void setSkipOverwrite(Boolean skipOverwrite) {
+		this.skipOverwrite = skipOverwrite;
+	}
+
+	public void setApiPackage(String apiPackage) {
+		this.apiPackage = apiPackage;
+	}
+
+	public void setModelPackage(String modelPackage) {
+		this.modelPackage = modelPackage;
+	}
+
+	public void setConfigPackage(String configPackage) {
+		this.configPackage = configPackage;
+	}
+
+	public void setControllerPackage(String controllerPackage) {
 		this.controllerPackage = controllerPackage;
 	}
 
@@ -153,339 +195,354 @@ public class Generate{
 	}
 
 	public void setModelNamePrefix(String modelNamePrefix) {
-        this.modelNamePrefix = modelNamePrefix;
-    }
+		this.modelNamePrefix = modelNamePrefix;
+	}
 
-    public void setModelNameSuffix(String modelNameSuffix) {
-        this.modelNameSuffix = modelNameSuffix;
-    }
+	public void setModelNameSuffix(String modelNameSuffix) {
+		this.modelNameSuffix = modelNameSuffix;
+	}
 
-    public void setInstantiationTypes(List<String> instantiationTypes) {
-        this.instantiationTypes = instantiationTypes;
-    }
+	public void setInstantiationTypes(List<String> instantiationTypes) {
+		this.instantiationTypes = instantiationTypes;
+	}
 
-    public void setTypeMappings(List<String> typeMappings) {
-        this.typeMappings = typeMappings;
-    }
+	public void setTypeMappings(List<String> typeMappings) {
+		this.typeMappings = typeMappings;
+	}
 
-    public void setAdditionalProperties(List<String> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-    }
+	public void setAdditionalProperties(List<String> additionalProperties) {
+		this.additionalProperties = additionalProperties;
+	}
 
-    public void setLanguageSpecificPrimitives(List<String> languageSpecificPrimitives) {
-        this.languageSpecificPrimitives = languageSpecificPrimitives;
-    }
+	public void setLanguageSpecificPrimitives(List<String> languageSpecificPrimitives) {
+		this.languageSpecificPrimitives = languageSpecificPrimitives;
+	}
 
-    public void setImportMappings(List<String> importMappings) {
-        this.importMappings = importMappings;
-    }
+	public void setImportMappings(List<String> importMappings) {
+		this.importMappings = importMappings;
+	}
 
-    public void setInvokerPackage(String invokerPackage) {
-        this.invokerPackage = invokerPackage;
-    }
+	public void setInvokerPackage(String invokerPackage) {
+		this.invokerPackage = invokerPackage;
+	}
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 
-    public void setArtifactId(String artifactId) {
-        this.artifactId = artifactId;
-    }
+	public void setArtifactId(String artifactId) {
+		this.artifactId = artifactId;
+	}
 
-    public void setArtifactVersion(String artifactVersion) {
-        this.artifactVersion = artifactVersion;
-    }
+	public void setArtifactVersion(String artifactVersion) {
+		this.artifactVersion = artifactVersion;
+	}
 
-    public void setLibrary(String library) {
-        this.library = library;
-    }
+	public void setLibrary(String library) {
+		this.library = library;
+	}
 
-    public void setGitUserId(String gitUserId) {
-        this.gitUserId = gitUserId;
-    }
+	public void setGitUserId(String gitUserId) {
+		this.gitUserId = gitUserId;
+	}
 
-    public void setGitRepoId(String gitRepoId) {
-        this.gitRepoId = gitRepoId;
-    }
+	public void setGitRepoId(String gitRepoId) {
+		this.gitRepoId = gitRepoId;
+	}
 
-    public void setGitRepoBaseURL(String gitRepoBaseURL) {
-        this.gitRepoBaseURL = gitRepoBaseURL;
-    }
+	public void setGitRepoBaseURL(String gitRepoBaseURL) {
+		this.gitRepoBaseURL = gitRepoBaseURL;
+	}
 
-    public void setReleaseNote(String releaseNote) {
-        this.releaseNote = releaseNote;
-    }
+	public void setReleaseNote(String releaseNote) {
+		this.releaseNote = releaseNote;
+	}
 
-    public void setHttpUserAgent(String httpUserAgent) {
-        this.httpUserAgent = httpUserAgent;
-    }
+	public void setHttpUserAgent(String httpUserAgent) {
+		this.httpUserAgent = httpUserAgent;
+	}
 
-    public void setReservedWordsMappings(List<String> reservedWordsMappings) {
-        this.reservedWordsMappings = reservedWordsMappings;
-    }
+	public void setReservedWordsMappings(List<String> reservedWordsMappings) {
+		this.reservedWordsMappings = reservedWordsMappings;
+	}
 
-    public void setIgnoreFileOverride(String ignoreFileOverride) {
-        this.ignoreFileOverride = ignoreFileOverride;
-    }
+	public void setIgnoreFileOverride(String ignoreFileOverride) {
+		this.ignoreFileOverride = ignoreFileOverride;
+	}
 
-    public void setRemoveOperationIdPrefix(Boolean removeOperationIdPrefix) {
-        this.removeOperationIdPrefix = removeOperationIdPrefix;
-    }
+	public void setRemoveOperationIdPrefix(Boolean removeOperationIdPrefix) {
+		this.removeOperationIdPrefix = removeOperationIdPrefix;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    public void setCodegenArguments(List<CodegenArgument> codegenArguments) {
-        this.codegenArguments = codegenArguments;
-    }
+	public void setCodegenArguments(List<CodegenArgument> codegenArguments) {
+		this.codegenArguments = codegenArguments;
+	}
 
-    public void setDisableExamples(Boolean disableExamples) {
-        this.disableExamples = disableExamples;
-    }
-    
-    public void setResolveFully(Boolean resolveFully) {
-        this.resolveFully = resolveFully;
-    }
+	public void setDisableExamples(Boolean disableExamples) {
+		this.disableExamples = disableExamples;
+	}
 
-    public void setFlattenInlineSchema(Boolean flattenInlineSchema) {
-        this.flattenInlineSchema = flattenInlineSchema;
-    }
+	public void setResolveFully(Boolean resolveFully) {
+		this.resolveFully = resolveFully;
+	}
 
-    public void setIgnoreImportMappings(Boolean ignoreImportMappings) {
-        this.ignoreImportMappings = ignoreImportMappings;
-    }
+	public void setFlattenInlineSchema(Boolean flattenInlineSchema) {
+		this.flattenInlineSchema = flattenInlineSchema;
+	}
 
-//    @Override
-//    public void run() {
-public void generateSwaggerCode() {
-        loadArguments();
+	public void setIgnoreImportMappings(Boolean ignoreImportMappings) {
+		this.ignoreImportMappings = ignoreImportMappings;
+	}
 
-        // attempt to read from config file
-        CodegenConfigurator configurator = CodegenConfigurator.fromFile(configFile);
+	// @Override
+	// public void run() {
+	public void generateSwaggerCode() {
+		loadArguments();
 
-        // if a config file wasn't specified or we were unable to read it
-        if (configurator == null) {
-            // create a fresh configurator
-            configurator = new CodegenConfigurator();
-        }
+		// attempt to read from config file
+		CodegenConfigurator configurator = CodegenConfigurator.fromFile(configFile);
 
-        // now override with any specified parameters
-        if (verbose != null) {
-            configurator.setVerbose(verbose);
-        }
+		// if a config file wasn't specified or we were unable to read it
+		if (configurator == null) {
+			// create a fresh configurator
+			configurator = new CodegenConfigurator();
+		}
 
-        if (skipOverwrite != null) {
-            configurator.setSkipOverwrite(skipOverwrite);
-        }
+		// now override with any specified parameters
+		if (verbose != null) {
+			configurator.setVerbose(verbose);
+		}
 
-        if (isNotEmpty(spec)) {
-            configurator.setInputSpecURL(spec);
-        }
+		if (skipOverwrite != null) {
+			configurator.setSkipOverwrite(skipOverwrite);
+		}
 
-        if (isNotEmpty(lang)) {
-            configurator.setLang(lang);
-        }
+		if (isNotEmpty(spec)) {
+			configurator.setInputSpecURL(spec);
+		}
 
-        if (isNotEmpty(output)) {
-            configurator.setOutputDir(output);
-        }
+		if (isNotEmpty(lang)) {
+			configurator.setLang(lang);
+		}
 
-        if (isNotEmpty(auth)) {
-            configurator.setAuth(auth);
-        }
+		if (isNotEmpty(output)) {
+			configurator.setOutputDir(output);
+		}
 
-        if (isNotEmpty(templateDir)) {
-            configurator.setTemplateDir(templateDir);
-        }
+		if (isNotEmpty(auth)) {
+			configurator.setAuth(auth);
+		}
 
-        if (isNotEmpty(templateVersion)) {
-            configurator.setTemplateVersion(templateVersion);
-        }
+		if (isNotEmpty(templateDir)) {
+			configurator.setTemplateDir(templateDir);
+		}
 
-        if (isNotEmpty(apiPackage)) {
-            configurator.setApiPackage(apiPackage);
-        }
+		if (isNotEmpty(templateVersion)) {
+			configurator.setTemplateVersion(templateVersion);
+		}
 
-        if (isNotEmpty(modelPackage)) {
-            configurator.setModelPackage(modelPackage);
-        }
-        
-        if (isNotEmpty(configPackage)) {
-            configurator.setConfigPackage(configPackage);
-        }
-        
-        if (isNotEmpty(controllerPackage)) {
-            configurator.setControllerPackage(controllerPackage);
-        }
-        
-        if (isNotEmpty(controllerImplPackage)) {
-            configurator.setControllerImplPackage(controllerImplPackage);
-        }
-        
-        if (isNotEmpty(exceptionPackage)) {
-            configurator.setExceptionPackage(exceptionPackage);
-        }
-        
-        if (isNotEmpty(modelNamePrefix)) {
-            configurator.setModelNamePrefix(modelNamePrefix);
-        }
+		if (isNotEmpty(apiPackage)) {
+			configurator.setApiPackage(apiPackage);
+		}
 
-        if (isNotEmpty(modelNameSuffix)) {
-            configurator.setModelNameSuffix(modelNameSuffix);
-        }
+		if (isNotEmpty(modelPackage)) {
+			configurator.setModelPackage(modelPackage);
+		}
 
-        if (isNotEmpty(invokerPackage)) {
-            configurator.setInvokerPackage(invokerPackage);
-        }
+		if (isNotEmpty(configPackage)) {
+			configurator.setConfigPackage(configPackage);
+		}
 
-        if (isNotEmpty(groupId)) {
-            configurator.setGroupId(groupId);
-        }
+		if (isNotEmpty(controllerPackage)) {
+			configurator.setControllerPackage(controllerPackage);
+		}
 
-        if (isNotEmpty(artifactId)) {
-            configurator.setArtifactId(artifactId);
-        }
+		if (isNotEmpty(controllerImplPackage)) {
+			configurator.setControllerImplPackage(controllerImplPackage);
+		}
 
-        if (isNotEmpty(artifactVersion)) {
-            configurator.setArtifactVersion(artifactVersion);
-        }
+		if (isNotEmpty(exceptionPackage)) {
+			configurator.setExceptionPackage(exceptionPackage);
+		}
 
-        if (isNotEmpty(library)) {
-            configurator.setLibrary(library);
-        }
+		if (isNotEmpty(modelNamePrefix)) {
+			configurator.setModelNamePrefix(modelNamePrefix);
+		}
 
-        if (isNotEmpty(gitUserId)) {
-            configurator.setGitUserId(gitUserId);
-        }
+		if (isNotEmpty(modelNameSuffix)) {
+			configurator.setModelNameSuffix(modelNameSuffix);
+		}
 
-        if (isNotEmpty(gitRepoId)) {
-            configurator.setGitRepoId(gitRepoId);
-        }
+		if (isNotEmpty(invokerPackage)) {
+			configurator.setInvokerPackage(invokerPackage);
+		}
 
-        if (isNotEmpty(gitRepoBaseURL)) {
-            configurator.setGitRepoBaseURL(gitRepoBaseURL);
-        }
+		if (isNotEmpty(groupId)) {
+			configurator.setGroupId(groupId);
+		}
 
-        if (isNotEmpty(releaseNote)) {
-            configurator.setReleaseNote(releaseNote);
-        }
+		if (isNotEmpty(artifactId)) {
+			configurator.setArtifactId(artifactId);
+		}
 
-        if (isNotEmpty(httpUserAgent)) {
-            configurator.setHttpUserAgent(httpUserAgent);
-        }
+		if (isNotEmpty(artifactVersion)) {
+			configurator.setArtifactVersion(artifactVersion);
+		}
 
-        if (isNotEmpty(ignoreFileOverride)) {
-            configurator.setIgnoreFileOverride(ignoreFileOverride);
-        }
+		if (isNotEmpty(library)) {
+			configurator.setLibrary(library);
+		}
 
-        if (flattenInlineSchema != null) {
-            configurator.setFlattenInlineSchema(flattenInlineSchema);
-        }
+		if (isNotEmpty(gitUserId)) {
+			configurator.setGitUserId(gitUserId);
+		}
 
-        if (removeOperationIdPrefix != null) {
-            configurator.setRemoveOperationIdPrefix(removeOperationIdPrefix);
-        }
+		if (isNotEmpty(gitRepoId)) {
+			configurator.setGitRepoId(gitRepoId);
+		}
 
-        if (codegenArguments != null && !codegenArguments.isEmpty()) {
-            configurator.setCodegenArguments(codegenArguments);
-        }
+		if (isNotEmpty(gitRepoBaseURL)) {
+			configurator.setGitRepoBaseURL(gitRepoBaseURL);
+		}
 
-        if (disableExamples != null && disableExamples) {
-            additionalProperties.add(String.format("%s=%s", CodegenConstants.DISABLE_EXAMPLES_OPTION, disableExamples.toString()));
-        }
+		if (isNotEmpty(releaseNote)) {
+			configurator.setReleaseNote(releaseNote);
+		}
 
-        if (ignoreImportMappings != null) {
-            additionalProperties.add(String.format("%s=%s", CodegenConstants.IGNORE_IMPORT_MAPPING_OPTION, Boolean.parseBoolean(ignoreImportMappings.toString())));
-        }
+		if (isNotEmpty(httpUserAgent)) {
+			configurator.setHttpUserAgent(httpUserAgent);
+		}
 
-        if (resolveFully != null) {
-            configurator.setResolveFully(resolveFully);
-        }
-      
-        if (CodegenConstants.MUSTACHE_TEMPLATE_ENGINE.equalsIgnoreCase(templateEngine)) {
-            additionalProperties.add(String.format("%s=%s", CodegenConstants.TEMPLATE_ENGINE, CodegenConstants.MUSTACHE_TEMPLATE_ENGINE));
-        } else {
-            additionalProperties.add(String.format("%s=%s", CodegenConstants.TEMPLATE_ENGINE, CodegenConstants.HANDLEBARS_TEMPLATE_ENGINE));
-        }
+		if (isNotEmpty(ignoreFileOverride)) {
+			configurator.setIgnoreFileOverride(ignoreFileOverride);
+		}
 
-        applySystemPropertiesKvpList(systemProperties, configurator);
-        applyInstantiationTypesKvpList(instantiationTypes, configurator);
-        applyImportMappingsKvpList(importMappings, configurator);
-        applyTypeMappingsKvpList(typeMappings, configurator);
-        applyAdditionalPropertiesKvpList(additionalProperties, configurator);
-        applyLanguageSpecificPrimitivesCsvList(languageSpecificPrimitives, configurator);
-        applyReservedWordsMappingsKvpList(reservedWordsMappings, configurator);
-        final ClientOptInput clientOptInput = configurator.toClientOptInput();
+		if (flattenInlineSchema != null) {
+			configurator.setFlattenInlineSchema(flattenInlineSchema);
+		}
 
-        new DefaultGenerator().opts(clientOptInput).generate();
+		if (removeOperationIdPrefix != null) {
+			configurator.setRemoveOperationIdPrefix(removeOperationIdPrefix);
+		}
+
+		if (codegenArguments != null && !codegenArguments.isEmpty()) {
+			configurator.setCodegenArguments(codegenArguments);
+		}
+
+		if (disableExamples != null && disableExamples) {
+			additionalProperties
+					.add(String.format("%s=%s", CodegenConstants.DISABLE_EXAMPLES_OPTION, disableExamples.toString()));
+		}
+
+		if (ignoreImportMappings != null) {
+			additionalProperties.add(String.format("%s=%s", CodegenConstants.IGNORE_IMPORT_MAPPING_OPTION,
+					Boolean.parseBoolean(ignoreImportMappings.toString())));
+		}
+
+		if (resolveFully != null) {
+			configurator.setResolveFully(resolveFully);
+		}
+
+		if (CodegenConstants.MUSTACHE_TEMPLATE_ENGINE.equalsIgnoreCase(templateEngine)) {
+			additionalProperties.add(String.format("%s=%s", CodegenConstants.TEMPLATE_ENGINE,
+					CodegenConstants.MUSTACHE_TEMPLATE_ENGINE));
+		}
+		else {
+			additionalProperties.add(String.format("%s=%s", CodegenConstants.TEMPLATE_ENGINE,
+					CodegenConstants.HANDLEBARS_TEMPLATE_ENGINE));
+		}
+
+		applySystemPropertiesKvpList(systemProperties, configurator);
+		applyInstantiationTypesKvpList(instantiationTypes, configurator);
+		applyImportMappingsKvpList(importMappings, configurator);
+		applyTypeMappingsKvpList(typeMappings, configurator);
+		applyAdditionalPropertiesKvpList(additionalProperties, configurator);
+		applyLanguageSpecificPrimitivesCsvList(languageSpecificPrimitives, configurator);
+		applyReservedWordsMappingsKvpList(reservedWordsMappings, configurator);
+		final ClientOptInput clientOptInput = configurator.toClientOptInput();
+
+		new DefaultGenerator().opts(clientOptInput).generate();
 		deleteTempInputFile(configurator.getInputSpecURL());
-    }
+	}
 
 	private void deleteTempInputFile(String inputFile) {
-    	File file = new File(inputFile);
-        try {
+		File file = new File(inputFile);
+		try {
 			FileUtils.delete(file);
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			throw new InvalidArgException("Unable to delete temporary input file" + ex.getMessage());
 		}
-    }
-	
-    private void loadArguments() {
-        if (StringUtils.isBlank(this.url)) {
-            return;
-        }
-        final String content;
-        File file = new File(this.url);
-        if (file.exists() && file.isFile()) {
-            try {
-                content = FileUtils.readFileToString(file);
-            } catch (IOException e) {
-                //LOG.error("Unable to read file: " + this.url, e);
-                return;
-            }
-        } else if (cliHelper.isValidURL(this.url)) {
-            try {
-                content = RemoteUrl.urlToString(this.url, null);
-            } catch (Exception e) {
-                //LOG.error("Unable to read url: " + this.url, e);
-                return;
-            }
-        } else {
-            return;
-        }
+	}
 
-        if (StringUtils.isBlank(content)) {
-            return;
-        }
+	private void loadArguments() {
+		if (StringUtils.isBlank(this.url)) {
+			return;
+		}
+		final String content;
+		File file = new File(this.url);
+		if (file.exists() && file.isFile()) {
+			try {
+				content = FileUtils.readFileToString(file);
+			}
+			catch (IOException e) {
+				// LOG.error("Unable to read file: " + this.url, e);
+				return;
+			}
+		}
+		else if (cliHelper.isValidURL(this.url)) {
+			try {
+				content = RemoteUrl.urlToString(this.url, null);
+			}
+			catch (Exception e) {
+				// LOG.error("Unable to read url: " + this.url, e);
+				return;
+			}
+		}
+		else {
+			return;
+		}
 
-        JsonNode node = null;
+		if (StringUtils.isBlank(content)) {
+			return;
+		}
 
-        if (cliHelper.isValidJson(content)) {
-            try {
-                node = Json.mapper().readTree(content.getBytes());
-            } catch (IOException e) {
-                //LOG.error("Unable to deserialize json from: " + this.url, e);
-                node = null;
-            }
-        } else if (cliHelper.isValidYaml(content)) {
-            try {
-                node = Yaml.mapper().readTree(content.getBytes());
-            } catch (IOException e) {
-                //LOG.error("Unable to deserialize yaml from: " + this.url, e);
-                node = null;
-            }
-        }
+		JsonNode node = null;
 
-        if (node == null) {
-            return;
-        }
+		if (cliHelper.isValidJson(content)) {
+			try {
+				node = Json.mapper().readTree(content.getBytes());
+			}
+			catch (IOException e) {
+				// LOG.error("Unable to deserialize json from: " + this.url, e);
+				node = null;
+			}
+		}
+		else if (cliHelper.isValidYaml(content)) {
+			try {
+				node = Yaml.mapper().readTree(content.getBytes());
+			}
+			catch (IOException e) {
+				// LOG.error("Unable to deserialize yaml from: " + this.url, e);
+				node = null;
+			}
+		}
 
-        final Map<String, Object> optionValueMap = cliHelper.createOptionValueMap(node);
-        try {
-            BeanUtils.populate(this, optionValueMap);
-        } catch (Exception e) {
-            //LOG.error("Error setting values to object.", e);
-        }
-    }
+		if (node == null) {
+			return;
+		}
+
+		final Map<String, Object> optionValueMap = cliHelper.createOptionValueMap(node);
+		try {
+			BeanUtils.populate(this, optionValueMap);
+		}
+		catch (Exception e) {
+			// LOG.error("Error setting values to object.", e);
+		}
+	}
+
 }

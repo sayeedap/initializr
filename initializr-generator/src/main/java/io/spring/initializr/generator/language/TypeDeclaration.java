@@ -16,7 +16,6 @@
 
 package io.spring.initializr.generator.language;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.List;
  * A type declared in a {@link CompilationUnit}.
  *
  * @author Andy Wilkinson
- * @author Sayeed
+ * @author Sayeed A
  */
 public class TypeDeclaration implements Annotatable {
 
@@ -66,7 +65,7 @@ public class TypeDeclaration implements Annotatable {
 	}
 
 	public String getClassType() {
-		return classType;
+		return this.classType;
 	}
 
 	public void setClassType(String classType) {
@@ -74,7 +73,7 @@ public class TypeDeclaration implements Annotatable {
 	}
 
 	public List<String> getImplements() {
-		return implementsClassName;
+		return this.implementsClassName;
 	}
 
 	public void implement(List<String> implementsClassName) {

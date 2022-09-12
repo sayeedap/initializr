@@ -74,7 +74,7 @@ public final class JavaMethodDeclaration implements Annotatable {
 	}
 
 	public JavaReturnType getJavaReturnType() {
-		return javaReturnType;
+		return this.javaReturnType;
 	}
 
 	@Override

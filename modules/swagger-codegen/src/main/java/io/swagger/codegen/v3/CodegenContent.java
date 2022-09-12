@@ -7,38 +7,40 @@ import java.util.Map;
 
 public class CodegenContent {
 
-    private String contentType;
+	private String contentType;
 
-    public CodegenContent() {
-    }
+	public CodegenContent() {
+	}
 
-    public CodegenContent(String contentType) {
-        this.contentType =  contentType;
-    }
+	public CodegenContent(String contentType) {
+		this.contentType = contentType;
+	}
 
-    private List<CodegenParameter> parameters = new ArrayList<CodegenParameter>();
-    private Map<String, Object> contentExtensions = new HashMap<>();
+	private List<CodegenParameter> parameters = new ArrayList<CodegenParameter>();
 
-    public boolean getIsForm() {
-        if (contentExtensions.get(CodegenConstants.IS_FORM_EXT_NAME) == null) {
-            return Boolean.FALSE;
-        }
-        return Boolean.parseBoolean(contentExtensions.get(CodegenConstants.IS_FORM_EXT_NAME).toString());
-    }
+	private Map<String, Object> contentExtensions = new HashMap<>();
 
-    public List<CodegenParameter> getParameters() {
-        return parameters;
-    }
+	public boolean getIsForm() {
+		if (contentExtensions.get(CodegenConstants.IS_FORM_EXT_NAME) == null) {
+			return Boolean.FALSE;
+		}
+		return Boolean.parseBoolean(contentExtensions.get(CodegenConstants.IS_FORM_EXT_NAME).toString());
+	}
 
-    public String getContentType() {
-        return contentType;
-    }
+	public List<CodegenParameter> getParameters() {
+		return parameters;
+	}
 
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
+	public String getContentType() {
+		return contentType;
+	}
 
-    public Map<String, Object> getContentExtensions() {
-        return contentExtensions;
-    }
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public Map<String, Object> getContentExtensions() {
+		return contentExtensions;
+	}
+
 }

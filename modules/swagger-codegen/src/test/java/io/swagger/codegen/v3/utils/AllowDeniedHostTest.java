@@ -1,6 +1,5 @@
 package io.swagger.codegen.v3.utils;
 
-
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
@@ -30,143 +29,108 @@ import static org.testng.Assert.assertFalse;
 
 public class AllowDeniedHostTest {
 
-    private static final int WIRE_MOCK_PORT = 9999;
-    private static final String EXPECTED_ACCEPTS_HEADER = "application/json, application/yaml, */*";
-    private static final String LOCALHOST = "localhost";
-    private WireMockServer wireMockServer;
+	private static final int WIRE_MOCK_PORT = 9999;
 
+	private static final String EXPECTED_ACCEPTS_HEADER = "application/json, application/yaml, */*";
 
-    @AfterMethod
-    public void tearDown() throws Exception {
-        wireMockServer.stop();
-    }
+	private static final String LOCALHOST = "localhost";
 
-    @BeforeMethod
-    public void setUp() throws Exception {
-        wireMockServer = new WireMockServer(WIRE_MOCK_PORT);
-        wireMockServer.start();
-        WireMock.configureFor(WIRE_MOCK_PORT);
-    }
+	private WireMockServer wireMockServer;
 
-    @Test
-    public void testAuthorizationHeaderAllowedHost() throws Exception {
+	@AfterMethod
+	public void tearDown() throws Exception {
+		wireMockServer.stop();
+	}
 
-        HostAccessControl allowedHostAccessControl = new HostAccessControl();
-        allowedHostAccessControl.setHost("localhost");
+	@BeforeMethod
+	public void setUp() throws Exception {
+		wireMockServer = new WireMockServer(WIRE_MOCK_PORT);
+		wireMockServer.start();
+		WireMock.configureFor(WIRE_MOCK_PORT);
+	}
 
-        setupStub();
+	@Test
+	public void testAuthorizationHeaderAllowedHost() throws Exception {
 
-        final String headerValue = "foobar";
-        final String headerName = "Authorization";
-        final AuthorizationValue authorizationValue = new AuthorizationValue(headerName, headerValue, "header",
-                url -> url.toString().startsWith("http://localhost"));
+		HostAccessControl allowedHostAccessControl = new HostAccessControl();
+		allowedHostAccessControl.setHost("localhost");
 
-        GenerationRequest request = new GenerationRequest();
-        request
-                .codegenVersion(GenerationRequest.CodegenVersion.V3)
-                .type(GenerationRequest.Type.SERVER)
-                .lang("java")
-                .specURL(getUrl())
-                .options(
-                        new Options()
-                                .outputDir(getTmpFolder().getAbsolutePath())
-                                .authorizationValue(authorizationValue)
-                                .allowedAuthHosts(Arrays.asList(allowedHostAccessControl))
-                );
+		setupStub();
 
-        new GeneratorService().generationRequest(request).generate();
+		final String headerValue = "foobar";
+		final String headerName = "Authorization";
+		final AuthorizationValue authorizationValue = new AuthorizationValue(headerName, headerValue, "header",
+				url -> url.toString().startsWith("http://localhost"));
 
-        verify(getRequestedFor(urlEqualTo("/v2/pet/1"))
-                .withHeader("Accept", equalTo(EXPECTED_ACCEPTS_HEADER))
-                .withHeader(headerName, equalTo(headerValue))
-        );
-    }
+		GenerationRequest request = new GenerationRequest();
+		request.codegenVersion(GenerationRequest.CodegenVersion.V3).type(GenerationRequest.Type.SERVER).lang("java")
+				.specURL(getUrl()).options(
+						new Options().outputDir(getTmpFolder().getAbsolutePath()).authorizationValue(authorizationValue)
+								.allowedAuthHosts(Arrays.asList(allowedHostAccessControl)));
 
-    @Test
-    public void testAuthorizationHeaderWithNonAllowedHost() throws Exception {
+		new GeneratorService().generationRequest(request).generate();
 
-        HostAccessControl deniedHostAccessControl = new HostAccessControl();
-        deniedHostAccessControl.setHost("localhost");
+		verify(getRequestedFor(urlEqualTo("/v2/pet/1")).withHeader("Accept", equalTo(EXPECTED_ACCEPTS_HEADER))
+				.withHeader(headerName, equalTo(headerValue)));
+	}
 
-        setupStub();
+	@Test
+	public void testAuthorizationHeaderWithNonAllowedHost() throws Exception {
 
-        final String headerValue = "foobar";
-        String authorization = "Authorization";
-        final AuthorizationValue authorizationValue = new AuthorizationValue(authorization,
-                headerValue, "header", u -> false);
+		HostAccessControl deniedHostAccessControl = new HostAccessControl();
+		deniedHostAccessControl.setHost("localhost");
 
-        GenerationRequest request = new GenerationRequest();
-        request
-                .codegenVersion(GenerationRequest.CodegenVersion.V3)
-                .type(GenerationRequest.Type.SERVER)
-                .lang("java")
-                .specURL(getUrl())
-                .options(
-                        new Options()
-                                .outputDir(getTmpFolder().getAbsolutePath())
-                                .authorizationValue(authorizationValue)
-                                .deniedAuthHosts(Arrays.asList(deniedHostAccessControl))
-                );
+		setupStub();
 
-        new GeneratorService().generationRequest(request).generate();
+		final String headerValue = "foobar";
+		String authorization = "Authorization";
+		final AuthorizationValue authorizationValue = new AuthorizationValue(authorization, headerValue, "header",
+				u -> false);
 
-        List<LoggedRequest> requests = WireMock.findAll(getRequestedFor(urlEqualTo("/v2/pet/1")));
-        assertFalse(requests.get(0).containsHeader(authorization));
-        assertEquals(requests.size(),2);
+		GenerationRequest request = new GenerationRequest();
+		request.codegenVersion(GenerationRequest.CodegenVersion.V3).type(GenerationRequest.Type.SERVER).lang("java")
+				.specURL(getUrl()).options(
+						new Options().outputDir(getTmpFolder().getAbsolutePath()).authorizationValue(authorizationValue)
+								.deniedAuthHosts(Arrays.asList(deniedHostAccessControl)));
 
-    }
+		new GeneratorService().generationRequest(request).generate();
 
-    private String getUrl() {
-        return String.format("http://%s:%d/v2/pet/1", LOCALHOST, WIRE_MOCK_PORT);
-    }
+		List<LoggedRequest> requests = WireMock.findAll(getRequestedFor(urlEqualTo("/v2/pet/1")));
+		assertFalse(requests.get(0).containsHeader(authorization));
+		assertEquals(requests.size(), 2);
 
-    private String setupStub() {
-        final String expectedBody = "openapi: 3.0.0\n" +
-                "info:\n" +
-                "  title: test\n" +
-                "  version: \"0.0.1\"\n" +
-                "\n" +
-                "paths:\n" +
-                "  '/contents/{id}':\n" +
-                "    parameters:\n" +
-                "      - name: id\n" +
-                "        in: path\n" +
-                "        description: test\n" +
-                "        required: true\n" +
-                "        schema:\n" +
-                "          type: integer\n" +
-                "  get:\n" +
-                "    description: test\n" +
-                "    responses:\n" +
-                "      '200':\n" +
-                "        description: OK\n" +
-                "        schema: null\n" +
-                "        $ref: '#/components/schemas/Content'\n" +
-                "components:\n" +
-                "  schemas:\n" +
-                "    Content:\n" +
-                "      type: object\n" +
-                "      title: \t\ttest";
+	}
 
-        stubFor(get(urlEqualTo("/v2/pet/1"))
-                .willReturn(aResponse()
-                        .withBody(expectedBody)
-                        .withHeader("Content-Type", "application/json")
-                ));
-        return expectedBody;
-    }
+	private String getUrl() {
+		return String.format("http://%s:%d/v2/pet/1", LOCALHOST, WIRE_MOCK_PORT);
+	}
 
-    protected static File getTmpFolder() {
-        try {
-            File outputFolder = Files.createTempFile("codegentest-", "-tmp").toFile();
-            outputFolder.delete();
-            outputFolder.mkdir();
-            outputFolder.deleteOnExit();
-            return outputFolder;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+	private String setupStub() {
+		final String expectedBody = "openapi: 3.0.0\n" + "info:\n" + "  title: test\n" + "  version: \"0.0.1\"\n" + "\n"
+				+ "paths:\n" + "  '/contents/{id}':\n" + "    parameters:\n" + "      - name: id\n"
+				+ "        in: path\n" + "        description: test\n" + "        required: true\n"
+				+ "        schema:\n" + "          type: integer\n" + "  get:\n" + "    description: test\n"
+				+ "    responses:\n" + "      '200':\n" + "        description: OK\n" + "        schema: null\n"
+				+ "        $ref: '#/components/schemas/Content'\n" + "components:\n" + "  schemas:\n" + "    Content:\n"
+				+ "      type: object\n" + "      title: \t\ttest";
+
+		stubFor(get(urlEqualTo("/v2/pet/1"))
+				.willReturn(aResponse().withBody(expectedBody).withHeader("Content-Type", "application/json")));
+		return expectedBody;
+	}
+
+	protected static File getTmpFolder() {
+		try {
+			File outputFolder = Files.createTempFile("codegentest-", "-tmp").toFile();
+			outputFolder.delete();
+			outputFolder.mkdir();
+			outputFolder.deleteOnExit();
+			return outputFolder;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }
-

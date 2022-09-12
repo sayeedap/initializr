@@ -72,7 +72,7 @@ public class SourceCodeProjectGenerationConfiguration {
 	/**
 	 * Language-agnostic source code contributions for projects using war packaging.
 	 */
-	@Configuration 
+	@Configuration
 	@ConditionalOnPackaging(WarPackaging.ID)
 	static class WarPackagingConfiguration {
 
@@ -96,11 +96,10 @@ public class SourceCodeProjectGenerationConfiguration {
 	/**
 	 * Language-agnostic source code contributions for projects using components.
 	 */
-	@Configuration 
+	@Configuration
 	static class ComponentsConfiguration {
 
 		private final ProjectDescription description;
-		
 
 		private final InitializrMetadata buildMetadataResolver;
 
@@ -116,8 +115,8 @@ public class SourceCodeProjectGenerationConfiguration {
 		@ConditionalOnComponents("controller")
 		ControllerCodeContributor controllerCodeContributor(
 				ObjectProvider<ControllerCodeCustomizer<?>> controllerCodeCustomizer) {
-			//List<Annotation> annotations = new ArrayList<>();
-//			annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
+			// List<Annotation> annotations = new ArrayList<>();
+			// annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
 			return new ControllerCodeContributor(StringUtils.capitalize(this.description.getName()) + "Controller",
 					this.description.getPackageName(), null, controllerCodeCustomizer);
 		}
@@ -126,8 +125,8 @@ public class SourceCodeProjectGenerationConfiguration {
 		@ConditionalOnComponents("controller")
 		ControllerImplCodeContributor controllerImplCodeContributor(
 				ObjectProvider<ControllerImplCodeCustomizer<?>> customCodeCustomizers) {
-			//List<Annotation> annotations = new ArrayList<>();
-//			annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
+			// List<Annotation> annotations = new ArrayList<>();
+			// annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
 			return new ControllerImplCodeContributor(
 					StringUtils.capitalize(this.description.getName()) + "ControllerImpl",
 					this.description.getPackageName(),
@@ -147,19 +146,19 @@ public class SourceCodeProjectGenerationConfiguration {
 		@ConditionalOnComponents("service")
 		ServiceImplCodeContributor serviceImplCodeContributor(
 				ObjectProvider<ServiceImplCodeCustomizer<?>> customCodeCustomizers) {
-			//List<Annotation> annotations = new ArrayList<>();
-//			annotations.add(Annotation.name("org.springframework.stereotype.Service"));
+			// List<Annotation> annotations = new ArrayList<>();
+			// annotations.add(Annotation.name("org.springframework.stereotype.Service"));
 			return new ServiceImplCodeContributor(StringUtils.capitalize(this.description.getName()) + "ServiceImpl",
-					this.description.getPackageName(), Collections.singletonList(this.description.getPackageName() + ".service."
-							+ StringUtils.capitalize(this.description.getName()) + "Service"),
+					this.description.getPackageName(), Collections.singletonList(this.description.getPackageName()
+							+ ".service." + StringUtils.capitalize(this.description.getName()) + "Service"),
 					customCodeCustomizers);
 		}
 
 		@Bean
 		@ConditionalOnComponents("exception")
 		ExceptionCodeContributor exceptionCodeContributor() {
-//			List<Annotation> annotations = new ArrayList<>();
-//			annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
+			// List<Annotation> annotations = new ArrayList<>();
+			// annotations.add(Annotation.name("org.springframework.web.bind.annotation.RestController"));
 			return new ExceptionCodeContributor(this.description.getPackageName() + ".exception", this.description);
 		}
 
@@ -167,7 +166,7 @@ public class SourceCodeProjectGenerationConfiguration {
 		OtherComponentsContributor otherComponentsContributor() {
 			return new OtherComponentsContributor(this.description, build, buildMetadataResolver);
 		}
-		
+
 		@Bean
 		ConfigurationCodesContributor configurationCodesContributor() {
 			return new ConfigurationCodesContributor(this.description, build, buildMetadataResolver);

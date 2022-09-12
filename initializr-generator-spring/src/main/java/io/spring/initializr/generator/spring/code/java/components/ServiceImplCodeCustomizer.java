@@ -6,7 +6,6 @@ import io.spring.initializr.generator.language.TypeDeclaration;
 
 /**
  * @author Sayeed
- *
  * @param <T>
  */
 @FunctionalInterface
@@ -18,4 +17,5 @@ public interface ServiceImplCodeCustomizer<T extends TypeDeclaration> extends Or
 	default int getOrder() {
 		return 0;
 	}
+
 }

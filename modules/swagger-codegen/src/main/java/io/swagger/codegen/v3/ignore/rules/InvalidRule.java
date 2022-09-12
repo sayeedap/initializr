@@ -3,24 +3,26 @@ package io.swagger.codegen.v3.ignore.rules;
 import java.util.List;
 
 public class InvalidRule extends Rule {
-    private final String reason;
 
-    InvalidRule(List<Part> syntax, String definition, String reason) {
-        super(syntax, definition);
-        this.reason = reason;
-    }
+	private final String reason;
 
-    @Override
-    public Boolean matches(String relativePath) {
-        return null;
-    }
+	InvalidRule(List<Part> syntax, String definition, String reason) {
+		super(syntax, definition);
+		this.reason = reason;
+	}
 
-    @Override
-    public Operation evaluate(String relativePath) {
-        return Operation.NOOP;
-    }
+	@Override
+	public Boolean matches(String relativePath) {
+		return null;
+	}
 
-    public String getReason() {
-        return reason;
-    }
+	@Override
+	public Operation evaluate(String relativePath) {
+		return Operation.NOOP;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
 }

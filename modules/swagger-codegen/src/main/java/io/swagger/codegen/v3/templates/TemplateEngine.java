@@ -5,7 +5,8 @@ import java.util.Map;
 
 public interface TemplateEngine {
 
-    String getRendered(String templateFile, Map<String, Object> templateData) throws IOException;
+	String getRendered(String templateFile, Map<String, Object> templateData) throws IOException;
 
-    String getName();
+	String getName();
+
 }

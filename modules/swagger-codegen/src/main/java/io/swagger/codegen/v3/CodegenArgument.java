@@ -2,88 +2,94 @@ package io.swagger.codegen.v3;
 
 public class CodegenArgument {
 
-    private String option;
-    private String shortOption;
-    private String description;
-    private String type;
-    private String value;
-    private Boolean isArray = Boolean.FALSE;
+	private String option;
 
-    public String getOption() {
-        return option;
-    }
+	private String shortOption;
 
-    public void setOption(String option) {
-        this.option = option;
-    }
+	private String description;
 
-    public CodegenArgument option(String option) {
-        this.option = option;
-        return this;
-    }
+	private String type;
 
-    public String getShortOption() {
-        return shortOption;
-    }
+	private String value;
 
-    public void setShortOption(String shortOption) {
-        this.shortOption = shortOption;
-    }
+	private Boolean isArray = Boolean.FALSE;
 
-    public CodegenArgument shortOption(String shortOption) {
-        this.shortOption = shortOption;
-        return this;
-    }
+	public String getOption() {
+		return option;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setOption(String option) {
+		this.option = option;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public CodegenArgument option(String option) {
+		this.option = option;
+		return this;
+	}
 
-    public CodegenArgument description(String description) {
-        this.description = description;
-        return this;
-    }
+	public String getShortOption() {
+		return shortOption;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setShortOption(String shortOption) {
+		this.shortOption = shortOption;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public CodegenArgument shortOption(String shortOption) {
+		this.shortOption = shortOption;
+		return this;
+	}
 
-    public CodegenArgument type(String type) {
-        this.type = type;
-        return this;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public CodegenArgument description(String description) {
+		this.description = description;
+		return this;
+	}
 
-    public CodegenArgument value(String value) {
-        this.value = value;
-        return this;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public Boolean getArray() {
-        return isArray;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public void setArray(Boolean array) {
-        isArray = array;
-    }
+	public CodegenArgument type(String type) {
+		this.type = type;
+		return this;
+	}
 
-    public CodegenArgument isArray(Boolean isArray) {
-        this.isArray = isArray;
-        return this;
-    }
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public CodegenArgument value(String value) {
+		this.value = value;
+		return this;
+	}
+
+	public Boolean getArray() {
+		return isArray;
+	}
+
+	public void setArray(Boolean array) {
+		isArray = array;
+	}
+
+	public CodegenArgument isArray(Boolean isArray) {
+		this.isArray = isArray;
+		return this;
+	}
+
 }

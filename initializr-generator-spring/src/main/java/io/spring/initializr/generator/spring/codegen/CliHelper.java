@@ -49,7 +49,8 @@ public class CliHelper {
 		URL url = Resources.getResource("configuration/oas3.yaml");
 		try {
 			return Resources.toString(url, Charsets.UTF_8);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -70,7 +71,8 @@ public class CliHelper {
 		if (schema.getExtensions() != null && !schema.getExtensions().isEmpty()
 				&& schema.getExtensions().get("x-command") != null) {
 			return schema.getExtensions().get("x-command").toString();
-		} else {
+		}
+		else {
 			return schemaName.toLowerCase();
 		}
 	}
@@ -163,7 +165,8 @@ public class CliHelper {
 			if (extensions.get("x-option") != null) {
 				String option = fixOptionName(extensions.get("x-option").toString());
 				value = inputArgs.get(option);
-			} else {
+			}
+			else {
 				continue;
 			}
 			if (value == null) {
@@ -171,24 +174,30 @@ public class CliHelper {
 			}
 			if (property instanceof BooleanSchema) {
 				optionValueMap.put(propertyName, Boolean.valueOf(value.toString()));
-			} else if (property instanceof IntegerSchema) {
+			}
+			else if (property instanceof IntegerSchema) {
 				if (SchemaTypeUtil.INTEGER64_FORMAT.equals(property.getFormat())) {
 					optionValueMap.put(propertyName, Long.valueOf(value.toString()));
-				} else {
+				}
+				else {
 					optionValueMap.put(propertyName, Integer.valueOf(value.toString()));
 				}
-			} else if (property instanceof NumberSchema) {
+			}
+			else if (property instanceof NumberSchema) {
 				if (SchemaTypeUtil.FLOAT_FORMAT.equals(property.getFormat())) {
 					optionValueMap.put(propertyName, Float.valueOf(value.toString()));
-				} else {
+				}
+				else {
 					optionValueMap.put(propertyName, Double.valueOf(value.toString()));
 				}
-			} else if (property instanceof ArraySchema) {
+			}
+			else if (property instanceof ArraySchema) {
 				String inputElements = value.toString().replace("[", StringUtils.EMPTY).replace("]", StringUtils.EMPTY)
 						.replace(" ", StringUtils.EMPTY);
 				final List<String> values = new ArrayList<>(Arrays.asList(inputElements.split(",")));
 				optionValueMap.put(propertyName, values);
-			} else {
+			}
+			else {
 				optionValueMap.put(propertyName, value);
 			}
 		}
@@ -203,21 +212,27 @@ public class CliHelper {
 			JsonNode valueNode = node.findValue(argument);
 			if (valueNode.isBoolean()) {
 				optionValueMap.put(argument, valueNode.booleanValue());
-			} else if (valueNode.isShort() || valueNode.isInt()) {
+			}
+			else if (valueNode.isShort() || valueNode.isInt()) {
 				optionValueMap.put(argument, valueNode.intValue());
-			} else if (valueNode.isLong()) {
+			}
+			else if (valueNode.isLong()) {
 				optionValueMap.put(argument, valueNode.longValue());
-			} else if (valueNode.isFloat()) {
+			}
+			else if (valueNode.isFloat()) {
 				optionValueMap.put(argument, valueNode.floatValue());
-			} else if (valueNode.isDouble()) {
+			}
+			else if (valueNode.isDouble()) {
 				optionValueMap.put(argument, valueNode.doubleValue());
-			} else if (valueNode.isArray()) {
+			}
+			else if (valueNode.isArray()) {
 				String inputElements = valueNode.toString().replace("[", StringUtils.EMPTY)
 						.replace("]", StringUtils.EMPTY).replace("\"", StringUtils.EMPTY)
 						.replace(" ", StringUtils.EMPTY);
 				final List<String> values = new ArrayList<>(Arrays.asList(inputElements.split(",")));
 				optionValueMap.put(argument, values);
-			} else {
+			}
+			else {
 				optionValueMap.put(argument, valueNode.toString().replace("\"", StringUtils.EMPTY));
 			}
 		}
@@ -246,7 +261,8 @@ public class CliHelper {
 		try {
 			new ObjectMapper().readTree(content);
 			return true;
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			return false;
 		}
 	}
@@ -258,7 +274,8 @@ public class CliHelper {
 		try {
 			new YAMLMapper().readTree(content);
 			return true;
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			return false;
 		}
 	}
@@ -270,7 +287,8 @@ public class CliHelper {
 		try {
 			URI uri = new URI(urlStr);
 			return uri.getScheme().toLowerCase().startsWith("http");
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return false;
 		}
 	}
@@ -278,7 +296,8 @@ public class CliHelper {
 	public boolean isValidString(String content) {
 		if (StringUtils.isBlank(content) || content.equalsIgnoreCase(null)) {
 			return false;
-		} else
+		}
+		else
 			return true;
 	}
 
@@ -317,7 +336,8 @@ public class CliHelper {
 
 				if (property instanceof BooleanSchema) {
 					argument.nargs("?").setConst(true);
-				} else if (property instanceof ArraySchema) {
+				}
+				else if (property instanceof ArraySchema) {
 					argument.nargs("*");
 				}
 			}
@@ -334,7 +354,8 @@ public class CliHelper {
 								.help(codegenArgument.getDescription()).metavar(StringUtils.EMPTY);
 						if (codegenArgument.getType().equalsIgnoreCase("boolean")) {
 							argument.nargs("?").setConst(true);
-						} else if (codegenArgument.getArray() != null && codegenArgument.getArray()) {
+						}
+						else if (codegenArgument.getArray() != null && codegenArgument.getArray()) {
 							argument.nargs("*");
 						}
 					}
@@ -344,7 +365,8 @@ public class CliHelper {
 		final Map<String, Object> inputArgs = new HashMap<>();
 		try {
 			codegenParser.parseArgs(codeGenerationArgs, inputArgs);
-		} catch (ArgumentParserException e) {
+		}
+		catch (ArgumentParserException e) {
 			codegenParser.handleError(e);
 			throw new InvalidArgException("Invalid Arg: " + e.getMessage());
 		}
@@ -359,7 +381,7 @@ public class CliHelper {
 
 		}
 		final Map<String, Object> extensions = commandSchema.getExtensions();
-	
+
 		if (extensions == null || extensions.isEmpty() || extensions.get("x-class-name") == null) {
 			throw new InvalidArgException("Extensions are required to run command. i.e: 'x-class-name'");
 		}
@@ -379,7 +401,8 @@ public class CliHelper {
 					if (isValidString(optionValue)) {
 						codegenArgument.setValue(optionValue);
 						return true;
-					} else {
+					}
+					else {
 						return false;
 					}
 				}).collect(Collectors.toList());
@@ -388,11 +411,13 @@ public class CliHelper {
 				generateCommand.setCodegenArguments(codegenArguments);
 				generateCommand.generateSwaggerCode();
 			}
-		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException
+		}
+		catch (ClassNotFoundException | IllegalAccessException | InstantiationException
 				| InvocationTargetException ex) {
 			throw new InvalidArgException("Could not load class " + className + "for command" + userInputCommand
 					+ " and message is " + ex.getMessage());
 
 		}
 	}
+
 }

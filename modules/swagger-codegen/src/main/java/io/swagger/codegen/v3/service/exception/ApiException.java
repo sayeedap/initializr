@@ -15,19 +15,23 @@
 package io.swagger.codegen.v3.service.exception;
 
 public class ApiException extends RuntimeException {
-    private static final long serialVersionUID = -5085112752305370687L;
-    private int code;
 
-    public ApiException(int code, String msg) {
-        super(msg);
-        this.code = code;
-    }
-    public ApiException(int code, String msg, Throwable e) {
-        super(msg, e);
-        this.code = code;
-    }
+	private static final long serialVersionUID = -5085112752305370687L;
 
-    public int getCode() {
-        return code;
-    }
+	private int code;
+
+	public ApiException(int code, String msg) {
+		super(msg);
+		this.code = code;
+	}
+
+	public ApiException(int code, String msg, Throwable e) {
+		super(msg, e);
+		this.code = code;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
 }

@@ -37,7 +37,9 @@ public class ControllerCodeContributor implements
 	@Override
 	public void customize(SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>> sourceCode) {
 		CompilationUnit<TypeDeclaration> compilationUnit = sourceCode
-				.createCompilationUnit(this.packageName + ".controller", fileName); // File Name &&PACKAGENAME
+				.createCompilationUnit(this.packageName + ".controller", fileName); // File
+																					// Name
+																					// &&PACKAGENAME
 		TypeDeclaration servletInitializer = compilationUnit.createTypeDeclaration(fileName); // class
 		servletInitializer.setClassType("interface");
 		customizeServletInitializer(servletInitializer);

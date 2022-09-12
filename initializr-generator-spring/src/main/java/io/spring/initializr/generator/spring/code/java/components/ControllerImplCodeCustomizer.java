@@ -6,7 +6,6 @@ import io.spring.initializr.generator.language.TypeDeclaration;
 
 /**
  * @author Sayeed
- *
  * @param <T>
  */
 @FunctionalInterface
