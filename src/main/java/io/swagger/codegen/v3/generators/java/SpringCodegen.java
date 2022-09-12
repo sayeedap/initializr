@@ -387,7 +387,7 @@ public class SpringCodegen extends AbstractJavaCodegen
 			}
 		}
 
-		supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
+		//supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
 		supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
 		LOGGER.info("inside processOpts supportingFiles: " + supportingFiles + ")");
 
