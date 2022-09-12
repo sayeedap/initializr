@@ -80,7 +80,7 @@ public class CodegenContributor implements ProjectContributor {
 		codeGenArgs.append(" --controller-package ").append(basePackage + ".controller");
 		codeGenArgs.append(" --controllerimpl-package ").append(basePackage + ".controller.impl");
 		codeGenArgs.append(" --exception-package ").append(basePackage + ".exception");
-		codeGenArgs.append(" --library spring-cloud");
+		//codeGenArgs.append(" --library spring-cloud");
 		setFramework(codeGenArgs);
 		codeGenArgs.append(" -o ").append(projectRoot);
 
