@@ -35,7 +35,7 @@
 		</dependency>
 		<dependency>
 			<groupId>io.spring.initializr</groupId>
-			<artifactId>swaggercodegengenerators</artifactId>
+			<artifactId>swagger-codegen-generators</artifactId>
 			<version>${revision}</version>
 		</dependency>
 		<dependency>
