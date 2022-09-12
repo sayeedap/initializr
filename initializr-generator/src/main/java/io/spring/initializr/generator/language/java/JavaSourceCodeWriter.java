@@ -48,7 +48,7 @@ import io.spring.initializr.generator.language.SourceStructure;
  *
  * @author Andy Wilkinson
  * @author Matt Berteaux
- * @author Sayeed
+ * @author Sayeed A
  */
 public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 
@@ -135,11 +135,12 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 				if (!methodDeclarations.isEmpty()) {
 					writer.indented(() -> {
 						for (JavaMethodDeclaration methodDeclaration : methodDeclarations) {
-							if (type.getClassType().equals("class"))
+							if (type.getClassType().equals("class")) {
 								writeMethodDeclaration(writer, methodDeclaration);
-							else
+							}
+							else {
 								writeAbstractMethodDeclaration(writer, methodDeclaration);
-
+							}
 						}
 					});
 				}
@@ -159,7 +160,8 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 			writer.print("(");
 			if (attributes.size() == 1 && attributes.get(0).getName().equals("value")) {
 				writer.print(formatAnnotationAttribute(attributes.get(0)));
-			} else {
+			}
+			else {
 				writer.print(attributes.stream()
 						.map((attribute) -> attribute.getName() + " = " + formatAnnotationAttribute(attribute))
 						.collect(Collectors.joining(", ")));
@@ -223,7 +225,8 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 			for (JavaStatement statement : statements) {
 				if (statement instanceof JavaExpressionStatement) {
 					writeExpression(writer, ((JavaExpressionStatement) statement).getExpression());
-				} else if (statement instanceof JavaReturnStatement) {
+				}
+				else if (statement instanceof JavaReturnStatement) {
 					writer.print("return ");
 					writeExpression(writer, ((JavaReturnStatement) statement).getExpression());
 				}
@@ -276,14 +279,16 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 	private void writeExpression(IndentingWriter writer, JavaExpression expression) {
 		if (expression instanceof JavaMethodInvocation) {
 			writeMethodInvocation(writer, (JavaMethodInvocation) expression);
-		} else if (expression instanceof JavaStringExpression) {
+		}
+		else if (expression instanceof JavaStringExpression) {
 			writeStringExpression(writer, (JavaStringExpression) expression);
 		}
 	}
 
 	private void writeMethodInvocation(IndentingWriter writer, JavaMethodInvocation methodInvocation) {
-//		writer.print(getUnqualifiedName(methodInvocation.getTarget()) + "." + methodInvocation.getName() + "("
-//				+ String.join(", ", methodInvocation.getArguments()) + ")");
+		// writer.print(getUnqualifiedName(methodInvocation.getTarget()) + "." +
+		// methodInvocation.getName() + "("
+		// + String.join(", ", methodInvocation.getArguments()) + ")");
 		writeExpression(writer, methodInvocation.getTarget());
 		writer.print("." + methodInvocation.getName() + "(" + String.join(", ", methodInvocation.getArguments()) + ")");
 
@@ -294,7 +299,7 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 	}
 
 	private Set<String> determineImports(JavaCompilationUnit compilationUnit) {
-//		TODO Imports for java return type
+		// TODO Imports for java return type
 		List<String> imports = new ArrayList<>();
 		for (JavaTypeDeclaration typeDeclaration : compilationUnit.getTypeDeclarations()) {
 			if (requiresImport(typeDeclaration.getExtends())) {
@@ -306,7 +311,7 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 
 			}
 
-//			imports.addAll(getRequiredImports(typeDeclaration.getImplements()));
+			// imports.addAll(getRequiredImports(typeDeclaration.getImplements()));
 
 			imports.addAll(getRequiredImports(typeDeclaration.getAnnotations(), this::determineImports));
 			for (JavaFieldDeclaration fieldDeclaration : typeDeclaration.getFieldDeclarations()) {
@@ -331,8 +336,9 @@ public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 				imports.addAll(getRequiredImports(
 						methodDeclaration.getStatements().stream().filter(JavaExpressionStatement.class::isInstance)
 								.map(JavaExpressionStatement.class::cast).map(JavaExpressionStatement::getExpression)
-//								.filter(JavaMethodInvocation.class::isInstance).map(JavaMethodInvocation.class::cast),
-//						(methodInvocation) -> Collections.singleton(methodInvocation.getTarget())));
+								// .filter(JavaMethodInvocation.class::isInstance).map(JavaMethodInvocation.class::cast),
+								// (methodInvocation) ->
+								// Collections.singleton(methodInvocation.getTarget())));
 								.filter(JavaMethodInvocation.class::isInstance).map(JavaMethodInvocation.class::cast)
 								.map(JavaMethodInvocation::getTarget).filter(JavaStringExpression.class::isInstance)
 								.map(JavaStringExpression.class::cast),

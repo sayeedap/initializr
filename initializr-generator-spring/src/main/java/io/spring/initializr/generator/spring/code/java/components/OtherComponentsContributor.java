@@ -47,31 +47,38 @@ public class OtherComponentsContributor implements ProjectContributor {
 				try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(file))) {
 					mustacheSection.write(writer);
 				}
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		});
 
-//		Files.createDirectories(resolvePackage(projectRoot,
-//				sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName() + ".configuration"));
-//		Files.createDirectories(resolvePackage(projectRoot,
-//				sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName() + ".repository"));
-//		Files.createDirectories(resolvePackage(projectRoot,
-//				sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName() + ".utility"));
-//		Files.createDirectories(resolvePackage(projectRoot,
-//				sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName() + ".proxy"));
-//		Files.createDirectories(resolvePackage(projectRoot,
-//				sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName() + ".model"));
-//		Files.createDirectories(resolvePackage(projectRoot,
-//				sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName() + ".entity"));
+		// Files.createDirectories(resolvePackage(projectRoot,
+		// sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName()
+		// + ".configuration"));
+		// Files.createDirectories(resolvePackage(projectRoot,
+		// sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName()
+		// + ".repository"));
+		// Files.createDirectories(resolvePackage(projectRoot,
+		// sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName()
+		// + ".utility"));
+		// Files.createDirectories(resolvePackage(projectRoot,
+		// sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName()
+		// + ".proxy"));
+		// Files.createDirectories(resolvePackage(projectRoot,
+		// sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName()
+		// + ".model"));
+		// Files.createDirectories(resolvePackage(projectRoot,
+		// sourceStructure.getSourcesDirectory() + "." + this.description.getPackageName()
+		// + ".entity"));
 
 	}
 
-//	private static Path resolvePackage(Path directory, String packageName) {
-//		return directory.resolve(packageName.replace('.', '/'));
-//	}
+	// private static Path resolvePackage(Path directory, String packageName) {
+	// return directory.resolve(packageName.replace('.', '/'));
+	// }
 
 	public enum ProjectComponents {
 

@@ -38,8 +38,12 @@ public class ControllerImplCodeContributor implements
 	@Override
 	public void customize(SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>> sourceCode) {
 		CompilationUnit<TypeDeclaration> compilationUnit = sourceCode
-				.createCompilationUnit(this.packageName + ".controller.impl", fileName); // File Name &&PACKAGENAME
-		TypeDeclaration servletInitializer = compilationUnit.createTypeDeclaration(fileName); // class // anme
+				.createCompilationUnit(this.packageName + ".controller.impl", fileName); // File
+																							// Name
+																							// &&PACKAGENAME
+		TypeDeclaration servletInitializer = compilationUnit.createTypeDeclaration(fileName); // class
+																								// //
+																								// anme
 		servletInitializer.implement(this.implementsClassName);
 		servletInitializer.annotate(Annotation.name("org.springframework.web.bind.annotation.RestController"));
 		servletInitializer.annotate(Annotation.name("org.springframework.web.bind.annotation.RequestMapping"));

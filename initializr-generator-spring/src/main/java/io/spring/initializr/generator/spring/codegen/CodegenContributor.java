@@ -13,13 +13,14 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
 /**
  * {@link ProjectContributor} for the project's structure specified in
  * {@code Swagger.yaml} file.
- * 
+ *
  * @author Sayeed
  *
  */
 public class CodegenContributor implements ProjectContributor {
 
 	private final CustomProjectDescription description;
+
 	CliHelper cliHelper = new CliHelper();
 
 	public CodegenContributor(CustomProjectDescription description) {
@@ -57,9 +58,9 @@ public class CodegenContributor implements ProjectContributor {
 		String args = generateCodeGenerationArgs(projectRoot);
 		cliHelper.setCommandObject(args);
 		System.out.println("swagger code generation completed...");
-//		if (commandObject instanceof Runnable) {
-//			new Thread(((Runnable) commandObject)).start();
-//		}
+		// if (commandObject instanceof Runnable) {
+		// new Thread(((Runnable) commandObject)).start();
+		// }
 	}
 
 	private String generateCodeGenerationArgs(Path projectRoot) {
@@ -84,7 +85,8 @@ public class CodegenContributor implements ProjectContributor {
 		codeGenArgs.append(" -o ").append(projectRoot);
 
 		setInputFile(codeGenArgs);
-		//codeGenArgs.append(" -i ").append("C:\\Users\\stefy\\Desktop\\SwaggerCodeGenJar_11-08-2022\\APi1.yaml");
+		// codeGenArgs.append(" -i
+		// ").append("C:\\Users\\stefy\\Desktop\\SwaggerCodeGenJar_11-08-2022\\APi1.yaml");
 		System.out.println("stringBuilder:  " + codeGenArgs);
 
 		args = codeGenArgs.toString();
@@ -113,17 +115,19 @@ public class CodegenContributor implements ProjectContributor {
 		codeGenArgs.append(" -l ").append(framework);
 	}
 
-		private void setInputFile(StringBuilder codeGenArgs){
-			String prefix="temp";
-			byte[] bytes = new byte[0];
-			try {
-				bytes = this.description.getSwaggerFile().getBytes();
-				Path tempDirWithPrefix = Files.createTempDirectory(prefix);
-				Files.write(Paths.get(tempDirWithPrefix + this.description.getSwaggerFile().getOriginalFilename()), bytes);
-				codeGenArgs.append(" -i ").append(Paths.get(tempDirWithPrefix + this.description.getSwaggerFile().getOriginalFilename()).toString());
-			} catch (IOException ex) {
-				throw new InvalidArgException("Error in setting inputFile: "+ ex.getMessage());
-			}
+	private void setInputFile(StringBuilder codeGenArgs) {
+		String prefix = "temp";
+		byte[] bytes = new byte[0];
+		try {
+			bytes = this.description.getSwaggerFile().getBytes();
+			Path tempDirWithPrefix = Files.createTempDirectory(prefix);
+			Files.write(Paths.get(tempDirWithPrefix + this.description.getSwaggerFile().getOriginalFilename()), bytes);
+			codeGenArgs.append(" -i ").append(
+					Paths.get(tempDirWithPrefix + this.description.getSwaggerFile().getOriginalFilename()).toString());
 		}
+		catch (IOException ex) {
+			throw new InvalidArgException("Error in setting inputFile: " + ex.getMessage());
+		}
+	}
 
 }

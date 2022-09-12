@@ -19,9 +19,9 @@ package io.spring.initializr.generator.spring.codegen;
 import org.springframework.core.Ordered;
 
 /**
- * Callback for customizing a project's Code structure. Invoked with an
- * {@link Ordered order} of {@code 0} by default, considering overriding
- * {@link #getOrder()} to customize this behaviour.
+ * Callback for customizing a project's Code structure. Invoked with an {@link Ordered
+ * order} of {@code 0} by default, considering overriding {@link #getOrder()} to customize
+ * this behaviour.
  *
  * @author Sayeed
  */

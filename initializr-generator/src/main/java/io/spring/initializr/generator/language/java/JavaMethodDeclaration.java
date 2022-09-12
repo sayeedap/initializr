@@ -36,8 +36,8 @@ public final class JavaMethodDeclaration implements Annotatable {
 
 	private final String name;
 
-//	private final String returnType;
-	
+	// private final String returnType;
+
 	private final JavaReturnType javaReturnType;
 
 	private final int modifiers;
@@ -47,13 +47,13 @@ public final class JavaMethodDeclaration implements Annotatable {
 	private final List<JavaStatement> statements;
 
 	private JavaMethodDeclaration(String name, int modifiers, List<Parameter> parameters,
-			List<JavaStatement> statements,JavaReturnType javaReturnType) {
+			List<JavaStatement> statements, JavaReturnType javaReturnType) {
 		this.name = name;
-//		this.returnType = returnType;
+		// this.returnType = returnType;
 		this.modifiers = modifiers;
 		this.parameters = parameters;
 		this.statements = statements;
-		this.javaReturnType=javaReturnType;
+		this.javaReturnType = javaReturnType;
 	}
 
 	public static Builder method(String name) {
@@ -64,9 +64,9 @@ public final class JavaMethodDeclaration implements Annotatable {
 		return this.name;
 	}
 
-//	String getReturnType() {
-//		return this.returnType;
-//	}
+	// String getReturnType() {
+	// return this.returnType;
+	// }
 
 	List<Parameter> getParameters() {
 		return this.parameters;
@@ -79,10 +79,9 @@ public final class JavaMethodDeclaration implements Annotatable {
 	public List<JavaStatement> getStatements() {
 		return this.statements;
 	}
-	
 
 	public JavaReturnType getJavaReturnType() {
-		return javaReturnType;
+		return this.javaReturnType;
 	}
 
 	@Override
@@ -104,12 +103,12 @@ public final class JavaMethodDeclaration implements Annotatable {
 
 		private List<Parameter> parameters = new ArrayList<>();
 
-//		private String returnType = "void";
+		// private String returnType = "void";
 
-		private  JavaReturnType javaReturnType;
+		private JavaReturnType javaReturnType;
 
 		private int modifiers;
-		
+
 		private Builder(String name) {
 			this.name = name;
 		}
@@ -119,11 +118,11 @@ public final class JavaMethodDeclaration implements Annotatable {
 			return this;
 		}
 
-//		public Builder returning(String returnType) {
-//			this.returnType = returnType;
-//			return this;
-//		}
-		
+		// public Builder returning(String returnType) {
+		// this.returnType = returnType;
+		// return this;
+		// }
+
 		public Builder returning(JavaReturnType returnType) {
 			this.javaReturnType = returnType;
 			return this;
@@ -135,8 +134,8 @@ public final class JavaMethodDeclaration implements Annotatable {
 		}
 
 		public JavaMethodDeclaration body(JavaStatement... statements) {
-			return new JavaMethodDeclaration(this.name,  this.modifiers, this.parameters,
-					Arrays.asList(statements),this.javaReturnType);
+			return new JavaMethodDeclaration(this.name, this.modifiers, this.parameters, Arrays.asList(statements),
+					this.javaReturnType);
 		}
 
 	}

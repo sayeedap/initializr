@@ -1,9 +1,9 @@
 package io.spring.initializr.generator.spring.docker;
 
 /**
- * The {@link DockerFile} contains all the commands a user could call on the
- * command line to assemble an image
- * 
+ * The {@link DockerFile} contains all the commands a user could call on the command line
+ * to assemble an image
+ *
  * @author Sayeed
  */
 public class DockerFile {

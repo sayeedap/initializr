@@ -37,13 +37,13 @@ public class JavaMethodInvocation extends JavaExpression {
 		this.name = name;
 		this.arguments = Arrays.asList(arguments);
 	}
-	
+
 	public JavaMethodInvocation(String target, String name, String... arguments) {
 		this(new JavaStringExpression(target), name, arguments);
 	}
 
 	public JavaExpression getTarget() {
-		return target;
+		return this.target;
 	}
 
 	public String getName() {

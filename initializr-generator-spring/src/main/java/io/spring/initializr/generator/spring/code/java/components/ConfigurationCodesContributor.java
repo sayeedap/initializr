@@ -21,7 +21,6 @@ import io.spring.initializr.metadata.InitializrMetadata;
  */
 public class ConfigurationCodesContributor implements ProjectContributor {
 
-
 	private final ProjectDescription description;
 
 	private final Build build;
@@ -45,7 +44,8 @@ public class ConfigurationCodesContributor implements ProjectContributor {
 		if (this.buildMetadataResolver.hasFacet(this.build, "swagger")) {
 
 			writeSwaggerConfiguration(sourceStructure);
-		} else {
+		}
+		else {
 			System.out.println("Swagger noooooot found");
 		}
 

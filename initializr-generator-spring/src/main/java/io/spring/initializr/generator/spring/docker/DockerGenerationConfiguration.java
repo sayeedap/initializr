@@ -14,7 +14,7 @@ import io.spring.initializr.generator.spring.docker.Command.CommandType;
 
 /**
  * Configuration for docker-related contributions to a generated project.
- * 
+ *
  * @author Sayeed
  *
  */
@@ -66,7 +66,6 @@ public class DockerGenerationConfiguration {
 
 	/**
 	 * The {@link openjdkTagName} find appropriate docker image for java version
-	 * 
 	 * @param jvmVersion
 	 * @return Docker image
 	 */

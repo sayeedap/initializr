@@ -19,16 +19,16 @@ public class ServiceCodeContributor implements
 		MainSourceCodeCustomizer<TypeDeclaration, CompilationUnit<TypeDeclaration>, SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>>> {
 
 	private final String fileName;
-	
+
 	private final String packageName;
 
 	private final String initializerClassName;
 
 	private final ObjectProvider<ServiceCodeCustomizer<?>> serviceCodeCustomizers;
 
-	public ServiceCodeContributor(String fileName,String packageName, String initializerClassName,
+	public ServiceCodeContributor(String fileName, String packageName, String initializerClassName,
 			ObjectProvider<ServiceCodeCustomizer<?>> serviceCodeCustomizers) {
-		this.fileName=fileName;
+		this.fileName = fileName;
 		this.packageName = packageName;
 		this.initializerClassName = initializerClassName;
 		this.serviceCodeCustomizers = serviceCodeCustomizers;
@@ -37,9 +37,11 @@ public class ServiceCodeContributor implements
 	@Override
 	public void customize(SourceCode<TypeDeclaration, CompilationUnit<TypeDeclaration>> sourceCode) {
 		CompilationUnit<TypeDeclaration> compilationUnit = sourceCode
-				.createCompilationUnit(this.packageName + ".service", fileName); // File Name &&PACKAGENAME
+				.createCompilationUnit(this.packageName + ".service", fileName); // File
+																					// Name
+																					// &&PACKAGENAME
 		TypeDeclaration servletInitializer = compilationUnit.createTypeDeclaration(fileName); // class
-		servletInitializer.setClassType("interface");																											// anme
+		servletInitializer.setClassType("interface"); // anme
 		servletInitializer.extend(this.initializerClassName);
 		customizeServletInitializer(servletInitializer);
 	}
