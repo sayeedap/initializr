@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 
 import io.spring.initializr.generator.condition.ConditionalOnComponents;
 import io.spring.initializr.generator.condition.ConditionalOnPackaging;
+import io.spring.initializr.generator.condition.ConditionalOnSwaggerFile;
 import io.spring.initializr.generator.language.Annotation;
 import io.spring.initializr.generator.language.Parameter;
 import io.spring.initializr.generator.language.java.JavaExpressionStatement;
@@ -134,7 +135,6 @@ class JavaProjectGenerationDefaultContributorsConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnComponents("service")
 	ServiceCodeCustomizer<JavaTypeDeclaration> javaServiceCodeCustomizer(ProjectDescription description) {
 		return (typeDeclaration) -> {
 			typeDeclaration.modifiers(Modifier.PUBLIC);
@@ -142,7 +142,6 @@ class JavaProjectGenerationDefaultContributorsConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnComponents("service")
 	ServiceImplCodeCustomizer<JavaTypeDeclaration> javaServiceImplCodeCustomizer(ProjectDescription description) {
 		return (typeDeclaration) -> {
 			typeDeclaration.modifiers(Modifier.PUBLIC);

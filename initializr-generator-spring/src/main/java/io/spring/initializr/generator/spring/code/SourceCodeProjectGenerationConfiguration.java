@@ -165,7 +165,7 @@ public class SourceCodeProjectGenerationConfiguration {
 
 		@Bean
 		OtherComponentsContributor otherComponentsContributor() {
-			return new OtherComponentsContributor(this.description);
+			return new OtherComponentsContributor(this.description, build, buildMetadataResolver);
 		}
 		
 		@Bean

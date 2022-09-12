@@ -5,6 +5,10 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import io.spring.initializr.generator.project.CustomProjectDescription;
 
+/**
+ * @author Sayeed
+ *
+ */
 public class OnComponentsCondition extends CustomProjectGenerationCondition {
 
 	@Override

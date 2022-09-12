@@ -5,11 +5,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.ObjectProvider;
 
-import io.spring.initializr.generator.language.Annotation;
 import io.spring.initializr.generator.language.CompilationUnit;
 import io.spring.initializr.generator.language.SourceCode;
 import io.spring.initializr.generator.language.TypeDeclaration;
-import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.spring.code.MainSourceCodeCustomizer;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
 
