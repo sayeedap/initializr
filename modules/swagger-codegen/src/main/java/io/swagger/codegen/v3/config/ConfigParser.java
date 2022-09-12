@@ -12,34 +12,37 @@ import org.slf4j.LoggerFactory;
 
 public class ConfigParser {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigParser.class);
 
-    public static Config read(String location) {
+	public static Config read(String location) {
 
-        LOGGER.info("reading config from " + location);
+		LOGGER.info("reading config from " + location);
 
-        ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
 
-        Config config = new Config();
+		Config config = new Config();
 
-        try {
-            JsonNode rootNode = mapper.readTree(new File(location));
-            Iterator<Map.Entry<String, JsonNode>> optionNodes = rootNode.fields();
+		try {
+			JsonNode rootNode = mapper.readTree(new File(location));
+			Iterator<Map.Entry<String, JsonNode>> optionNodes = rootNode.fields();
 
-            while (optionNodes.hasNext()) {
-                Map.Entry<String, JsonNode> optionNode = optionNodes.next();
+			while (optionNodes.hasNext()) {
+				Map.Entry<String, JsonNode> optionNode = optionNodes.next();
 
-                if (optionNode.getValue().isValueNode()) {
-                    config.setOption(optionNode.getKey(), optionNode.getValue().asText());
-                } else {
-                    LOGGER.warn("omitting non-value node " + optionNode.getKey());
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            return null;
-        }
+				if (optionNode.getValue().isValueNode()) {
+					config.setOption(optionNode.getKey(), optionNode.getValue().asText());
+				}
+				else {
+					LOGGER.warn("omitting non-value node " + optionNode.getKey());
+				}
+			}
+		}
+		catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			return null;
+		}
 
-        return config;
-    }
+		return config;
+	}
+
 }

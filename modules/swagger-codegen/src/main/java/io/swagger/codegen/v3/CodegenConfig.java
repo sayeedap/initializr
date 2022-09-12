@@ -13,250 +13,254 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
 public interface CodegenConfig {
-    CodegenType getTag();
 
-    String getName();
+	CodegenType getTag();
 
-    String getHelp();
+	String getName();
 
-    Map<String, Object> additionalProperties();
+	String getHelp();
 
-    Map<String, Object> vendorExtensions();
+	Map<String, Object> additionalProperties();
 
-    String testPackage();
+	Map<String, Object> vendorExtensions();
 
-    String apiPackage();
+	String testPackage();
 
-    String controllerPackage();
-    
-    String controllerImplPackage();
-    
-    String apiFileFolder();
+	String apiPackage();
 
-    String apiTestFileFolder();
+	String controllerPackage();
 
-    String apiDocFileFolder();
+	String controllerImplPackage();
 
-    String fileSuffix();
+	String apiFileFolder();
 
-    String outputFolder();
+	String apiTestFileFolder();
 
-    String templateDir();
+	String apiDocFileFolder();
 
-    String embeddedTemplateDir();
+	String fileSuffix();
 
-    String customTemplateDir();
+	String outputFolder();
 
-    String getTemplateVersion();
+	String templateDir();
 
-    String modelFileFolder();
+	String embeddedTemplateDir();
 
-    String modelTestFileFolder();
+	String customTemplateDir();
 
-    String modelDocFileFolder();
+	String getTemplateVersion();
 
-    String modelPackage();
+	String modelFileFolder();
 
-    String toApiName(String name);
+	String modelTestFileFolder();
 
-    String toApiVarName(String name);
+	String modelDocFileFolder();
 
-    String toModelName(String name);
+	String modelPackage();
 
-    String toParamName(String name);
+	String toApiName(String name);
 
-    String escapeText(String text);
+	String toApiVarName(String name);
 
-    String escapeUnsafeCharacters(String input);
+	String toModelName(String name);
 
-    String escapeReservedWord(String name);
+	String toParamName(String name);
 
-    String escapeQuotationMark(String input);
+	String escapeText(String text);
 
-    String getTypeDeclaration(Schema schema);
+	String escapeUnsafeCharacters(String input);
 
-    String getTypeDeclaration(String name);
+	String escapeReservedWord(String name);
 
-    void processOpts();
+	String escapeQuotationMark(String input);
 
-    List<CliOption> cliOptions();
+	String getTypeDeclaration(Schema schema);
 
-    String generateExamplePath(String path, Operation operation);
+	String getTypeDeclaration(String name);
 
-    Set<String> reservedWords();
+	void processOpts();
 
-    List<SupportingFile> supportingFiles();
+	List<CliOption> cliOptions();
 
-    String getInputSpec();
+	String generateExamplePath(String path, Operation operation);
 
-    void setInputSpec(String inputSpec);
+	Set<String> reservedWords();
 
-    String getInputURL();
+	List<SupportingFile> supportingFiles();
 
-    void setInputURL(String inputSpec);
+	String getInputSpec();
 
-    String getOutputDir();
+	void setInputSpec(String inputSpec);
 
-    void setOutputDir(String dir);
+	String getInputURL();
 
-    CodegenModel fromModel(String name, Schema schema);
+	void setInputURL(String inputSpec);
 
-    CodegenModel fromModel(String name, Schema schema, Map<String, Schema> allDefinitions);
+	String getOutputDir();
 
-    CodegenOperation fromOperation(String resourcePath, String httpMethod, Operation operation, Map<String, Schema> definitions, OpenAPI openAPI);
+	void setOutputDir(String dir);
 
-    CodegenOperation fromOperation(String resourcePath, String httpMethod, Operation operation, Map<String, Schema> definitions);
+	CodegenModel fromModel(String name, Schema schema);
 
-    List<CodegenSecurity> fromSecurity(Map<String, SecurityScheme> schemes);
+	CodegenModel fromModel(String name, Schema schema, Map<String, Schema> allDefinitions);
 
-    Set<String> defaultIncludes();
+	CodegenOperation fromOperation(String resourcePath, String httpMethod, Operation operation,
+			Map<String, Schema> definitions, OpenAPI openAPI);
 
-    Map<String, String> typeMapping();
+	CodegenOperation fromOperation(String resourcePath, String httpMethod, Operation operation,
+			Map<String, Schema> definitions);
 
-    Map<String, String> instantiationTypes();
+	List<CodegenSecurity> fromSecurity(Map<String, SecurityScheme> schemes);
 
-    Map<String, String> importMapping();
+	Set<String> defaultIncludes();
 
-    Map<String, String> apiTemplateFiles();
+	Map<String, String> typeMapping();
 
-    Map<String, String> modelTemplateFiles();
+	Map<String, String> instantiationTypes();
 
-    Map<String, String> apiTestTemplateFiles();
+	Map<String, String> importMapping();
 
-    Map<String, String> modelTestTemplateFiles();
+	Map<String, String> apiTemplateFiles();
 
-    Map<String, String> apiDocTemplateFiles();
+	Map<String, String> modelTemplateFiles();
 
-    Map<String, String> modelDocTemplateFiles();
+	Map<String, String> apiTestTemplateFiles();
 
-    Set<String> languageSpecificPrimitives();
+	Map<String, String> modelTestTemplateFiles();
 
-    Map<String, String> reservedWordsMappings();
+	Map<String, String> apiDocTemplateFiles();
 
-    void preprocessOpenAPI(OpenAPI openAPI);
+	Map<String, String> modelDocTemplateFiles();
 
-    void processOpenAPI(OpenAPI openAPI);
+	Set<String> languageSpecificPrimitives();
 
-    Mustache.Compiler processCompiler(Mustache.Compiler compiler);
+	Map<String, String> reservedWordsMappings();
 
-    TemplateEngine getTemplateEngine();
+	void preprocessOpenAPI(OpenAPI openAPI);
 
-    String sanitizeName(String name);
+	void processOpenAPI(OpenAPI openAPI);
 
-    String sanitizeTag(String tag);
+	Mustache.Compiler processCompiler(Mustache.Compiler compiler);
 
-    String toApiFilename(String name);
+	TemplateEngine getTemplateEngine();
 
-    String toModelFilename(String name);
+	String sanitizeName(String name);
 
-    String toApiTestFilename(String name);
+	String sanitizeTag(String tag);
 
-    String toModelTestFilename(String name);
+	String toApiFilename(String name);
 
-    String toApiDocFilename(String name);
+	String toModelFilename(String name);
 
-    String toModelDocFilename(String name);
+	String toApiTestFilename(String name);
 
-    String toModelImport(String name);
+	String toModelTestFilename(String name);
 
-    String toApiImport(String name);
+	String toApiDocFilename(String name);
 
-    void addOperationToGroup(String tag, String resourcePath, Operation operation, CodegenOperation co, Map<String, List<CodegenOperation>> operations);
+	String toModelDocFilename(String name);
 
-    Map<String, Object> postProcessAllModels(Map<String, Object> objs);
+	String toModelImport(String name);
 
-    Map<String, Object> postProcessModels(Map<String, Object> objs);
+	String toApiImport(String name);
 
-    Map<String, Object> postProcessOperations(Map<String, Object> objs);
+	void addOperationToGroup(String tag, String resourcePath, Operation operation, CodegenOperation co,
+			Map<String, List<CodegenOperation>> operations);
 
-    Map<String, Object> postProcessOperationsWithModels(Map<String, Object> objs, List<Object> allModels);
+	Map<String, Object> postProcessAllModels(Map<String, Object> objs);
 
-    Map<String, Object> postProcessSupportingFileData(Map<String, Object> objs);
+	Map<String, Object> postProcessModels(Map<String, Object> objs);
 
-    void postProcessModelProperty(CodegenModel model, CodegenProperty property);
+	Map<String, Object> postProcessOperations(Map<String, Object> objs);
 
-    void postProcessParameter(CodegenParameter parameter);
+	Map<String, Object> postProcessOperationsWithModels(Map<String, Object> objs, List<Object> allModels);
 
-    String apiFilename(String templateName, String tag);
+	Map<String, Object> postProcessSupportingFileData(Map<String, Object> objs);
 
-    String apiTestFilename(String templateName, String tag);
+	void postProcessModelProperty(CodegenModel model, CodegenProperty property);
 
-    String apiDocFilename(String templateName, String tag);
+	void postProcessParameter(CodegenParameter parameter);
 
-    boolean shouldOverwrite(String filename);
+	String apiFilename(String templateName, String tag);
 
-    boolean isSkipOverwrite();
+	String apiTestFilename(String templateName, String tag);
 
-    void setSkipOverwrite(boolean skipOverwrite);
+	String apiDocFilename(String templateName, String tag);
 
-    boolean isRemoveOperationIdPrefix();
+	boolean shouldOverwrite(String filename);
 
-    void setRemoveOperationIdPrefix(boolean removeOperationIdPrefix);
+	boolean isSkipOverwrite();
 
-    Map<String, String> supportedLibraries();
+	void setSkipOverwrite(boolean skipOverwrite);
 
-    void setLibrary(String library);
+	boolean isRemoveOperationIdPrefix();
 
-    /**
-     * Library template (sub-template).
-     *
-     * @return libray template
-     */
-    String getLibrary();
+	void setRemoveOperationIdPrefix(boolean removeOperationIdPrefix);
 
-    void setGitUserId(String gitUserId);
+	Map<String, String> supportedLibraries();
 
-    String getGitUserId();
+	void setLibrary(String library);
 
-    void setGitRepoId(String gitRepoId);
+	/**
+	 * Library template (sub-template).
+	 * @return libray template
+	 */
+	String getLibrary();
 
-    String getGitRepoId();
+	void setGitUserId(String gitUserId);
 
-    void setGitRepoBaseURL(String gitRepoBaseURL);
+	String getGitUserId();
 
-    String getGitRepoBaseURL();
+	void setGitRepoId(String gitRepoId);
 
-    void setReleaseNote(String releaseNote);
+	String getGitRepoId();
 
-    String getReleaseNote();
+	void setGitRepoBaseURL(String gitRepoBaseURL);
 
-    void setHttpUserAgent(String httpUserAgent);
+	String getGitRepoBaseURL();
 
-    String getHttpUserAgent();
+	void setReleaseNote(String releaseNote);
 
-    String getCommonTemplateDir();
+	String getReleaseNote();
 
-    void setIgnoreFilePathOverride(String ignoreFileOverride);
+	void setHttpUserAgent(String httpUserAgent);
 
-    String getIgnoreFilePathOverride();
+	String getHttpUserAgent();
 
-    String toBooleanGetter(String name);
+	String getCommonTemplateDir();
 
-    String toSetter(String name);
+	void setIgnoreFilePathOverride(String ignoreFileOverride);
 
-    String toGetter(String name);
+	String getIgnoreFilePathOverride();
 
-    void addHandlebarHelpers(Handlebars handlebars);
+	String toBooleanGetter(String name);
 
-    List<CodegenArgument> readLanguageArguments();
+	String toSetter(String name);
 
-    List<CodegenArgument> getLanguageArguments();
+	String toGetter(String name);
 
-    void setLanguageArguments(List<CodegenArgument> codegenArguments);
+	void addHandlebarHelpers(Handlebars handlebars);
 
-    boolean needsUnflattenedSpec();
+	List<CodegenArgument> readLanguageArguments();
 
-    void setUnflattenedOpenAPI(OpenAPI unflattenedOpenAPI);
+	List<CodegenArgument> getLanguageArguments();
 
-    boolean getIgnoreImportMapping();
+	void setLanguageArguments(List<CodegenArgument> codegenArguments);
 
-    void setIgnoreImportMapping(boolean ignoreImportMapping);
+	boolean needsUnflattenedSpec();
 
-    boolean defaultIgnoreImportMappingOption();
+	void setUnflattenedOpenAPI(OpenAPI unflattenedOpenAPI);
 
-    ISchemaHandler getSchemaHandler();
+	boolean getIgnoreImportMapping();
 
-    default boolean checkAliasModel() {
-        return false;
-    }
+	void setIgnoreImportMapping(boolean ignoreImportMapping);
+
+	boolean defaultIgnoreImportMappingOption();
+
+	ISchemaHandler getSchemaHandler();
+
+	default boolean checkAliasModel() {
+		return false;
+	}
+
 }

@@ -4,19 +4,21 @@ import io.swagger.v3.oas.models.media.Schema;
 
 public class CodegenSchema {
 
-    private CodegenModel codegenModel;
-    private Schema schema;
+	private CodegenModel codegenModel;
 
-    public CodegenSchema(CodegenModel codegenModel, Schema schema) {
-        this.codegenModel = codegenModel;
-        this.schema = schema;
-    }
+	private Schema schema;
 
-    public CodegenModel getCodegenModel() {
-        return codegenModel;
-    }
+	public CodegenSchema(CodegenModel codegenModel, Schema schema) {
+		this.codegenModel = codegenModel;
+		this.schema = schema;
+	}
 
-    public Schema getSchema() {
-        return schema;
-    }
+	public CodegenModel getCodegenModel() {
+		return codegenModel;
+	}
+
+	public Schema getSchema() {
+		return schema;
+	}
+
 }

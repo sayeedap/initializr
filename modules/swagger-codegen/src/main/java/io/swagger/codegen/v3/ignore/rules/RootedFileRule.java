@@ -4,55 +4,61 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * A special case rule which matches files only if they're located
- * in the same directory as the .swagger-codegen-ignore file.
+ * A special case rule which matches files only if they're located in the same directory
+ * as the .swagger-codegen-ignore file.
  */
 public class RootedFileRule extends Rule {
-    private String definedFilename = null;
-    private String definedExtension = null;
 
-    RootedFileRule(List<Part> syntax, String definition) {
-        super(syntax, definition);
+	private String definedFilename = null;
 
-        int separatorIndex = definition.lastIndexOf(".");
-        definedFilename = getFilenamePart(definition, separatorIndex);
-        definedExtension = getExtensionPart(definition, separatorIndex);
-    }
+	private String definedExtension = null;
 
-    private String getFilenamePart(final String input, int stopIndex){
-        return input.substring('/' == input.charAt(0) ? 1 : 0, stopIndex > 0 ? stopIndex : input.length());
-    }
+	RootedFileRule(List<Part> syntax, String definition) {
+		super(syntax, definition);
 
-    private String getExtensionPart(final String input, int stopIndex) {
-        return input.substring(stopIndex > 0 ? stopIndex+1: input.length(), input.length());
-    }
+		int separatorIndex = definition.lastIndexOf(".");
+		definedFilename = getFilenamePart(definition, separatorIndex);
+		definedExtension = getExtensionPart(definition, separatorIndex);
+	}
 
-    @Override
-    public Boolean matches(String relativePath) {
-        // NOTE: Windows-style separator isn't supported, so File.pathSeparator would be incorrect here.
-        // NOTE: lastIndexOf rather than contains because /file.txt is acceptable while path/file.txt is not.
-        //       relativePath will be passed by CodegenIgnoreProcessor and is relative to .codegen-ignore.
-        boolean isSingleFile = relativePath.lastIndexOf("/") <= 0;
+	private String getFilenamePart(final String input, int stopIndex) {
+		return input.substring('/' == input.charAt(0) ? 1 : 0, stopIndex > 0 ? stopIndex : input.length());
+	}
 
-        if(isSingleFile) {
-            int separatorIndex = relativePath.lastIndexOf(".");
-            final String filename = getFilenamePart(relativePath, separatorIndex);
-            final String extension = getExtensionPart(relativePath, separatorIndex);
-            boolean extensionMatches = definedExtension.equals(extension) || definedExtension.equals(IgnoreLineParser.Token.MATCH_ANY.getPattern());
+	private String getExtensionPart(final String input, int stopIndex) {
+		return input.substring(stopIndex > 0 ? stopIndex + 1 : input.length(), input.length());
+	}
 
-            if(extensionMatches && definedFilename.contains(IgnoreLineParser.Token.MATCH_ANY.getPattern())) {
-                // TODO: Evaluate any other escape requirements here.
-                Pattern regex = Pattern.compile(
-                        definedFilename
-                                .replaceAll(Pattern.quote("."), "\\\\Q.\\\\E")
-                                .replaceAll(Pattern.quote("*"), ".*?") // non-greedy match on 0+ any character
-                );
-                return regex.matcher(filename).matches();
-            }
+	@Override
+	public Boolean matches(String relativePath) {
+		// NOTE: Windows-style separator isn't supported, so File.pathSeparator would be
+		// incorrect here.
+		// NOTE: lastIndexOf rather than contains because /file.txt is acceptable while
+		// path/file.txt is not.
+		// relativePath will be passed by CodegenIgnoreProcessor and is relative to
+		// .codegen-ignore.
+		boolean isSingleFile = relativePath.lastIndexOf("/") <= 0;
 
-            return extensionMatches && definedFilename.equals(filename);
-        }
+		if (isSingleFile) {
+			int separatorIndex = relativePath.lastIndexOf(".");
+			final String filename = getFilenamePart(relativePath, separatorIndex);
+			final String extension = getExtensionPart(relativePath, separatorIndex);
+			boolean extensionMatches = definedExtension.equals(extension)
+					|| definedExtension.equals(IgnoreLineParser.Token.MATCH_ANY.getPattern());
 
-        return false;
-    }
+			if (extensionMatches && definedFilename.contains(IgnoreLineParser.Token.MATCH_ANY.getPattern())) {
+				// TODO: Evaluate any other escape requirements here.
+				Pattern regex = Pattern.compile(definedFilename.replaceAll(Pattern.quote("."), "\\\\Q.\\\\E")
+						.replaceAll(Pattern.quote("*"), ".*?") // non-greedy match on 0+
+																// any character
+				);
+				return regex.matcher(filename).matches();
+			}
+
+			return extensionMatches && definedFilename.equals(filename);
+		}
+
+		return false;
+	}
+
 }

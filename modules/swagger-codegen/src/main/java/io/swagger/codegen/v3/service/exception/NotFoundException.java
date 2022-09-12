@@ -17,12 +17,15 @@ package io.swagger.codegen.v3.service.exception;
 import org.apache.http.HttpStatus;
 
 public class NotFoundException extends ApiException {
-    private static final long serialVersionUID = -1223255119112336573L;
 
-    public NotFoundException(String msg) {
-        super(HttpStatus.SC_NOT_FOUND, msg);
-    }
-    public NotFoundException(String msg, Throwable e) {
-        super(HttpStatus.SC_NOT_FOUND, msg, e);
-    }
+	private static final long serialVersionUID = -1223255119112336573L;
+
+	public NotFoundException(String msg) {
+		super(HttpStatus.SC_NOT_FOUND, msg);
+	}
+
+	public NotFoundException(String msg, Throwable e) {
+		super(HttpStatus.SC_NOT_FOUND, msg, e);
+	}
+
 }

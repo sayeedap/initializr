@@ -7,31 +7,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum CodegenType {
-    CLIENT, SERVER, DOCUMENTATION, CONFIG, OTHER;
 
-    private static Map<String, CodegenType> names = new HashMap<String, CodegenType>();
+	CLIENT, SERVER, DOCUMENTATION, CONFIG, OTHER;
 
-    @JsonCreator
-    public static CodegenType forValue(String value) {
-        return names.get(value.toLowerCase());
-    }
+	private static Map<String, CodegenType> names = new HashMap<String, CodegenType>();
 
-    @JsonValue
-    public String toValue() {
-        for (Map.Entry<String, CodegenType> entry : names.entrySet()) {
-            if (entry.getValue() == this) {
-                return entry.getKey();
-            }
-        }
+	@JsonCreator
+	public static CodegenType forValue(String value) {
+		return names.get(value.toLowerCase());
+	}
 
-        return null; // or fail
-    }
+	@JsonValue
+	public String toValue() {
+		for (Map.Entry<String, CodegenType> entry : names.entrySet()) {
+			if (entry.getValue() == this) {
+				return entry.getKey();
+			}
+		}
 
-    static {
-        names.put("client", CLIENT);
-        names.put("server", SERVER);
-        names.put("documentation", DOCUMENTATION);
-        names.put("config", CONFIG);
-        names.put("other", OTHER);
-    }
+		return null; // or fail
+	}
+
+	static {
+		names.put("client", CLIENT);
+		names.put("server", SERVER);
+		names.put("documentation", DOCUMENTATION);
+		names.put("config", CONFIG);
+		names.put("other", OTHER);
+	}
+
 }
