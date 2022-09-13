@@ -13,7 +13,7 @@ import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
 /**
- * @author Sayeed
+ * @author Sayeed A
  *
  */
 public class ExceptionCodeContributor implements ProjectContributor {

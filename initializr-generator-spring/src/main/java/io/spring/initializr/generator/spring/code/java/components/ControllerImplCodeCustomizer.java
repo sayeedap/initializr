@@ -5,7 +5,7 @@ import org.springframework.core.Ordered;
 import io.spring.initializr.generator.language.TypeDeclaration;
 
 /**
- * @author Sayeed
+ * @author Sayeed A
  * @param <T>
  */
 @FunctionalInterface

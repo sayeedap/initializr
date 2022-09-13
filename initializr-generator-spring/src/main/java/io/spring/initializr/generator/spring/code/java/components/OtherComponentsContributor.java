@@ -15,7 +15,7 @@ import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 
 /**
- * @author Sayeed
+ * @author Sayeed A
  *
  */
 public class OtherComponentsContributor implements ProjectContributor {
@@ -115,11 +115,11 @@ public class OtherComponentsContributor implements ProjectContributor {
 		}
 
 		public String getPackageName() {
-			return packageName;
+			return this.packageName;
 		}
 
 		public String getAbout() {
-			return about;
+			return this.about;
 		}
 
 		public Map<String, Object> convertToMustacheMap(String basePackage) {
