@@ -22,21 +22,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import io.spring.initializr.generator.packaging.Packaging;
-
 import org.springframework.context.annotation.Conditional;
 
 /**
- * Condition that matches when a generated project will use a particular
- * {@link Packaging}.
+ * Condition that matches when a generated project will have a swagger file
  *
  * @author Sayeed
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Documented
-@Conditional(OnComponentsCondition.class)
-public @interface ConditionalOnComponents {
+@Conditional(OnSwaggerFileCondition.class)
+public @interface ConditionalOnSwaggerFile {
 
 	String value();
 

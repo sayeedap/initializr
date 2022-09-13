@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.spring.initializr</groupId>
 	<artifactId>initializr</artifactId>
@@ -61,7 +62,6 @@
 		<module>initializr-web</module>
 		<module>modules/swagger-codegen</module>
 		<module>modules/swagger-codegen-generators</module>
-		<module>modules/swagger-codegen-web</module>
 
 	</modules>
 
@@ -178,9 +178,8 @@
 			<build>
 				<pluginManagement>
 					<plugins>
-						<!-- This plugin's configuration is used to store Eclipse m2e
-						     settings only. It has no influence on the Maven build
-						     itself. -->
+						<!-- This plugin's configuration is used to store Eclipse m2e settings 
+							only. It has no influence on the Maven build itself. -->
 						<plugin>
 							<groupId>org.eclipse.m2e</groupId>
 							<artifactId>lifecycle-mapping</artifactId>
@@ -198,7 +197,7 @@
 												</goals>
 											</pluginExecutionFilter>
 											<action>
-												<ignore/>
+												<ignore />
 											</action>
 										</pluginExecution>
 										<pluginExecution>
@@ -211,7 +210,7 @@
 												</goals>
 											</pluginExecutionFilter>
 											<action>
-												<ignore/>
+												<ignore />
 											</action>
 										</pluginExecution>
 									</pluginExecutions>

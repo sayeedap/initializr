@@ -16,6 +16,7 @@
 
 package io.spring.initializr.generator.spring.codegen;
 
+import io.spring.initializr.generator.condition.ConditionalOnSwaggerFile;
 import io.spring.initializr.generator.project.CustomProjectDescription;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 
@@ -28,6 +29,7 @@ import org.springframework.context.annotation.Bean;
  *
  */
 @ProjectGenerationConfiguration
+@ConditionalOnSwaggerFile("hasSwaggerFile")
 public class CodegenGenerationConfiguration {
 
 	@Bean

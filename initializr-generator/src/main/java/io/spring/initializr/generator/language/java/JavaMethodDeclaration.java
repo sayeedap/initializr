@@ -28,15 +28,13 @@ import io.spring.initializr.generator.language.Parameter;
 /**
  * Declaration of a method written in Java.
  *
- * @author Andy Wilkinson
+ * 
  */
 public final class JavaMethodDeclaration implements Annotatable {
 
 	private final List<Annotation> annotations = new ArrayList<>();
 
 	private final String name;
-
-	// private final String returnType;
 
 	private final JavaReturnType javaReturnType;
 
@@ -49,7 +47,6 @@ public final class JavaMethodDeclaration implements Annotatable {
 	private JavaMethodDeclaration(String name, int modifiers, List<Parameter> parameters,
 			List<JavaStatement> statements, JavaReturnType javaReturnType) {
 		this.name = name;
-		// this.returnType = returnType;
 		this.modifiers = modifiers;
 		this.parameters = parameters;
 		this.statements = statements;
@@ -63,10 +60,6 @@ public final class JavaMethodDeclaration implements Annotatable {
 	String getName() {
 		return this.name;
 	}
-
-	// String getReturnType() {
-	// return this.returnType;
-	// }
 
 	List<Parameter> getParameters() {
 		return this.parameters;
@@ -103,8 +96,6 @@ public final class JavaMethodDeclaration implements Annotatable {
 
 		private List<Parameter> parameters = new ArrayList<>();
 
-		// private String returnType = "void";
-
 		private JavaReturnType javaReturnType;
 
 		private int modifiers;
@@ -117,11 +108,6 @@ public final class JavaMethodDeclaration implements Annotatable {
 			this.modifiers = modifiers;
 			return this;
 		}
-
-		// public Builder returning(String returnType) {
-		// this.returnType = returnType;
-		// return this;
-		// }
 
 		public Builder returning(JavaReturnType returnType) {
 			this.javaReturnType = returnType;
