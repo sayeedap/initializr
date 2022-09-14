@@ -3,7 +3,7 @@ package io.spring.initializr.generator.spring.docker;
 /**
  * Sets the Base Image for subsequent instructions
  * 
- * @author Sayeed
+ * @author Sayeed AP
  */
 public class Image {
 

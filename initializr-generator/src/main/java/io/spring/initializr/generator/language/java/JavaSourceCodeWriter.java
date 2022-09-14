@@ -48,7 +48,7 @@ import io.spring.initializr.generator.language.SourceStructure;
  *
  * @author Andy Wilkinson
  * @author Matt Berteaux
- * @author Sayeed A
+ * @author Sayeed AP
  */
 public class JavaSourceCodeWriter implements SourceCodeWriter<JavaSourceCode> {
 

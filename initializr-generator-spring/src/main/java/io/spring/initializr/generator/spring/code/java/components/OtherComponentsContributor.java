@@ -18,7 +18,7 @@ import io.spring.initializr.generator.spring.build.BuildMetadataResolver;
 import io.spring.initializr.metadata.InitializrMetadata;
 
 /**
- * @author Sayeed
+ * @author Sayeed AP
  *
  */
 public class OtherComponentsContributor implements ProjectContributor {
@@ -76,7 +76,8 @@ public class OtherComponentsContributor implements ProjectContributor {
 			try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(file))) {
 				mustacheSection.write(writer);
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

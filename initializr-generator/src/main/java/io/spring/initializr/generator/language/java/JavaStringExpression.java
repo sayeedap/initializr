@@ -19,7 +19,7 @@ package io.spring.initializr.generator.language.java;
 /**
  * A java expression that can be represented as a String.
  *
- * @author Sayeed A
+ * @author Sayeed AP
  */
 public class JavaStringExpression extends JavaExpression {
 

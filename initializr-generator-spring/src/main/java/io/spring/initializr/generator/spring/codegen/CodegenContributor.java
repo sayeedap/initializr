@@ -14,7 +14,7 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
  * {@link ProjectContributor} for the project's structure specified in
  * {@code Swagger.yaml} file.
  *
- * @author Sayeed
+ * @author Sayeed AP
  *
  */
 public class CodegenContributor implements ProjectContributor {
@@ -43,9 +43,9 @@ public class CodegenContributor implements ProjectContributor {
 				this.description.getLanguage());
 
 		// resource directory sourceStructure.getResourcesDirectory();
-		// C:\Users\sayeed\AppData\Local\Temp\project-13060793765327664540\product\src\main\resources
+		// C:\Users\Sayeed AP\AppData\Local\Temp\project-13060793765327664540\product\src\main\resources
 		// source directory sourceStructure.getSourcesDirectory();
-		// //C:\Users\sayeed\AppData\Local\Temp\project-13060793765327664540\product\src\main\java
+		// //C:\Users\Sayeed AP\AppData\Local\Temp\project-13060793765327664540\product\src\main\java
 
 		writeSwaggerFile(projectRoot);
 	}
@@ -80,7 +80,7 @@ public class CodegenContributor implements ProjectContributor {
 		codeGenArgs.append(" --controller-package ").append(basePackage + ".controller");
 		codeGenArgs.append(" --controllerimpl-package ").append(basePackage + ".controller.impl");
 		codeGenArgs.append(" --exception-package ").append(basePackage + ".exception");
-		//codeGenArgs.append(" --library spring-cloud");
+		// codeGenArgs.append(" --library spring-cloud");
 		setFramework(codeGenArgs);
 		codeGenArgs.append(" -o ").append(projectRoot);
 

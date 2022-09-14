@@ -52,7 +52,7 @@ import io.spring.initializr.metadata.InitializrMetadata;
  * Project generation configuration for projects written in any language.
  *
  * @author Andy Wilkinson
- * @author Sayeed
+ * @author Sayeed AP
  */
 @ProjectGenerationConfiguration
 public class SourceCodeProjectGenerationConfiguration {

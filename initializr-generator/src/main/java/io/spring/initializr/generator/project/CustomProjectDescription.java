@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
  * A custom {@link ProjectDescription} to convey the additional flags to contributors.
  *
  * @author Stephane Nicoll
- * @author Sayeed A
+ * @author Sayeed AP
  */
 public class CustomProjectDescription extends MutableProjectDescription {
 

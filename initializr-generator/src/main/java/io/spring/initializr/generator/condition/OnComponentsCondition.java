@@ -24,7 +24,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import io.spring.initializr.generator.project.CustomProjectDescription;
 
 /**
- * @author Sayeed
+ * @author Sayeed AP
  *
  */
 public class OnComponentsCondition extends CustomProjectGenerationCondition {

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * The {@link Command} is executable commands
  * 
- * @author Sayeed
+ * @author Sayeed AP
  */
 public class Command {
 
@@ -47,7 +47,7 @@ public class Command {
 	}
 
 	/**
-	 * @author sayeed
+	 * @author Sayeed AP
 	 */
 	enum CommandType {
 

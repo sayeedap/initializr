@@ -9,7 +9,7 @@ import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
 /**
  * Configuration for swagger file related contributions to a generated project.
  * 
- * @author Sayeed
+ * @author Sayeed AP
  *
  */
 @ProjectGenerationConfiguration

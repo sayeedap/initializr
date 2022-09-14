@@ -11,7 +11,7 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
 /**
  * {@link ProjectContributor} for the project's {@code DockerFile} file.
  *
- * @author Sayeed
+ * @author Sayeed AP
  *
  */
 public class DockerContributor implements ProjectContributor {

@@ -24,7 +24,7 @@ import java.util.List;
  * A type declared in a {@link CompilationUnit}.
  *
  * @author Andy Wilkinson
- * @author Sayeed A
+ * @author Sayeed AP
  */
 public class TypeDeclaration implements Annotatable {
 

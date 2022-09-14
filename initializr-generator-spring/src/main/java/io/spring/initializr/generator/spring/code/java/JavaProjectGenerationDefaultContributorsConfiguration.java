@@ -48,7 +48,7 @@ import io.spring.initializr.generator.spring.code.java.components.ServiceImplCod
  *
  * @author Andy Wilkinson
  * @author Stephane Nicoll
- * @author Sayeed
+ * @author Sayeed AP
  */
 @Configuration
 class JavaProjectGenerationDefaultContributorsConfiguration {

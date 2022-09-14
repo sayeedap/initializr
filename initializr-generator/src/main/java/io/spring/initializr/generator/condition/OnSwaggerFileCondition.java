@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.spring.initializr.generator.project.CustomProjectDescription;
 
 /**
- * @author Sayeed
+ * @author Sayeed AP
  *
  */
 public class OnSwaggerFileCondition extends CustomProjectGenerationCondition {
@@ -19,7 +19,8 @@ public class OnSwaggerFileCondition extends CustomProjectGenerationCondition {
 				.getFirst("value");
 		if (condition.equals("hasSwaggerFile")) {
 			return checkSwaggerFile(description.getSwaggerFile());
-		} else {
+		}
+		else {
 			return checkNotHaveSwaggerFile(description.getSwaggerFile());
 		}
 
