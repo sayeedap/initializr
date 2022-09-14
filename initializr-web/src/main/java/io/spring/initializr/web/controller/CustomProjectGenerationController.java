@@ -26,7 +26,7 @@ import io.spring.initializr.web.project.ProjectGenerationInvoker;
 /**
  * Example of a custom {@link ProjectGenerationController}.
  *
- * @author Stephane Nicoll, Sayeed
+ * @author Stephane Nicoll, Sayeed AP
  */
 public class CustomProjectGenerationController extends ProjectGenerationController<CustomProjectRequest> {
 
