@@ -236,4 +236,3 @@ components:
           title: "flatten inline schemas"
           description: "flattens inline composed schemas."
           x-option: "--flatten-inline-schema"
-   

@@ -123,11 +123,11 @@ public class OtherComponentsContributor implements ProjectContributor {
 		}
 
 		public String getPackageName() {
-			return packageName;
+			return this.packageName;
 		}
 
 		public String getAbout() {
-			return about;
+			return this.about;
 		}
 
 		public boolean isDefaultComponent() {

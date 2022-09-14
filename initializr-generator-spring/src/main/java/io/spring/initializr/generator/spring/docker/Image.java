@@ -20,7 +20,7 @@ public class Image {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class Image {
 	 * @return the tag
 	 */
 	public String getTag() {
-		return tag;
+		return this.tag;
 	}
 
 	/**
