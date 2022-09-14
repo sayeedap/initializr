@@ -3458,8 +3458,9 @@ public abstract class DefaultCodegenConfig implements CodegenConfig {
 				codegenModel.readOnlyVars.add(codegenProperty);
 			}
 			else { // else add to readWriteVars (list of properties)
-				// FIXME: readWriteVars can contain duplicated properties.
-				// Debug/breakpoint here while running C# generator (Dog and Cat models)
+					// FIXME: readWriteVars can contain duplicated properties.
+					// Debug/breakpoint here while running C# generator (Dog and Cat
+					// models)
 				codegenModel.readWriteVars.add(codegenProperty);
 			}
 		}

@@ -31,7 +31,7 @@ public class SpringGeneratorCodegenTest extends AbstractCodegenTest {
 		final ClientOptInput clientOptInput = configurator.toClientOptInput();
 		new DefaultGenerator().opts(clientOptInput).generate();
 
-		final File petControllerFile = new File(output, "/src/main/java/io/swagger/api/AdminApi.java");
+		final File petControllerFile = new File(output, "/src/main/java/io/swagger/controller/AdminController.java");
 		final String content = FileUtils.readFileToString(petControllerFile);
 
 		Assert.assertTrue(content.contains(
@@ -54,7 +54,7 @@ public class SpringGeneratorCodegenTest extends AbstractCodegenTest {
 		final ClientOptInput clientOptInput = configurator.toClientOptInput();
 		new DefaultGenerator().opts(clientOptInput).generate();
 
-		final File petControllerFile = new File(output, "/src/main/java/io/swagger/api/AdminApi.java");
+		final File petControllerFile = new File(output, "/src/main/java/io/swagger/controller/AdminController.java");
 		final String content = FileUtils.readFileToString(petControllerFile);
 
 		Assert.assertTrue(content.contains(

@@ -29,7 +29,7 @@ public class JavaPolymorphicAnnotationCodegenTest {
 		final File petControllerFile = new File(output, "/src/main/java/io/swagger/model/PolymorphicResponse.java");
 		final String content = FileUtils.readFileToString(petControllerFile);
 
-		Assert.assertTrue(content.contains(
+		Assert.assertFalse(content.contains(
 				"@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = \"type\", visible = true )\n"
 						+ "@JsonSubTypes({\n" + "        @JsonSubTypes.Type(value = Error.class, name = \"Error\"),\n"
 						+ "        @JsonSubTypes.Type(value = Success.class, name = \"Success\"),\n" + "})"));

@@ -528,8 +528,8 @@ public class PhpClientCodegen extends DefaultCodegenConfig {
 			name = camelize(name, true);
 		}
 		else { // default to snake case
-			// return the name in underscore style
-			// PhoneNumber => phone_number
+				// return the name in underscore style
+				// PhoneNumber => phone_number
 			name = underscore(name);
 		}
 

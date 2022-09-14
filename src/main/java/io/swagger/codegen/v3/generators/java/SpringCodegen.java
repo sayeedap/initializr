@@ -387,7 +387,7 @@ public class SpringCodegen extends AbstractJavaCodegen
 			}
 		}
 
-		//supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
+		// supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
 		supportingFiles.add(new SupportingFile("README.mustache", "", "README.md"));
 		LOGGER.info("inside processOpts supportingFiles: " + supportingFiles + ")");
 
@@ -1006,7 +1006,7 @@ public class SpringCodegen extends AbstractJavaCodegen
 			}
 		}
 		else { // enum class
-			// Needed imports for Jackson's JsonCreator
+				// Needed imports for Jackson's JsonCreator
 			if (additionalProperties.containsKey("jackson")) {
 				model.imports.add("JsonCreator");
 			}

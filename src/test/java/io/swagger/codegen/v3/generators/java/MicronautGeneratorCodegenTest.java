@@ -54,7 +54,7 @@ public class MicronautGeneratorCodegenTest extends AbstractCodegenTest {
 	@Test(description = "verify interface api generated")
 	public void testApiInterface() throws IOException {
 		final String expectedContent = "@Controller" + System.lineSeparator() + "public interface AdminApi {";
-		final File controllerFile = new File(output, "/src/main/java/io/swagger/api/AdminApi.java");
+		final File controllerFile = new File(output, "/src/main/java/AdminApi.java");
 		final String content = FileUtils.readFileToString(controllerFile);
 		Assert.assertTrue(content.contains(expectedContent));
 	}
@@ -68,7 +68,7 @@ public class MicronautGeneratorCodegenTest extends AbstractCodegenTest {
 				+ ",@Parameter(description = \"path description\") @PathVariable(\"id\") Long id"
 				+ System.lineSeparator()
 				+ ",@Nullable @Parameter(description = \"query description\") @Valid @QueryValue(value = \"name\") String name";
-		final File controllerFile = new File(output, "/src/main/java/io/swagger/api/AdminApi.java");
+		final File controllerFile = new File(output, "/src/main/java/AdminApi.java");
 		final String content = FileUtils.readFileToString(controllerFile);
 		Assert.assertTrue(content.contains(expectedContent));
 	}
