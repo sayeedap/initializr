@@ -1016,6 +1016,15 @@ initializr:
           links:
             - rel: reference
               href: https://spring.io/projects/spring-shell
+        - name: Jackson Datatype Threetenbp
+          id: jackson-datatype
+          groupId: com.github.joschi.jackson
+          artifactId: jackson-datatype-threetenbp
+          version: 2.6.4
+          description: Datatype module to make Jackson recognize the ThreeTen data types (backport of the Java 8 Date & Time API).
+          links:
+            - rel: reference
+              href: https://github.com/joschi/jackson-datatype-threetenbp
     - name: Ops
       content:
         - name: Spring Boot Actuator

@@ -215,7 +215,7 @@ public class CustomProjectRequestToDescriptionConverter
 	private List<String> addSwaggerDependencies(List<String> depIds, CustomProjectRequest request) {
 
 		if (request.getSwaggerFile() != null && !request.getSwaggerFile().isEmpty()) {
-			depIds.add("swagger-doc");
+			depIds.addAll(Arrays.asList("swagger-doc","web","jackson-datatype") );
 		}
 		return depIds;
 	}
