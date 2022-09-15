@@ -37,10 +37,10 @@ import io.spring.initializr.metadata.Type;
 import io.spring.initializr.metadata.support.MetadataBuildItemMapper;
 
 /**
- * A default {@link ProjectRequestToDescriptionConverter} implementation that
- * uses the {@link InitializrMetadata metadata} to set default values for
- * missing attributes if necessary. Transparently transform the platform version
- * if necessary using a {@link ProjectRequestPlatformVersionTransformer}.
+ * A default {@link ProjectRequestToDescriptionConverter} implementation that uses the
+ * {@link InitializrMetadata metadata} to set default values for missing attributes if
+ * necessary. Transparently transform the platform version if necessary using a
+ * {@link ProjectRequestPlatformVersionTransformer}.
  *
  * @author Madhura Bhave
  * @author HaiTao Zhang
@@ -70,14 +70,12 @@ public class CustomProjectRequestToDescriptionConverter
 	}
 
 	/**
-	 * Validate the specified {@link ProjectRequest request} and initialize the
-	 * specified {@link ProjectDescription description}. Override any attribute of
-	 * the description that are managed by this instance.
-	 * 
-	 * @param request     the request to validate
+	 * Validate the specified {@link ProjectRequest request} and initialize the specified
+	 * {@link ProjectDescription description}. Override any attribute of the description
+	 * that are managed by this instance.
+	 * @param request the request to validate
 	 * @param description the description to initialize
-	 * @param metadata    the metadata instance to use to apply defaults if
-	 *                    necessary
+	 * @param metadata the metadata instance to use to apply defaults if necessary
 	 */
 	public void convert(CustomProjectRequest request, CustomProjectDescription description,
 			InitializrMetadata metadata) {
@@ -216,7 +214,7 @@ public class CustomProjectRequestToDescriptionConverter
 
 	private List<String> addSwaggerDependencies(List<String> depIds, CustomProjectRequest request) {
 
-		if (request.getSwaggerFile()!=null && !request.getSwaggerFile().isEmpty()) {
+		if (request.getSwaggerFile() != null && !request.getSwaggerFile().isEmpty()) {
 			depIds.add("swagger-doc");
 		}
 		return depIds;
