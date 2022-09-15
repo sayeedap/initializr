@@ -117,7 +117,7 @@
 							<dependency>
 								<groupId>com.puppycrawl.tools</groupId>
 								<artifactId>checkstyle</artifactId>
-								<version>9.3</version>
+								<version>10.3.3</version>
 							</dependency>
 							<dependency>
 								<groupId>io.spring.javaformat</groupId>
@@ -140,10 +140,13 @@
 									<suppressionsLocation>src/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
 									<includeTestSourceDirectory>true</includeTestSourceDirectory>
 									<propertyExpansion>main.basedir=${main.basedir}</propertyExpansion>
+									<includes>**/*</includes>
+									<excludes>${basedir}/modules/**,${basedir}/modules/swagger-codegen/../**,${basedir}/modules/swagger-codegen/**,${basedir}/modules/swagger-codegen-generators/**</excludes>																		
 								</configuration>
 								<goals>
 									<goal>check</goal>
 								</goals>
+								<inherited>false</inherited>
 							</execution>
 							<execution>
 								<id>nohttp-checkstyle-validation</id>

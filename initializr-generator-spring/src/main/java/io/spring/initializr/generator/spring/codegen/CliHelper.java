@@ -1,3 +1,19 @@
+/*
+ * Copyright 2012-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.spring.initializr.generator.spring.codegen;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -42,21 +58,20 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
 public class CliHelper {
 
-	public String loadResourceOAS3File() {
+	static String loadResourceOAS3File() {
 		URL url = Resources.getResource("configuration/oas3.yaml");
 		try {
 			return Resources.toString(url, Charsets.UTF_8);
 		}
-		catch (IOException e) {
-			e.printStackTrace();
+		catch (IOException ex) {
+			ex.printStackTrace();
 		}
 		return null;
 	}
 
-	public boolean containsOptionExtensions(Map<String, Object> extensions) {
+	static boolean containsOptionExtensions(Map<String, Object> extensions) {
 		if (extensions == null) {
 			return false;
 		}
@@ -67,7 +82,7 @@ public class CliHelper {
 		return false;
 	}
 
-	public String getCommand(String schemaName, Schema schema) {
+	public static String getCommand(String schemaName, Schema schema) {
 		if (schema.getExtensions() != null && !schema.getExtensions().isEmpty()
 				&& schema.getExtensions().get("x-command") != null) {
 			return schema.getExtensions().get("x-command").toString();
@@ -77,7 +92,7 @@ public class CliHelper {
 		}
 	}
 
-	public String[] getArguments(Map<String, Object> extensions) {
+	public static String[] getArguments(Map<String, Object> extensions) {
 		if (extensions.get("x-short-version") != null
 				&& StringUtils.isNotBlank(extensions.get("x-short-version").toString())) {
 			return new String[] { extensions.get("x-short-version").toString(), extensions.get("x-option").toString() };
@@ -85,7 +100,7 @@ public class CliHelper {
 		return new String[] { extensions.get("x-option").toString() };
 	}
 
-	public String[] getArguments(CodegenArgument codegenArgument) {
+	public static String[] getArguments(CodegenArgument codegenArgument) {
 		List<String> options = new ArrayList<>();
 		if (StringUtils.isNotBlank(codegenArgument.getOption())) {
 			options.add(codegenArgument.getOption());
@@ -96,7 +111,7 @@ public class CliHelper {
 		return options.toArray(new String[options.size()]);
 	}
 
-	public String detectCommand(String[] args) {
+	public static String detectCommand(String[] args) {
 		if (args == null || args.length == 0) {
 			return null;
 		}
@@ -107,7 +122,7 @@ public class CliHelper {
 		return command;
 	}
 
-	public String detectlanguage(String[] args) {
+	public static String detectlanguage(String[] args) {
 		if (args == null || args.length == 0) {
 			return null;
 		}
@@ -132,7 +147,7 @@ public class CliHelper {
 		return language;
 	}
 
-	public Class getClass(Schema property) {
+	public static Class getClass(Schema property) {
 		if (property instanceof BooleanSchema) {
 			return Boolean.class;
 		}
@@ -146,7 +161,7 @@ public class CliHelper {
 		return null;
 	}
 
-	public Map<String, Object> createOptionValueMap(Schema schema, Map<String, Object> inputArgs) {
+	public static Map<String, Object> createOptionValueMap(Schema schema, Map<String, Object> inputArgs) {
 		if (inputArgs == null || inputArgs.isEmpty()) {
 			return null;
 		}
@@ -239,12 +254,12 @@ public class CliHelper {
 		return optionValueMap;
 	}
 
-	public String fixOptionName(String option) {
+	public static String fixOptionName(String option) {
 		option = option.substring(countDashes(option));
 		return option.replace("-", "_");
 	}
 
-	private int countDashes(String option) {
+	private static int countDashes(String option) {
 		for (int i = 0; i < option.length(); i++) {
 			if (option.charAt(i) != '-') {
 				return i;
@@ -288,20 +303,16 @@ public class CliHelper {
 			URI uri = new URI(urlStr);
 			return uri.getScheme().toLowerCase().startsWith("http");
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			return false;
 		}
 	}
 
-	public boolean isValidString(String content) {
-		if (StringUtils.isBlank(content) || content.equalsIgnoreCase(null)) {
-			return false;
-		}
-		else
-			return true;
+	public static boolean isValidString(String content) {
+		return StringUtils.isBlank(content) || content.equalsIgnoreCase(null);
 	}
 
-	public void setCommandObject(String args) {
+	static void setCommandObject(String args) {
 		String[] codeGenerationArgs = args.split("\\s+");
 		String oas3 = loadResourceOAS3File();
 		if (StringUtils.isBlank(oas3)) {
@@ -366,9 +377,9 @@ public class CliHelper {
 		try {
 			codegenParser.parseArgs(codeGenerationArgs, inputArgs);
 		}
-		catch (ArgumentParserException e) {
-			codegenParser.handleError(e);
-			throw new InvalidArgException("Invalid Arg: " + e.getMessage());
+		catch (ArgumentParserException ex) {
+			codegenParser.handleError(ex);
+			throw new InvalidArgException("Invalid Arg: " + ex.getMessage());
 		}
 		final String userInputCommand = detectCommand(codeGenerationArgs);
 		if (userInputCommand == null) {

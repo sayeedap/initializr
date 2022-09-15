@@ -27,7 +27,7 @@ import io.spring.initializr.generator.packaging.Packaging;
 import org.springframework.context.annotation.Conditional;
 
 /**
- * Condition that matches when a generated project will use a particular
+ * Condition that matches when a generated project will use a particular.
  * {@link Packaging}.
  *
  * @author Sayeed AP

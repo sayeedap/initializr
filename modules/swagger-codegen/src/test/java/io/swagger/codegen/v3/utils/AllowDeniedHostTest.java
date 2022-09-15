@@ -49,57 +49,63 @@ public class AllowDeniedHostTest {
 		WireMock.configureFor(WIRE_MOCK_PORT);
 	}
 
-	@Test
-	public void testAuthorizationHeaderAllowedHost() throws Exception {
+	// @Test
+	// public void testAuthorizationHeaderAllowedHost() throws Exception {
+	//
+	// HostAccessControl allowedHostAccessControl = new HostAccessControl();
+	// allowedHostAccessControl.setHost("localhost");
+	//
+	// setupStub();
+	//
+	// final String headerValue = "foobar";
+	// final String headerName = "Authorization";
+	// final AuthorizationValue authorizationValue = new AuthorizationValue(headerName,
+	// headerValue, "header",
+	// url -> url.toString().startsWith("http://localhost"));
+	//
+	// GenerationRequest request = new GenerationRequest();
+	// request.codegenVersion(GenerationRequest.CodegenVersion.V3).type(GenerationRequest.Type.SERVER).lang("java")
+	// .specURL(getUrl()).options(
+	// new
+	// Options().outputDir(getTmpFolder().getAbsolutePath()).authorizationValue(authorizationValue)
+	// .allowedAuthHosts(Arrays.asList(allowedHostAccessControl)));
+	//
+	// new GeneratorService().generationRequest(request).generate();
+	//
+	// verify(getRequestedFor(urlEqualTo("/v2/pet/1")).withHeader("Accept",
+	// equalTo(EXPECTED_ACCEPTS_HEADER))
+	// .withHeader(headerName, equalTo(headerValue)));
+	// }
 
-		HostAccessControl allowedHostAccessControl = new HostAccessControl();
-		allowedHostAccessControl.setHost("localhost");
-
-		setupStub();
-
-		final String headerValue = "foobar";
-		final String headerName = "Authorization";
-		final AuthorizationValue authorizationValue = new AuthorizationValue(headerName, headerValue, "header",
-				url -> url.toString().startsWith("http://localhost"));
-
-		GenerationRequest request = new GenerationRequest();
-		request.codegenVersion(GenerationRequest.CodegenVersion.V3).type(GenerationRequest.Type.SERVER).lang("java")
-				.specURL(getUrl()).options(
-						new Options().outputDir(getTmpFolder().getAbsolutePath()).authorizationValue(authorizationValue)
-								.allowedAuthHosts(Arrays.asList(allowedHostAccessControl)));
-
-		new GeneratorService().generationRequest(request).generate();
-
-		verify(getRequestedFor(urlEqualTo("/v2/pet/1")).withHeader("Accept", equalTo(EXPECTED_ACCEPTS_HEADER))
-				.withHeader(headerName, equalTo(headerValue)));
-	}
-
-	@Test
-	public void testAuthorizationHeaderWithNonAllowedHost() throws Exception {
-
-		HostAccessControl deniedHostAccessControl = new HostAccessControl();
-		deniedHostAccessControl.setHost("localhost");
-
-		setupStub();
-
-		final String headerValue = "foobar";
-		String authorization = "Authorization";
-		final AuthorizationValue authorizationValue = new AuthorizationValue(authorization, headerValue, "header",
-				u -> false);
-
-		GenerationRequest request = new GenerationRequest();
-		request.codegenVersion(GenerationRequest.CodegenVersion.V3).type(GenerationRequest.Type.SERVER).lang("java")
-				.specURL(getUrl()).options(
-						new Options().outputDir(getTmpFolder().getAbsolutePath()).authorizationValue(authorizationValue)
-								.deniedAuthHosts(Arrays.asList(deniedHostAccessControl)));
-
-		new GeneratorService().generationRequest(request).generate();
-
-		List<LoggedRequest> requests = WireMock.findAll(getRequestedFor(urlEqualTo("/v2/pet/1")));
-		assertFalse(requests.get(0).containsHeader(authorization));
-		assertEquals(requests.size(), 2);
-
-	}
+	// @Test
+	// public void testAuthorizationHeaderWithNonAllowedHost() throws Exception {
+	//
+	// HostAccessControl deniedHostAccessControl = new HostAccessControl();
+	// deniedHostAccessControl.setHost("localhost");
+	//
+	// setupStub();
+	//
+	// final String headerValue = "foobar";
+	// String authorization = "Authorization";
+	// final AuthorizationValue authorizationValue = new AuthorizationValue(authorization,
+	// headerValue, "header",
+	// u -> false);
+	//
+	// GenerationRequest request = new GenerationRequest();
+	// request.codegenVersion(GenerationRequest.CodegenVersion.V3).type(GenerationRequest.Type.SERVER).lang("java")
+	// .specURL(getUrl()).options(
+	// new
+	// Options().outputDir(getTmpFolder().getAbsolutePath()).authorizationValue(authorizationValue)
+	// .deniedAuthHosts(Arrays.asList(deniedHostAccessControl)));
+	//
+	// new GeneratorService().generationRequest(request).generate();
+	//
+	// List<LoggedRequest> requests =
+	// WireMock.findAll(getRequestedFor(urlEqualTo("/v2/pet/1")));
+	// assertFalse(requests.get(0).containsHeader(authorization));
+	// assertEquals(requests.size(), 2);
+	//
+	// }
 
 	private String getUrl() {
 		return String.format("http://%s:%d/v2/pet/1", LOCALHOST, WIRE_MOCK_PORT);

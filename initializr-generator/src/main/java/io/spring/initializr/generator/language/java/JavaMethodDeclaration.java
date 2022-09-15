@@ -28,7 +28,7 @@ import io.spring.initializr.generator.language.Parameter;
 /**
  * Declaration of a method written in Java.
  *
- * 
+ * @author sayeed a
  */
 public final class JavaMethodDeclaration implements Annotatable {
 

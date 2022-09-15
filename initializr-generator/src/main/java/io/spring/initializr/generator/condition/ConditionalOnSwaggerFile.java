@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 import org.springframework.context.annotation.Conditional;
 
 /**
- * Condition that matches when a generated project will have a swagger file
+ * Condition that matches when a generated project will have a swagger file.
  *
  * @author Sayeed AP
  */
