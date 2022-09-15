@@ -1,20 +1,22 @@
+/*
+ * Copyright 2012-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.spring.initializr.generator.spring.codegen;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.swagger.codegen.v3.CodegenConstants;
-import io.swagger.codegen.v3.ClientOptInput;
-import io.swagger.codegen.v3.CodegenArgument;
-import io.swagger.codegen.v3.DefaultGenerator;
-import io.swagger.codegen.v3.config.CodegenConfigurator;
-import io.swagger.v3.core.util.Json;
-import io.swagger.v3.core.util.Yaml;
-import io.swagger.v3.parser.util.RemoteUrl;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import io.spring.initializr.generator.spring.codegen.CliHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,17 +24,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static io.swagger.codegen.v3.config.CodegenConfiguratorUtils.applyAdditionalPropertiesKvpList;
-import static io.swagger.codegen.v3.config.CodegenConfiguratorUtils.applyImportMappingsKvpList;
-import static io.swagger.codegen.v3.config.CodegenConfiguratorUtils.applyInstantiationTypesKvpList;
-import static io.swagger.codegen.v3.config.CodegenConfiguratorUtils.applyLanguageSpecificPrimitivesCsvList;
-import static io.swagger.codegen.v3.config.CodegenConfiguratorUtils.applyReservedWordsMappingsKvpList;
-import static io.swagger.codegen.v3.config.CodegenConfiguratorUtils.applySystemPropertiesKvpList;
-import static io.swagger.codegen.v3.config.CodegenConfiguratorUtils.applyTypeMappingsKvpList;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import io.swagger.codegen.v3.ClientOptInput;
+import io.swagger.codegen.v3.CodegenArgument;
+import io.swagger.codegen.v3.CodegenConstants;
+import io.swagger.codegen.v3.DefaultGenerator;
+import io.swagger.codegen.v3.config.CodegenConfigurator;
+import io.swagger.codegen.v3.config.CodegenConfiguratorUtils;
+import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.Yaml;
+import io.swagger.v3.parser.util.RemoteUrl;
 
 /**
- * User: lanwen Date: 24.03.15 Time: 20:22
+ * Generate is used for swagger code generation.
+ *
+ * @author stefy joshy
  */
 
 // public class Generate implements Runnable {
@@ -304,7 +312,7 @@ public class Generate {
 		loadArguments();
 
 		// attempt to read from config file
-		CodegenConfigurator configurator = CodegenConfigurator.fromFile(configFile);
+		CodegenConfigurator configurator = CodegenConfigurator.fromFile(this.configFile);
 
 		// if a config file wasn't specified or we were unable to read it
 		if (configurator == null) {
@@ -313,156 +321,157 @@ public class Generate {
 		}
 
 		// now override with any specified parameters
-		if (verbose != null) {
-			configurator.setVerbose(verbose);
+		if (this.verbose != null) {
+			configurator.setVerbose(this.verbose);
 		}
 
-		if (skipOverwrite != null) {
-			configurator.setSkipOverwrite(skipOverwrite);
+		if (this.skipOverwrite != null) {
+			configurator.setSkipOverwrite(this.skipOverwrite);
 		}
 
-		if (isNotEmpty(spec)) {
-			configurator.setInputSpecURL(spec);
+		if (StringUtils.isNotEmpty(this.spec)) {
+			configurator.setInputSpecURL(this.spec);
 		}
 
-		if (isNotEmpty(lang)) {
-			configurator.setLang(lang);
+		if (StringUtils.isNotEmpty(this.lang)) {
+			configurator.setLang(this.lang);
 		}
 
-		if (isNotEmpty(output)) {
-			configurator.setOutputDir(output);
+		if (StringUtils.isNotEmpty(this.output)) {
+			configurator.setOutputDir(this.output);
 		}
 
-		if (isNotEmpty(auth)) {
-			configurator.setAuth(auth);
+		if (StringUtils.isNotEmpty(this.auth)) {
+			configurator.setAuth(this.auth);
 		}
 
-		if (isNotEmpty(templateDir)) {
-			configurator.setTemplateDir(templateDir);
+		if (StringUtils.isNotEmpty(this.templateDir)) {
+			configurator.setTemplateDir(this.templateDir);
 		}
 
-		if (isNotEmpty(templateVersion)) {
-			configurator.setTemplateVersion(templateVersion);
+		if (StringUtils.isNotEmpty(this.templateVersion)) {
+			configurator.setTemplateVersion(this.templateVersion);
 		}
 
-		if (isNotEmpty(apiPackage)) {
-			configurator.setApiPackage(apiPackage);
+		if (StringUtils.isNotEmpty(this.apiPackage)) {
+			configurator.setApiPackage(this.apiPackage);
 		}
 
-		if (isNotEmpty(modelPackage)) {
-			configurator.setModelPackage(modelPackage);
+		if (StringUtils.isNotEmpty(this.modelPackage)) {
+			configurator.setModelPackage(this.modelPackage);
 		}
 
-		if (isNotEmpty(configPackage)) {
-			configurator.setConfigPackage(configPackage);
+		if (StringUtils.isNotEmpty(this.configPackage)) {
+			configurator.setConfigPackage(this.configPackage);
 		}
 
-		if (isNotEmpty(controllerPackage)) {
-			configurator.setControllerPackage(controllerPackage);
+		if (StringUtils.isNotEmpty(this.controllerPackage)) {
+			configurator.setControllerPackage(this.controllerPackage);
 		}
 
-		if (isNotEmpty(controllerImplPackage)) {
-			configurator.setControllerImplPackage(controllerImplPackage);
+		if (StringUtils.isNotEmpty(this.controllerImplPackage)) {
+			configurator.setControllerImplPackage(this.controllerImplPackage);
 		}
 
-		if (isNotEmpty(exceptionPackage)) {
-			configurator.setExceptionPackage(exceptionPackage);
+		if (StringUtils.isNotEmpty(this.exceptionPackage)) {
+			configurator.setExceptionPackage(this.exceptionPackage);
 		}
 
-		if (isNotEmpty(modelNamePrefix)) {
-			configurator.setModelNamePrefix(modelNamePrefix);
+		if (StringUtils.isNotEmpty(this.modelNamePrefix)) {
+			configurator.setModelNamePrefix(this.modelNamePrefix);
 		}
 
-		if (isNotEmpty(modelNameSuffix)) {
-			configurator.setModelNameSuffix(modelNameSuffix);
+		if (StringUtils.isNotEmpty(this.modelNameSuffix)) {
+			configurator.setModelNameSuffix(this.modelNameSuffix);
 		}
 
-		if (isNotEmpty(invokerPackage)) {
-			configurator.setInvokerPackage(invokerPackage);
+		if (StringUtils.isNotEmpty(this.invokerPackage)) {
+			configurator.setInvokerPackage(this.invokerPackage);
 		}
 
-		if (isNotEmpty(groupId)) {
-			configurator.setGroupId(groupId);
+		if (StringUtils.isNotEmpty(this.groupId)) {
+			configurator.setGroupId(this.groupId);
 		}
 
-		if (isNotEmpty(artifactId)) {
-			configurator.setArtifactId(artifactId);
+		if (StringUtils.isNotEmpty(this.artifactId)) {
+			configurator.setArtifactId(this.artifactId);
 		}
 
-		if (isNotEmpty(artifactVersion)) {
-			configurator.setArtifactVersion(artifactVersion);
+		if (StringUtils.isNotEmpty(this.artifactVersion)) {
+			configurator.setArtifactVersion(this.artifactVersion);
 		}
 
-		if (isNotEmpty(library)) {
-			configurator.setLibrary(library);
+		if (StringUtils.isNotEmpty(this.library)) {
+			configurator.setLibrary(this.library);
 		}
 
-		if (isNotEmpty(gitUserId)) {
-			configurator.setGitUserId(gitUserId);
+		if (StringUtils.isNotEmpty(this.gitUserId)) {
+			configurator.setGitUserId(this.gitUserId);
 		}
 
-		if (isNotEmpty(gitRepoId)) {
-			configurator.setGitRepoId(gitRepoId);
+		if (StringUtils.isNotEmpty(this.gitRepoId)) {
+			configurator.setGitRepoId(this.gitRepoId);
 		}
 
-		if (isNotEmpty(gitRepoBaseURL)) {
-			configurator.setGitRepoBaseURL(gitRepoBaseURL);
+		if (StringUtils.isNotEmpty(this.gitRepoBaseURL)) {
+			configurator.setGitRepoBaseURL(this.gitRepoBaseURL);
 		}
 
-		if (isNotEmpty(releaseNote)) {
-			configurator.setReleaseNote(releaseNote);
+		if (StringUtils.isNotEmpty(this.releaseNote)) {
+			configurator.setReleaseNote(this.releaseNote);
 		}
 
-		if (isNotEmpty(httpUserAgent)) {
-			configurator.setHttpUserAgent(httpUserAgent);
+		if (StringUtils.isNotEmpty(this.httpUserAgent)) {
+			configurator.setHttpUserAgent(this.httpUserAgent);
 		}
 
-		if (isNotEmpty(ignoreFileOverride)) {
-			configurator.setIgnoreFileOverride(ignoreFileOverride);
+		if (StringUtils.isNotEmpty(this.ignoreFileOverride)) {
+			configurator.setIgnoreFileOverride(this.ignoreFileOverride);
 		}
 
-		if (flattenInlineSchema != null) {
-			configurator.setFlattenInlineSchema(flattenInlineSchema);
+		if (this.flattenInlineSchema != null) {
+			configurator.setFlattenInlineSchema(this.flattenInlineSchema);
 		}
 
-		if (removeOperationIdPrefix != null) {
-			configurator.setRemoveOperationIdPrefix(removeOperationIdPrefix);
+		if (this.removeOperationIdPrefix != null) {
+			configurator.setRemoveOperationIdPrefix(this.removeOperationIdPrefix);
 		}
 
-		if (codegenArguments != null && !codegenArguments.isEmpty()) {
-			configurator.setCodegenArguments(codegenArguments);
+		if (this.codegenArguments != null && !this.codegenArguments.isEmpty()) {
+			configurator.setCodegenArguments(this.codegenArguments);
 		}
 
-		if (disableExamples != null && disableExamples) {
-			additionalProperties
-					.add(String.format("%s=%s", CodegenConstants.DISABLE_EXAMPLES_OPTION, disableExamples.toString()));
+		if (this.disableExamples != null && this.disableExamples) {
+			this.additionalProperties.add(
+					String.format("%s=%s", CodegenConstants.DISABLE_EXAMPLES_OPTION, this.disableExamples.toString()));
 		}
 
-		if (ignoreImportMappings != null) {
-			additionalProperties.add(String.format("%s=%s", CodegenConstants.IGNORE_IMPORT_MAPPING_OPTION,
-					Boolean.parseBoolean(ignoreImportMappings.toString())));
+		if (this.ignoreImportMappings != null) {
+			this.additionalProperties.add(String.format("%s=%s", CodegenConstants.IGNORE_IMPORT_MAPPING_OPTION,
+					Boolean.parseBoolean(this.ignoreImportMappings.toString())));
 		}
 
-		if (resolveFully != null) {
-			configurator.setResolveFully(resolveFully);
+		if (this.resolveFully != null) {
+			configurator.setResolveFully(this.resolveFully);
 		}
 
-		if (CodegenConstants.MUSTACHE_TEMPLATE_ENGINE.equalsIgnoreCase(templateEngine)) {
-			additionalProperties.add(String.format("%s=%s", CodegenConstants.TEMPLATE_ENGINE,
+		if (CodegenConstants.MUSTACHE_TEMPLATE_ENGINE.equalsIgnoreCase(this.templateEngine)) {
+			this.additionalProperties.add(String.format("%s=%s", CodegenConstants.TEMPLATE_ENGINE,
 					CodegenConstants.MUSTACHE_TEMPLATE_ENGINE));
 		}
 		else {
-			additionalProperties.add(String.format("%s=%s", CodegenConstants.TEMPLATE_ENGINE,
+			this.additionalProperties.add(String.format("%s=%s", CodegenConstants.TEMPLATE_ENGINE,
 					CodegenConstants.HANDLEBARS_TEMPLATE_ENGINE));
 		}
+		CodegenConfiguratorUtils codegenConfiguratorUtils = new CodegenConfiguratorUtils();
 
-		applySystemPropertiesKvpList(systemProperties, configurator);
-		applyInstantiationTypesKvpList(instantiationTypes, configurator);
-		applyImportMappingsKvpList(importMappings, configurator);
-		applyTypeMappingsKvpList(typeMappings, configurator);
-		applyAdditionalPropertiesKvpList(additionalProperties, configurator);
-		applyLanguageSpecificPrimitivesCsvList(languageSpecificPrimitives, configurator);
-		applyReservedWordsMappingsKvpList(reservedWordsMappings, configurator);
+		codegenConfiguratorUtils.applySystemPropertiesKvpList(this.systemProperties, configurator);
+		codegenConfiguratorUtils.applyInstantiationTypesKvpList(this.instantiationTypes, configurator);
+		codegenConfiguratorUtils.applyImportMappingsKvpList(this.importMappings, configurator);
+		codegenConfiguratorUtils.applyTypeMappingsKvpList(this.typeMappings, configurator);
+		codegenConfiguratorUtils.applyAdditionalPropertiesKvpList(this.additionalProperties, configurator);
+		codegenConfiguratorUtils.applyLanguageSpecificPrimitivesCsvList(this.languageSpecificPrimitives, configurator);
+		codegenConfiguratorUtils.applyReservedWordsMappingsKvpList(this.reservedWordsMappings, configurator);
 		final ClientOptInput clientOptInput = configurator.toClientOptInput();
 
 		new DefaultGenerator().opts(clientOptInput).generate();
@@ -489,16 +498,16 @@ public class Generate {
 			try {
 				content = FileUtils.readFileToString(file);
 			}
-			catch (IOException e) {
+			catch (IOException ex) {
 				// LOG.error("Unable to read file: " + this.url, e);
 				return;
 			}
 		}
-		else if (cliHelper.isValidURL(this.url)) {
+		else if (this.cliHelper.isValidURL(this.url)) {
 			try {
 				content = RemoteUrl.urlToString(this.url, null);
 			}
-			catch (Exception e) {
+			catch (Exception ex) {
 				// LOG.error("Unable to read url: " + this.url, e);
 				return;
 			}
@@ -513,20 +522,20 @@ public class Generate {
 
 		JsonNode node = null;
 
-		if (cliHelper.isValidJson(content)) {
+		if (this.cliHelper.isValidJson(content)) {
 			try {
 				node = Json.mapper().readTree(content.getBytes());
 			}
-			catch (IOException e) {
+			catch (IOException ex) {
 				// LOG.error("Unable to deserialize json from: " + this.url, e);
 				node = null;
 			}
 		}
-		else if (cliHelper.isValidYaml(content)) {
+		else if (this.cliHelper.isValidYaml(content)) {
 			try {
 				node = Yaml.mapper().readTree(content.getBytes());
 			}
-			catch (IOException e) {
+			catch (IOException ex) {
 				// LOG.error("Unable to deserialize yaml from: " + this.url, e);
 				node = null;
 			}
@@ -536,11 +545,11 @@ public class Generate {
 			return;
 		}
 
-		final Map<String, Object> optionValueMap = cliHelper.createOptionValueMap(node);
+		final Map<String, Object> optionValueMap = this.cliHelper.createOptionValueMap(node);
 		try {
 			BeanUtils.populate(this, optionValueMap);
 		}
-		catch (Exception e) {
+		catch (Exception ex) {
 			// LOG.error("Error setting values to object.", e);
 		}
 	}

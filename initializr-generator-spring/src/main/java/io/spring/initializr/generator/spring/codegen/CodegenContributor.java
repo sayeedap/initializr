@@ -1,3 +1,19 @@
+/*
+ * Copyright 2012-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.spring.initializr.generator.spring.codegen;
 
 import java.io.IOException;
@@ -20,15 +36,12 @@ public class CodegenContributor implements ProjectContributor {
 
 	private final CustomProjectDescription description;
 
-	CliHelper cliHelper = new CliHelper();
-
 	public CodegenContributor(CustomProjectDescription description) {
 		this.description = description;
 	}
 
 	@Override
 	public void contribute(Path projectRoot) throws IOException {
-		// TODO
 		// Application name = this.description.getApplicationName(); eg:
 		// ProductApplication
 		// Artifacte Id = this.description.getArtifactId(); eg: product
@@ -40,22 +53,13 @@ public class CodegenContributor implements ProjectContributor {
 
 		SourceStructure sourceStructure = this.description.getBuildSystem().getMainSource(projectRoot,
 				this.description.getLanguage());
-
-		// resource directory sourceStructure.getResourcesDirectory();
-		// C:\Users\sayeed\AppData\Local\Temp\project-13060793765327664540\product\src\main\resources
-		// source directory sourceStructure.getSourcesDirectory();
-		// //C:\Users\sayeed\AppData\Local\Temp\project-13060793765327664540\product\src\main\java
-
 		writeSwaggerFile(projectRoot);
 	}
 
 	private void writeSwaggerFile(Path projectRoot) {
-		// TODO Code for writing swagger file
-
 		System.out.println("swagger file" + this.description.getSwaggerFile());
-
 		String args = generateCodeGenerationArgs(projectRoot);
-		cliHelper.setCommandObject(args);
+		CliHelper.setCommandObject(args);
 		System.out.println("swagger code generation completed...");
 		// if (commandObject instanceof Runnable) {
 		// new Thread(((Runnable) commandObject)).start();
@@ -66,9 +70,9 @@ public class CodegenContributor implements ProjectContributor {
 		StringBuilder codeGenArgs = new StringBuilder();
 		String args = null;
 		codeGenArgs.append("generate");
-		if (cliHelper.isValidString(description.getGroupId()))
+		if (CliHelper.isValidString(description.getGroupId()))
 			codeGenArgs.append(" --group-id ").append(description.getGroupId());
-		if (cliHelper.isValidString(description.getArtifactId()))
+		if (CliHelper.isValidString(description.getArtifactId()))
 			codeGenArgs.append(" --artifact-id ").append(description.getArtifactId());
 
 		String basePackage = description.getGroupId() + "." + description.getArtifactId();
@@ -79,7 +83,7 @@ public class CodegenContributor implements ProjectContributor {
 		codeGenArgs.append(" --controller-package ").append(basePackage + ".controller");
 		codeGenArgs.append(" --controllerimpl-package ").append(basePackage + ".controller.impl");
 		codeGenArgs.append(" --exception-package ").append(basePackage + ".exception");
-		//codeGenArgs.append(" --library spring-cloud");
+		// codeGenArgs.append(" --library spring-cloud");
 		setFramework(codeGenArgs);
 		codeGenArgs.append(" -o ").append(projectRoot);
 
@@ -126,122 +130,5 @@ public class CodegenContributor implements ProjectContributor {
 			throw new InvalidArgException("Error in setting inputFile: " + ex.getMessage());
 		}
 	}
-//	public void setCommandObject(String args) {
-//	String[] codeGenerationArgs = args.split("\\s+");
-//	String oas3 = cliHelper.loadResourceOAS3File();
-//	if (StringUtils.isBlank(oas3)) {
-//		throw new InvalidArgException("Could not load oas3 resource file.");
-//	}
-//
-//	final OpenAPI openAPI = new OpenAPIV3Parser().readContents(oas3, null, null).getOpenAPI();
-//	final Map<String, Schema> schemaMap = openAPI.getComponents().getSchemas();
-//	final Set<String> schemaNames = schemaMap.keySet();
-//
-//	final ArgumentParser codegenParser = ArgumentParsers.newFor("swagger-codegen").build();
-//	final Subparsers subparsers = codegenParser.addSubparsers().title("commands").help("additional help")
-//			.metavar("Command");
-//
-//	final Map<String, Schema> commandMap = new HashMap<>();
-//	List<CodegenArgument> codegenArguments = null;
-//
-//	for (String schemaName : schemaNames) {
-//
-//		final Schema<?> schema = schemaMap.get(schemaName);
-//		final String command = cliHelper.getCommand(schemaName, schema);
-//		final Map<String, Schema> schemaProperties = schema.getProperties();
-//		final Subparser parser = subparsers.addParser(command).help(command);
-//		commandMap.put(command, schema);
-//		for (String propertyName : schemaProperties.keySet()) {
-//			final Schema<?> property = schemaProperties.get(propertyName);
-//			final Map<String, Object> extensions = property.getExtensions();
-//
-//			String[] arguments = cliHelper.getArguments(extensions);
-//			final Argument argument = parser.addArgument(arguments).type(cliHelper.getClass(property))
-//					.help(property.getDescription()).metavar(StringUtils.EMPTY);
-//
-//			if (property instanceof BooleanSchema) {
-//				argument.nargs("?").setConst(true);
-//			}
-//			else if (property instanceof ArraySchema) {
-//				argument.nargs("*");
-//			}
-//		}
-//		String language = cliHelper.detectlanguage(codeGenerationArgs);
-//		if (StringUtils.isNotBlank(language)) {
-//			CodegenConfig config = CodegenConfigLoader.forName(language);
-//			codegenArguments = config.readLanguageArguments();
-//			if (CollectionUtils.isNotEmpty(codegenArguments)) {
-//				for (CodegenArgument codegenArgument : codegenArguments) {
-//					String[] arguments = cliHelper.getArguments(codegenArgument);
-//					Class<?> codeGenArgType = "boolean".equalsIgnoreCase(codegenArgument.getType()) ? Boolean.class
-//							: String.class;
-//					final Argument argument = parser.addArgument(arguments).type(codeGenArgType)
-//							.help(codegenArgument.getDescription()).metavar(StringUtils.EMPTY);
-//					if (codegenArgument.getType().equalsIgnoreCase("boolean")) {
-//						argument.nargs("?").setConst(true);
-//					}
-//					else if (codegenArgument.getArray() != null && codegenArgument.getArray()) {
-//						argument.nargs("*");
-//					}
-//				}
-//			}
-//		}
-//	}
-//	final Map<String, Object> inputArgs = new HashMap<>();
-//	try {
-//		codegenParser.parseArgs(codeGenerationArgs, inputArgs);
-//	}
-//	catch (ArgumentParserException e) {
-//		codegenParser.handleError(e);
-//		throw new InvalidArgException("Invalid Arg: " + e.getMessage());
-//	}
-//	final String userInputCommand = cliHelper.detectCommand(codeGenerationArgs);
-//	if (userInputCommand == null) {
-//		throw new InvalidArgException("No command found.");
-//
-//	}
-//	final Schema<?> commandSchema = commandMap.get(userInputCommand);
-//	if (commandSchema == null) {
-//		throw new InvalidArgException("There are not schema related to command " + userInputCommand);
-//
-//	}
-//	final Map<String, Object> extensions = commandSchema.getExtensions();
-//
-//	if (extensions == null || extensions.isEmpty() || extensions.get("x-class-name") == null) {
-//		throw new InvalidArgException("Extensions are required to run command. i.e: 'x-class-name'");
-//	}
-//	final String className = extensions.get("x-class-name").toString();
-//	final Class<?> xClassName;
-//	final Object commandObject;
-//	try {
-//		xClassName = Class.forName(className);
-//		commandObject = xClassName.newInstance();
-//		final Map<String, Object> optionValueMap = cliHelper.createOptionValueMap(commandSchema, inputArgs);
-//		BeanUtils.populate(commandObject, optionValueMap);
-//		if (CollectionUtils.isNotEmpty(codegenArguments) && commandObject instanceof Generate) {
-//			codegenArguments = codegenArguments.stream().filter(codegenArgument -> {
-//				final String option = cliHelper.fixOptionName(codegenArgument.getOption());
-//				final String optionValue = String.valueOf(inputArgs.get(option));
-//
-//				if (cliHelper.isValidString(optionValue)) {
-//					codegenArgument.setValue(optionValue);
-//					return true;
-//				}
-//				else {
-//					return false;
-//				}
-//			}).collect(Collectors.toList());
-//
-//			Generate generateCommand = (Generate) commandObject;
-//			generateCommand.setCodegenArguments(codegenArguments);
-//			generateCommand.generateSwaggerCode();
-//		}
-//	}
-//	catch (ClassNotFoundException | IllegalAccessException | InstantiationException
-//			| InvocationTargetException ex) {
-//		throw new InvalidArgException("Could not load class " + className + "for command" + userInputCommand
-//				+ " and message is " + ex.getMessage());
-//
-//	}
-//}
+
 }

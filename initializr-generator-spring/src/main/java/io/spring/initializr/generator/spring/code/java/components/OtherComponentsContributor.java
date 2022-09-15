@@ -76,7 +76,8 @@ public class OtherComponentsContributor implements ProjectContributor {
 			try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(file))) {
 				mustacheSection.write(writer);
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

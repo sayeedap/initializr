@@ -21,10 +21,10 @@ import io.spring.initializr.generator.project.CustomProjectDescription;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
-import io.spring.initializr.generator.project.CustomProjectDescription;
-
 /**
- * @author Sayeed
+ * OnComponentsCondition.
+ *
+ * @author Sayeed A
  *
  */
 public class OnComponentsCondition extends CustomProjectGenerationCondition {
