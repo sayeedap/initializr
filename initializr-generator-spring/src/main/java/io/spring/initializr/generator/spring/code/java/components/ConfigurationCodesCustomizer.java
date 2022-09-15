@@ -3,7 +3,7 @@ package io.spring.initializr.generator.spring.code.java.components;
 import org.springframework.core.Ordered;
 
 /**
- * @author Sayeed A
+ * @author Sayeed AP
  *
  */
 @FunctionalInterface

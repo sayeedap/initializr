@@ -31,7 +31,7 @@ import io.spring.initializr.generator.spring.build.BuildMetadataResolver;
 import io.spring.initializr.metadata.InitializrMetadata;
 
 /**
- * @author Sayeed
+ * @author Sayeed AP
  *
  */
 public class ConfigurationCodesContributor implements ProjectContributor {
@@ -67,7 +67,7 @@ public class ConfigurationCodesContributor implements ProjectContributor {
 	}
 
 	private void writeSwaggerConfiguration(SourceStructure sourceStructure) throws IOException {
-		Path file = sourceStructure.createSourceFile(this.description.getPackageName() + ".comfiguration",
+		Path file = sourceStructure.createSourceFile(this.description.getPackageName() + ".configuration",
 				"SwaggerConfig");
 		MustacheSection mustacheSection = new MustacheSection(templateRenderer, "/SwaggerConfig",
 				Collections.singletonMap("packageName", this.description.getPackageName() + ".configuration"));

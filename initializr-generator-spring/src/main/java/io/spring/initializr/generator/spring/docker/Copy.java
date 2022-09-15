@@ -4,7 +4,7 @@ package io.spring.initializr.generator.spring.docker;
  * The {@link Copy} instruction copies new files or directories from {@link source} and
  * adds them to the filesystem of the container at the path {@link destination}
  *
- * @author Sayeed
+ * @author Sayeed AP
  */
 public class Copy {
 

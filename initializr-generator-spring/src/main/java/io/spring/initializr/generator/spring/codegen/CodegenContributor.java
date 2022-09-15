@@ -29,7 +29,7 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
  * {@link ProjectContributor} for the project's structure specified in
  * {@code Swagger.yaml} file.
  *
- * @author Sayeed
+ * @author Sayeed AP
  *
  */
 public class CodegenContributor implements ProjectContributor {

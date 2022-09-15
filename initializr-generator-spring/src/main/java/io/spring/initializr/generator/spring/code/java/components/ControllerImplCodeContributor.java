@@ -13,7 +13,7 @@ import io.spring.initializr.generator.spring.code.MainSourceCodeCustomizer;
 import io.spring.initializr.generator.spring.util.LambdaSafe;
 
 /**
- * @author Sayeed A
+ * @author Sayeed AP
  *
  */
 public class ControllerImplCodeContributor implements

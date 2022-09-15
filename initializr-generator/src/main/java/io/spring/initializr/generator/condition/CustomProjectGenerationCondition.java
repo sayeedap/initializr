@@ -27,7 +27,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
  * Base class for project generation {@link Condition Conditions} that rely on the state
  * of the {@link ProjectDescription}.
  *
- * @author Sayeed A
+ * @author Sayeed AP
  */
 public abstract class CustomProjectGenerationCondition implements Condition {
 

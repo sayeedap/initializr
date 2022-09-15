@@ -1049,6 +1049,15 @@ initializr:
           links:
             - rel: reference
               href: https://codecentric.github.io/spring-boot-admin/current/#getting-started
+        - name: Swagger Documentation
+          id: swagger-doc
+          groupId: org.springdoc
+          artifactId: springdoc-openapi-ui
+          version: 1.6.11
+          description: Documentation for APIs
+          facets:
+            - swagger
+          
     - name: Observability
       content:
         - name: Datadog

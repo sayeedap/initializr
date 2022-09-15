@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Class for java return type.
  *
- * @author Sayeed A
+ * @author Sayeed AP
  *
  */
 public class JavaReturnType {

@@ -24,8 +24,8 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * Configuration for swagger file related contributions to a generated project.
- *
- * @author Sayeed A
+ * 
+ * @author Sayeed AP
  *
  */
 @ProjectGenerationConfiguration

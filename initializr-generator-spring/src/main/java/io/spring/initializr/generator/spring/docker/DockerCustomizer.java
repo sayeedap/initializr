@@ -23,7 +23,7 @@ import org.springframework.core.Ordered;
  * order} of {@code 0} by default, considering overriding {@link #getOrder()} to customize
  * this behaviour.
  *
- * @author Sayeed
+ * @author Sayeed AP
  */
 @FunctionalInterface
 public interface DockerCustomizer<D extends DockerFile> extends Ordered {

@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Conditional;
 /**
  * Condition that matches when a generated project will have a swagger file.
  *
- * @author Sayeed A
+ * @author Sayeed AP
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD })

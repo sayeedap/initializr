@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * OnSwaggerFileCondition.
  *
- * @author Sayeed A
+ * @author Sayeed AP
  *
  */
 public class OnSwaggerFileCondition extends CustomProjectGenerationCondition {

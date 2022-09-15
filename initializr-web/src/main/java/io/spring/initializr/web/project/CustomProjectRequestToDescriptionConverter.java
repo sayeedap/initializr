@@ -16,8 +16,6 @@
 
 package io.spring.initializr.web.project;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,26 +27,25 @@ import io.spring.initializr.generator.buildsystem.BuildSystem;
 import io.spring.initializr.generator.language.Language;
 import io.spring.initializr.generator.packaging.Packaging;
 import io.spring.initializr.generator.project.CustomProjectDescription;
-import io.spring.initializr.generator.project.MutableProjectDescription;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.version.Version;
 import io.spring.initializr.metadata.DefaultMetadataElement;
 import io.spring.initializr.metadata.Dependency;
+import io.spring.initializr.metadata.InitializrConfiguration.Platform;
 import io.spring.initializr.metadata.InitializrMetadata;
 import io.spring.initializr.metadata.Type;
-import io.spring.initializr.metadata.InitializrConfiguration.Platform;
 import io.spring.initializr.metadata.support.MetadataBuildItemMapper;
 
 /**
- * A default {@link ProjectRequestToDescriptionConverter} implementation that uses the
- * {@link InitializrMetadata metadata} to set default values for missing attributes if
- * necessary. Transparently transform the platform version if necessary using a
- * {@link ProjectRequestPlatformVersionTransformer}.
+ * A default {@link ProjectRequestToDescriptionConverter} implementation that
+ * uses the {@link InitializrMetadata metadata} to set default values for
+ * missing attributes if necessary. Transparently transform the platform version
+ * if necessary using a {@link ProjectRequestPlatformVersionTransformer}.
  *
  * @author Madhura Bhave
  * @author HaiTao Zhang
  * @author Stephane Nicoll
- * @author Sayeed
+ * @author Sayeed AP
  */
 public class CustomProjectRequestToDescriptionConverter
 		implements ProjectRequestToDescriptionConverter<CustomProjectRequest> {
@@ -73,12 +70,14 @@ public class CustomProjectRequestToDescriptionConverter
 	}
 
 	/**
-	 * Validate the specified {@link ProjectRequest request} and initialize the specified
-	 * {@link ProjectDescription description}. Override any attribute of the description
-	 * that are managed by this instance.
-	 * @param request the request to validate
+	 * Validate the specified {@link ProjectRequest request} and initialize the
+	 * specified {@link ProjectDescription description}. Override any attribute of
+	 * the description that are managed by this instance.
+	 * 
+	 * @param request     the request to validate
 	 * @param description the description to initialize
-	 * @param metadata the metadata instance to use to apply defaults if necessary
+	 * @param metadata    the metadata instance to use to apply defaults if
+	 *                    necessary
 	 */
 	public void convert(CustomProjectRequest request, CustomProjectDescription description,
 			InitializrMetadata metadata) {
@@ -204,13 +203,23 @@ public class CustomProjectRequestToDescriptionConverter
 		return this.platformVersionTransformer.transform(version, metadata);
 	}
 
-	private List<Dependency> getResolvedDependencies(ProjectRequest request, Version platformVersion,
+	private List<Dependency> getResolvedDependencies(CustomProjectRequest request, Version platformVersion,
 			InitializrMetadata metadata) {
 		List<String> depIds = request.getDependencies();
+		// Add other dependencies
+		depIds = addSwaggerDependencies(depIds, request);
 		return depIds.stream().map((it) -> {
 			Dependency dependency = metadata.getDependencies().get(it);
 			return dependency.resolve(platformVersion);
 		}).collect(Collectors.toList());
+	}
+
+	private List<String> addSwaggerDependencies(List<String> depIds, CustomProjectRequest request) {
+
+		if (request.getSwaggerFile()!=null && !request.getSwaggerFile().isEmpty()) {
+			depIds.add("swagger-doc");
+		}
+		return depIds;
 	}
 
 }

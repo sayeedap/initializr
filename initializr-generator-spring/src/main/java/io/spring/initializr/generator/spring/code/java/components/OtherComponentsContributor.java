@@ -18,7 +18,7 @@ import io.spring.initializr.generator.spring.build.BuildMetadataResolver;
 import io.spring.initializr.metadata.InitializrMetadata;
 
 /**
- * @author Sayeed A
+ * @author Sayeed AP
  *
  */
 public class OtherComponentsContributor implements ProjectContributor {
