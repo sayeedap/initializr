@@ -29,6 +29,7 @@ import io.spring.initializr.generator.buildsystem.Build;
 import io.spring.initializr.generator.condition.ConditionalOnComponents;
 import io.spring.initializr.generator.condition.ConditionalOnPackaging;
 import io.spring.initializr.generator.condition.ConditionalOnPlatformVersion;
+import io.spring.initializr.generator.condition.ConditionalOnSwaggerFile;
 import io.spring.initializr.generator.language.Annotation;
 import io.spring.initializr.generator.language.TypeDeclaration;
 import io.spring.initializr.generator.packaging.war.WarPackaging;
@@ -112,7 +113,7 @@ public class SourceCodeProjectGenerationConfiguration {
 		}
 
 		@Bean
-		@ConditionalOnComponents("controller")
+		@ConditionalOnSwaggerFile("DoNotHaveSwaggerFile")
 		ControllerCodeContributor controllerCodeContributor(
 				ObjectProvider<ControllerCodeCustomizer<?>> controllerCodeCustomizer) {
 			// List<Annotation> annotations = new ArrayList<>();
@@ -122,7 +123,7 @@ public class SourceCodeProjectGenerationConfiguration {
 		}
 
 		@Bean
-		@ConditionalOnComponents("controller")
+		@ConditionalOnSwaggerFile("DoNotHaveSwaggerFile")
 		ControllerImplCodeContributor controllerImplCodeContributor(
 				ObjectProvider<ControllerImplCodeCustomizer<?>> customCodeCustomizers) {
 			// List<Annotation> annotations = new ArrayList<>();

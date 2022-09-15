@@ -102,7 +102,7 @@ class JavaProjectGenerationDefaultContributorsConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnComponents("controller")
+	@ConditionalOnSwaggerFile("DoNotHaveSwaggerFile")
 	ControllerCodeCustomizer<JavaTypeDeclaration> javaControllerCodeCustomizer(ProjectDescription description) {
 		return (typeDeclaration) -> {
 			typeDeclaration.modifiers(Modifier.PUBLIC);
@@ -117,7 +117,7 @@ class JavaProjectGenerationDefaultContributorsConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnComponents("controller")
+	@ConditionalOnSwaggerFile("DoNotHaveSwaggerFile")
 	ControllerImplCodeCustomizer<JavaTypeDeclaration> javaControllerImplCodeCustomizer(ProjectDescription description) {
 		return (typeDeclaration) -> {
 			typeDeclaration.modifiers(Modifier.PUBLIC);
