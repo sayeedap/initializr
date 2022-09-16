@@ -1,4 +1,0 @@
-[submodule "modules/swagger-codegen-generators"]
-	path = modules/swagger-codegen-generators
-	url = https://github.com/stefyjoshy/swagger-codegen-generators.git
-	branch = litmus-main
