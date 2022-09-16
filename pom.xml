@@ -60,8 +60,8 @@
 		<module>initializr-service-sample</module>
 		<module>initializr-version-resolver</module>
 		<module>initializr-web</module>
-		<module>modules/swagger-codegen</module>
-		<module>modules/swagger-codegen-generators</module>
+		<module>swagger-code-generator</module>
+		<module>swagger-template-generator</module>
 
 	</modules>
 
@@ -141,7 +141,7 @@
 									<includeTestSourceDirectory>true</includeTestSourceDirectory>
 									<propertyExpansion>main.basedir=${main.basedir}</propertyExpansion>
 									<includes>**/*</includes>
-									<excludes>${basedir}/modules/**,${basedir}/modules/swagger-codegen/../**,${basedir}/modules/swagger-codegen/**,${basedir}/modules/swagger-codegen-generators/**</excludes>																		
+									<excludes>${basedir}/swagger-code-generator/**,${basedir}/swagger-template-generator/**</excludes>																		
 								</configuration>
 								<goals>
 									<goal>check</goal>
@@ -159,7 +159,7 @@
 									<encoding>UTF-8</encoding>
 									<sourceDirectories>${basedir}</sourceDirectories>
 									<includes>**/*</includes>
-									<excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class,modules/swagger-codegen/**,modules/swagger-codegen-generators/**</excludes>
+									<excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class,swagger-code-generator/**,swagger-template-generator/**</excludes>
 								</configuration>
 								<goals>
 									<goal>check</goal>
